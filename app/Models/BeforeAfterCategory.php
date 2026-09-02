@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
+class BeforeAfterCategory extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['name', 'slug', 'sort_order', 'is_active'];
+
+    protected function casts(): array
+    {
+        return ['is_active' => 'boolean', 'sort_order' => 'integer'];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function ($model) {
+            if (empty($model->slug)) {
+                $model->slug = Str::slug($model->name);
+            }
+        });
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(BeforeAfterProject::class, 'category_id');
+    }
+
+    public function scopeActive($query) { return $query->where('is_active', true); }
+    public function scopeOrdered($query) { return $query->orderBy('sort_order'); }
+}
