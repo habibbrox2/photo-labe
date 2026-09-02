@@ -29,4 +29,5 @@ class BlogCategory extends Model
 
     public function posts() { return $this->hasMany(BlogPost::class, 'category_id'); }
     public function scopeActive($query) { return $query->where('is_active', true); }
+    public function scopeOrdered($query) { return $query->orderBy('sort_order')->orderBy('name'); }
 }

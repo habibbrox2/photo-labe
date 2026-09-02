@@ -1,7 +1,200 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ServiceController;
+use App\Http\Controllers\Frontend\PortfolioController;
+use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Frontend\BlogController;
+use App\Http\Controllers\Frontend\QuoteController;
+use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\BeforeAfterController;
+use App\Http\Controllers\Frontend\PageController;
+use App\Http\Controllers\Frontend\SitemapController;
 
-Route::get('/', function () {
-    return view('welcome');
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
+// Homepage
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Services
+Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('services.show');
+
+// Portfolio
+Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
+Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+// Digital Products
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
+
+// Blog
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+
+// Quote
+Route::get('/get-a-quote', [QuoteController::class, 'create'])->name('quote.create');
+Route::post('/get-a-quote', [QuoteController::class, 'store'])->middleware('throttle:5,1')->name('quote.store');
+
+// Contact
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
+
+// Static Pages
+Route::get('/about', fn () => view('frontend.about'))->name('about');
+Route::get('/faq', fn () => view('frontend.faq'))->name('faq');
+Route::get('/pricing', fn () => view('frontend.pricing'))->name('pricing');
+Route::get('/before-after', [BeforeAfterController::class, 'index'])->name('before-after');
+Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
+
+// SEO
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/robots.txt', function () {
+    $sitemapUrl = url('/sitemap.xml');
+    $content = "User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /account/\nDisallow: /cart/\nDisallow: /checkout/\n\nSitemap: {$sitemapUrl}\n";
+    return response($content, 200)->header('Content-Type', 'text/plain');
+})->name('robots');
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\AuthController;
+
+Route::middleware(['guest', 'throttle:10,1'])->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Email Verification
+    Route::get('/verify-email', [AuthController::class, 'showVerifyEmail'])->name('verification.notice');
+    Route::post('/verify-email/resend', [AuthController::class, 'sendVerificationEmail'])->name('verification.send');
+    Route::get('/verify-email/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
+
+    // Profile
+    Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+
+    // Change Password
+    Route::get('/change-password', [AuthController::class, 'showChangePassword'])->name('password.change');
+    Route::put('/change-password', [AuthController::class, 'updatePassword'])->name('password.change.update');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Customer Dashboard Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('account')
+    ->middleware(['auth', 'verified'])
+    ->name('account.')
+    ->group(function () {
+        Route::get('/', fn () => view('customer.dashboard'))->name('dashboard');
+        Route::get('/orders', fn () => view('customer.orders'))->name('orders');
+        Route::get('/quotes', fn () => view('customer.quotes'))->name('quotes');
+        Route::get('/profile', fn () => view('auth.profile'))->name('profile');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
+use App\Http\Controllers\Admin\BeforeAfterController as AdminBeforeAfterController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\QuoteController as AdminQuoteController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
+use App\Http\Controllers\Admin\MediaController as AdminMediaController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+
+Route::prefix('admin')
+    ->middleware(['auth', 'admin'])
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/', fn () => view('admin.dashboard'))->name('dashboard');
+
+        // Services
+        Route::resource('services', AdminServiceController::class);
+
+        // Portfolio
+        Route::resource('portfolio', AdminPortfolioController::class);
+
+        // Before/After
+        Route::resource('before-after', AdminBeforeAfterController::class);
+
+        // Products
+        Route::resource('products', AdminProductController::class);
+
+        // Blog
+        Route::resource('blog', AdminBlogController::class);
+
+        // Quotes
+        Route::resource('quotes', AdminQuoteController::class)->only(['index', 'show', 'update', 'destroy']);
+
+        // Orders
+        Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update', 'destroy']);
+
+        // Customers
+        Route::resource('customers', AdminCustomerController::class)->only(['index', 'show', 'destroy']);
+
+        // Testimonials
+        Route::resource('testimonials', AdminTestimonialController::class);
+
+        // Pages
+        Route::resource('pages', AdminPageController::class);
+
+        // Reviews
+        Route::resource('reviews', AdminReviewController::class)->only(['index', 'update', 'destroy']);
+
+        // Media
+        Route::resource('media', AdminMediaController::class)->only(['index', 'store', 'destroy']);
+
+        // Settings
+        Route::get('settings', [AdminSettingController::class, 'index'])->name('settings.index');
+        Route::put('settings', [AdminSettingController::class, 'update'])->name('settings.update');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Cart & Checkout Routes
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
+
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::post('/add', [CartController::class, 'add'])->name('add');
+    Route::patch('/{item}', [CartController::class, 'update'])->name('update');
+    Route::delete('/{item}', [CartController::class, 'remove'])->name('remove');
+    Route::delete('/', [CartController::class, 'clear'])->name('clear');
+});
+
+Route::prefix('checkout')->name('checkout.')->group(function () {
+    Route::get('/', [CheckoutController::class, 'show'])->name('show');
+    Route::post('/', [CheckoutController::class, 'process'])->middleware('throttle:3,1')->name('process');
+    Route::get('/success/{order}', [CheckoutController::class, 'success'])->name('success');
 });

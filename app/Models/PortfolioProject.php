@@ -53,7 +53,7 @@ class PortfolioProject extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(PortfolioTag::class, 'portfolio_project_tag');
+        return $this->belongsToMany(PortfolioTag::class, 'portfolio_project_tag', 'project_id', 'tag_id');
     }
 
     public function scopeActive($query)

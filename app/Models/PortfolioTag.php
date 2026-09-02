@@ -23,6 +23,6 @@ class PortfolioTag extends Model
 
     public function projects()
     {
-        return $this->belongsToMany(PortfolioProject::class, 'portfolio_project_tag');
+        return $this->belongsToMany(PortfolioProject::class, 'portfolio_project_tag', 'tag_id', 'project_id');
     }
 }

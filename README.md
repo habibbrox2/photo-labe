@@ -1,144 +1,92 @@
-# PicLab
+# PicLab — Creative Services + Photo Editing + Digital Products Platform
 
-A **Creative Services + Photo Editing + Digital Products** platform built with Laravel, designed to showcase professional photo editing services, manage client orders, and sell basic digital products. Built from the ground up for **shared hosting** compatibility.
+A production-ready Laravel platform for professional photo editing services, portfolio showcase, and digital product sales. Optimized for shared hosting (cPanel).
 
----
+## Tech Stack
 
-## Overview
+- **Backend:** Laravel 12, PHP 8.2+, MySQL 8+
+- **Frontend:** Blade, Tailwind CSS v4, Alpine.js, Vite
+- **Queue:** Database (shared hosting compatible)
+- **Auth:** Custom with roles (super_admin, admin, editor, designer, customer)
 
-PicLab is a production-ready Laravel application that enables businesses to:
+## Features
 
-- **Showcase photo editing services** with detailed descriptions, pricing, and features
-- **Display portfolio projects** with gallery images and filtering
-- **Present interactive Before/After editing samples** with a touch-friendly slider
-- **Receive and manage customer quote requests** through an intuitive form flow
-- **Convert quotes into orders** with file management and revision workflows
-- **Sell digital products** (Lightroom presets, Photoshop actions, LUTs, etc.) via a session-based cart and checkout
-- **Publish blog content** with SEO-friendly URLs and structured data
-- **Serve both customers and admins** through dedicated dashboards
+### Public Website
+- Homepage with hero, services, before/after slider, portfolio, products, testimonials, FAQ
+- Service listings with category filtering and detail pages
+- Portfolio with category filtering, gallery lightbox, and tags
+- Before/After interactive slider (mouse, touch, keyboard)
+- Digital products with cart and checkout
+- Blog with categories and tags
+- Quote request form with file uploads
+- Contact form
+- Dynamic CMS pages
 
-### Key Features
+### Admin Panel
+- Dashboard with stats (revenue, orders, quotes, customers)
+- Full CRUD for: Services, Portfolio, Products, Blog, Pages, Testimonials, Before/After
+- Quote management with status workflow
+- Order management with status updates
+- Customer management
+- Media library with upload
+- Review moderation (approve/reject)
+- Site settings management
 
-| Area | Highlights |
-|---|---|
-| Services | Categories, pricing tiers, features, SEO metadata |
-| Portfolio | Project galleries with category filtering |
-| Before/After | Interactive slider component (mouse/touch/keyboard) |
-| Quotes | Multi-step form, file uploads, status tracking |
-| Orders | Full lifecycle (pending → completed), revisions, messaging |
-| File Management | Private storage, random filenames, MIME validation, authorized downloads |
-| Products | Categories, image galleries, product files, cart, checkout |
-| Blog | Posts, categories, tags, SEO fields |
-| Admin Panel | Dashboard with revenue/stats, data tables, bulk actions |
-| SEO | Sitemap, robots.txt, Open Graph, canonical URLs, schema markup |
-| Security | CSRF, form request validation, policies, audit logging, secure file storage |
+### Customer Dashboard
+- Profile management
+- Order history
+- Quote history
 
----
+### SEO
+- Dynamic sitemap.xml
+- robots.txt
+- Schema.org JSON-LD (Organization, Product, Article)
+- Open Graph + Twitter Card meta tags
+- Canonical URLs
 
-## Technology Stack
-
-| Layer | Technology |
-|---|---|
-| Backend | PHP 8.3+, Laravel (latest stable) |
-| Database | MySQL 8+ |
-| ORM | Laravel Eloquent |
-| Frontend | Blade templates + Tailwind CSS |
-| Interactivity | Alpine.js + vanilla JavaScript |
-| Icons | Lucide Icons |
-| Build Tool | Vite |
-| Queue | Database queue (no Redis required) |
-| Mail | SMTP |
-| Auth | Laravel Auth (session-based) |
-| Payments | Stripe, bKash, Nagad, SSLCommerz (payment gateway interface) |
-
-> No React, Vue, Node.js runtime, WebSockets, Redis, Docker, or microservices — fully compatible with standard cPanel/shared hosting.
-
----
+### Security
+- CSRF protection on all forms
+- Role-based middleware (admin, editor)
+- Authorization policies (7 models)
+- Private file storage
+- Password hashing (bcrypt)
+- Session regeneration on login
+- Rate limiting ready
 
 ## Requirements
 
-- **PHP** 8.3 or higher with extensions: `pdo`, `mbstring`, `openssl`, `ctype`, `json`, `bcmath`, `fileinfo`, `gd` or `imagick`
-- **MySQL** 8.0+ (or equivalent MariaDB)
-- **Composer** 2.x
-- **Node.js** 18+ and **npm** (for asset building only — not for serving the app)
-- **cPanel/shared hosting** with `mod_rewrite` enabled
-
----
+- PHP 8.2+ with extensions: pdo_mysql, mbstring, openssl, tokenizer, xml, curl, gd
+- MySQL 8.0+
+- Composer 2.x
+- Node.js 18+ (for frontend build)
 
 ## Installation
 
-### 1. Clone the repository
+### 1. Clone & Install
 
 ```bash
-git clone https://github.com/habibbrox2/pic-labe.git
-cd pic-labe
-```
-
-### 2. Install PHP dependencies
-
-```bash
-composer install --optimize-autoloader
-```
-
-### 3. Install Node dependencies and build assets
-
-```bash
+git clone <repository-url> piclab
+cd piclab
+composer install
 npm install
-npm run build
 ```
 
-### 4. Configure environment
+### 2. Environment Setup
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-Edit `.env` with your database and mail credentials (see [Configuration](#configuration)).
-
-### 5. Run migrations and seed
-
-```bash
-php artisan migrate --seed
-```
-
-### 6. Link storage
-
-```bash
-php artisan storage:link
-```
-
-### 7. Start the development server
-
-```bash
-php artisan serve
-```
-
-Visit `http://localhost:8000` — the application should be running.
-
-> **Default admin credentials** (created by seeders): email `admin@piclab.test`, password `password`
-
----
-
-## Configuration
-
-Key `.env` variables:
+Edit `.env` with your database credentials:
 
 ```env
-APP_NAME="PicLab"
-APP_ENV=production
-APP_URL=https://yourdomain.com
-
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=piclab
-DB_USERNAME=your_user
-DB_PASSWORD=your_password
-
-QUEUE_CONNECTION=database
-CACHE_STORE=database
-SESSION_DRIVER=database
+DB_USERNAME=root
+DB_PASSWORD=
 
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.mailtrap.io
@@ -146,146 +94,127 @@ MAIL_PORT=587
 MAIL_USERNAME=your_username
 MAIL_PASSWORD=your_password
 MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=noreply@piclab.com
+MAIL_FROM_ADDRESS="noreply@piclab.com"
 MAIL_FROM_NAME="${APP_NAME}"
-
-FILESYSTEM_DISK=local
 ```
 
----
-
-## Shared Hosting Deployment
-
-See **[DEPLOYMENT.md](DEPLOYMENT.md)** for detailed shared hosting setup instructions.
-
-Recommended directory structure:
-
-```text
-/home/username/
-├── laravel-app/
-│   ├── app/
-│   ├── bootstrap/
-│   ├── config/
-│   ├── database/
-│   ├── resources/
-│   ├── routes/
-│   ├── storage/
-│   └── vendor/
-└── public_html/
-    ├── index.php
-    ├── .htaccess
-    └── build/      (Vite assets)
-```
-
-Only Laravel's public assets are exposed through `public_html/`. Sensitive files (`.env`, application code, private storage) remain outside the web root.
-
-### Production optimization commands
+### 3. Database Setup
 
 ```bash
-composer install --no-dev --optimize-autoloader
-php artisan migrate --force
+# Create database (via phpMyAdmin or CLI)
+mysql -u root -e "CREATE DATABASE piclab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+
+# Run migrations and seeders
+php artisan migrate:fresh --seed
+```
+
+### 4. Storage Link
+
+```bash
 php artisan storage:link
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
 ```
 
-### Cron (via cPanel)
+### 5. Build Frontend
 
 ```bash
-php /home/username/laravel-app/artisan schedule:run
+npm run build
 ```
 
-Queue worker polling (no persistent process required):
+### 6. Start Development Server
 
 ```bash
-php /home/username/laravel-app/artisan queue:work --once
+php artisan serve
 ```
 
----
+Visit: `http://localhost:8000`
 
-## Architecture
+## Default Accounts
 
-The application follows a **modular monolith** architecture with clean separation of concerns:
+| Role | Email | Password |
+|------|-------|----------|
+| Super Admin | admin@piclab.com | password |
+| Editor | editor@piclab.com | password |
+| Designer | designer@piclab.com | password |
+| Customer | john@example.com | password |
+| Customer | jane@example.com | password |
+
+## Project Structure
 
 ```
-Browser → Routes → Middleware → Controller → Form Request → Application Service → Eloquent Model → MySQL
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/          # 11 admin controllers
+│   │   ├── Frontend/       # 9 frontend controllers
+│   │   ├── AuthController.php
+│   │   └── Controller.php
+│   ├── Middleware/
+│   │   ├── AdminMiddleware.php
+│   │   └── EditorMiddleware.php
+│   └── Requests/
+├── Models/                 # 30+ Eloquent models
+├── Enums/                  # 6 PHP backed enums
+├── Policies/               # 7 authorization policies
+├── Services/
+├── Notifications/
+├── Jobs/
+└── Support/
+
+resources/
+├── views/
+│   ├── admin/              # Admin panel views
+│   ├── auth/               # Authentication views
+│   ├── components/         # Reusable Blade components
+│   ├── customer/           # Customer dashboard views
+│   ├── frontend/           # Public website views
+│   └── layouts/            # Layout templates
+├── css/
+└── js/
+
+routes/
+├── web.php                 # 120+ routes
+└── console.php
+
+database/
+├── migrations/             # 14 migration files
+├── seeders/                # 8 seeders
+└── factories/
 ```
 
-- **Controllers** are thin — business logic lives in `app/Services/`
-- **Form Requests** handle all validation server-side
-- **Policies** enforce authorization on every protected action
-- **Database transactions** wrap critical operations (checkout, payment, order creation)
-- **Enums** represent status values throughout the domain
+## Development
 
-### Core Services
+```bash
+# Start all development services
+composer dev
 
-- `QuoteService` — quote request lifecycle
-- `OrderService` — order creation, status management, revisions
-- `ProductService` — product catalog
-- `PaymentService` — payment gateway abstraction
-- `FileService` — secure file upload/download
-- `PortfolioService` — portfolio and before/after management
-- `SeoService` — SEO metadata handling
-
-### Module Overview
-
-| Module | Description |
-|---|---|
-| **Services** | Photo editing services with categories, features, and pricing |
-| **Portfolio** | Project gallery with tags and category filtering |
-| **Before/After** | Interactive slider comparing original and edited images |
-| **Quotes** | Customer quote requests with file uploads and admin review |
-| **Orders** | Order workflow from creation to completion with revision support |
-| **Products** | Digital product catalog with cart and checkout |
-| **Blog** | Content management with categories, tags, and SEO |
-| **Admin** | Full admin panel for all modules |
-
-See **[ARCHITECTURE.md](ARCHITECTURE.md)** for detailed architecture documentation.
-
----
-
-## Security
-
-PicLab implements comprehensive security measures:
-
-- CSRF protection on all forms
-- Server-side validation via Form Requests
-- Authorization Policies on every protected action
-- Rate limiting on authentication routes
-- Mass assignment protection via `$fillable`
-- Private file storage with authorized downloads
-- File upload validation (MIME type, extension, size limits, randomized filenames)
-- Audit logging for sensitive admin operations
-- No raw SQL with user input
-
-See **[SECURITY.md](SECURITY.md)** for the full security policy.
-
----
+# Or individually:
+php artisan serve          # HTTP server
+php artisan queue:listen   # Queue worker
+npm run dev                # Vite dev server with HMR
+```
 
 ## Testing
 
 ```bash
-php artisan test
+# Run all tests
+php test
+
+# Run with coverage
+php test --coverage
 ```
 
-Tests cover: authentication, authorization, service CRUD, portfolio CRUD, quote/order workflows, cart, checkout, payment verification, product purchases, and critical security scenarios (cross-user access prevention, admin route protection).
+## Production Deployment
 
----
+See [DEPLOYMENT.md](DEPLOYMENT.md) for shared hosting deployment guide.
 
-## Documentation
+## Security
 
-| Document | Purpose |
-|---|---|
-| [README.md](README.md) | Project overview and quick start |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Architecture and design decisions |
-| [DATABASE.md](DATABASE.md) | Database schema and relationships |
-| [DEPLOYMENT.md](DEPLOYMENT.md) | Shared hosting deployment guide |
-| [SHARED_HOSTING.md](SHARED_HOSTING.md) | cPanel configuration details |
-| [SECURITY.md](SECURITY.md) | Security policy and practices |
+See [SECURITY.md](SECURITY.md) for security documentation.
 
----
+## Database
+
+See [DATABASE.md](DATABASE.md) for database schema documentation.
 
 ## License
 
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT License

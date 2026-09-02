@@ -45,7 +45,7 @@ class Product extends Model
 
     public function scopeActive($query) { return $query->where('status', 'published'); }
     public function scopeFeatured($query) { return $query->where('is_featured', true); }
-    public function scopeOrdered($query) { return $query->orderBy('sort_order')->orderBy('title'); }
+    public function scopeOrdered($query) { return $query->orderBy('title'); }
 
     public function getEffectivePriceAttribute(): float
     {
