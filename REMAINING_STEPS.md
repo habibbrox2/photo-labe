@@ -4,6 +4,30 @@ PicLab — Creative Services + Photo Editing + Digital Products Platform
 
 ---
 
+## 🛑 SESSION STOP POINT — 2026-09-02
+
+**What was being worked on:** Milestone 7 (Quote System) + Milestone 9 (Customer Dashboard)
+
+**Files created this session:**
+- `app/Http/Controllers/Frontend/CustomerController.php` — Full customer controller
+- `resources/views/customer/dashboard.blade.php` — Rewritten with real data widgets
+- `resources/views/customer/orders.blade.php` — Order list with filters & pagination
+- `resources/views/customer/order-show.blade.php` — Order detail with timeline, messages, files, revisions
+- `resources/views/customer/quotes.blade.php` — Quote list with status filters
+- `resources/views/customer/quote-show.blade.php` — Quote detail with pricing, accept/reject, files
+- `resources/views/customer/purchases.blade.php` — Purchases with download links
+- `resources/views/customer/payments.blade.php` — Payment history table
+- `app/Http/Controllers/Admin/QuoteController.php` — Added `convertToOrder()` method
+
+**NEXT SESSION — #1 PRIORITY:**
+Add ALL missing routes to `routes/web.php`. The views and controllers are built but the routes are not connected yet. Specifically:
+
+1. Customer routes: `orders/{order}`, `orders/{order}/message`, `orders/{order}/revision`, `quotes/{quote}/accept`, `quotes/{quote}/reject`, `purchases`, `purchases/{purchase}/download/{file}`, `payments`
+2. Admin route: `POST quotes/{quote}/convert` for quote-to-order conversion
+3. Then run `php artisan route:clear` and test all pages
+
+---
+
 ## Milestone 1 — Project Architecture ✅ COMPLETED
 
 - [x] Laravel project setup (v12.69.1)
