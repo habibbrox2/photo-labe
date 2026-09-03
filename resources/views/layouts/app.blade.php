@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" prefix="og: https://ogp.me/ns#">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
-    {{-- Preload critical resources --}}
-    <link rel="preload" href="{{ asset('build/assets/app-' . md5_file(public_path('build/manifest.json') ?: '') . '.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    
+
+    {{-- Typography --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     {{-- Favicon --}}
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -20,39 +23,39 @@
     <meta name="application-name" content="{{ config('app.name', 'PhotoLabe') }}">
     <meta name="msapplication-TileColor" content="#4c6ef5">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    
+
     {{-- Geo Meta --}}
     <meta name="geo.region" content="US-DC">
     <meta name="geo.placename" content="Design City">
     <meta name="geo.position" content="38.9072;-77.0369">
     <meta name="ICBM" content="38.9072, -77.0369">
-    
+
     {{-- Business Info --}}
     <meta name="rating" content="general">
     <meta name="revisit-after" content="7 days">
     <meta name="expires" content="never">
     <meta name="language" content="English">
     <meta name="generator" content="Laravel">
-    
-    {{-- SEO --}} 
+
+    {{-- SEO --}}
     @hasSection('seo')
-        @yield('seo')
+    @yield('seo')
     @else
-        <title>@yield('title', config('app.name', 'PhotoLabe')) - {{ config('app.name', 'PhotoLabe') }}</title>
-        <meta name="description" content="@yield('meta_description', 'Professional Photo Editing & Creative Design Services')">
-        <meta property="og:title" content="@yield('og_title', config('app.name'))">
-        <meta property="og:description" content="@yield('og_description', 'Professional Photo Editing & Creative Design Services')">
-        <meta property="og:image" content="@yield('og_image', asset('storage/demo/hero/main.jpg'))">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:site_name" content="{{ config('app.name') }}">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="@yield('title', config('app.name'))">
-        <meta name="twitter:description" content="@yield('meta_description', 'Professional Photo Editing & Creative Design Services')">
-        <link rel="canonical" href="{{ url()->current() }}">
-        
-        {{-- Default Organization Schema --}}
-        <script type="application/ld+json">
+    <title>@yield('title', config('app.name', 'PhotoLabe')) - {{ config('app.name', 'PhotoLabe') }}</title>
+    <meta name="description" content="@yield('meta_description', 'Professional Photo Editing & Creative Design Services')">
+    <meta property="og:title" content="@yield('og_title', config('app.name'))">
+    <meta property="og:description" content="@yield('og_description', 'Professional Photo Editing & Creative Design Services')">
+    <meta property="og:image" content="@yield('og_image', asset('storage/demo/hero/main.jpg'))">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', config('app.name'))">
+    <meta name="twitter:description" content="@yield('meta_description', 'Professional Photo Editing & Creative Design Services')">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Default Organization Schema --}}
+    <script type="application/ld+json">
         {
             "@@context": "https://schema.org",
             "@type": "Organization",
@@ -81,30 +84,31 @@
                 "https://facebook.com/photolabe"
             ]
         }
-        </script>
+    </script>
     @endif
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
+
 <body class="bg-surface-50 text-gray-900 antialiased font-sans">
 
     @include('components.header')
 
     @if(session('success'))
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-            <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg" role="alert">
-                {{ session('success') }}
-            </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="surface-card bg-emerald-50/90 border-emerald-200 text-emerald-800 px-5 py-4" role="alert">
+            {{ session('success') }}
         </div>
+    </div>
     @endif
 
     @if(session('error'))
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg" role="alert">
-                {{ session('error') }}
-            </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="surface-card bg-red-50/90 border-red-200 text-red-800 px-5 py-4" role="alert">
+            {{ session('error') }}
         </div>
+    </div>
     @endif
 
     <main>
@@ -112,12 +116,8 @@
     </main>
 
     @include('components.footer')
-    
-    {{-- Preload fonts --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     @stack('scripts')
 </body>
+
 </html>

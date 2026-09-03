@@ -24,7 +24,12 @@
         <a href="{{ route('products.index') }}" class="text-indigo-600 text-sm hover:text-indigo-700 mb-6 inline-block">← Back to Products</a>
         <div class="grid lg:grid-cols-2 gap-12">
             <div>
-                @if($product->featured_image)
+                @if($heroBeforeAfter)
+                    <x-before-after
+                        before="{{ asset('storage/' . $heroBeforeAfter->before_image) }}"
+                        after="{{ asset('storage/' . $heroBeforeAfter->after_image) }}"
+                    />
+                @elseif($product->featured_image)
                     <div class="rounded-2xl overflow-hidden bg-gray-100 aspect-square">
                         <img src="{{ asset('storage/' . $product->featured_image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
                     </div>
@@ -47,7 +52,7 @@
                     <div class="prose prose-sm max-w-none mb-6">{!! $product->description !!}</div>
                 @endif
                 <div class="flex gap-3">
-                    <form action="{{ route('cart.index') }}" method="POST" class="flex-1">
+                    <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="quantity" value="1">
@@ -64,6 +69,28 @@
                 @endif
             </div>
         </div>
+
+        @if($beforeAfterItems->count())
+            <div class="mt-24">
+                <div class="text-center mb-12">
+                    <span class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold mb-4">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                        Before & After
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">See the Difference</h2>
+                    <p class="text-gray-500 max-w-2xl mx-auto">Drag the slider to compare the transformation.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @foreach($beforeAfterItems as $item)
+                        <x-before-after
+                            before="{{ asset('storage/' . $item->before_image) }}"
+                            after="{{ asset('storage/' . $item->after_image) }}"
+                            title="{{ $item->title }}"
+                        />
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 </section>
 @endsection

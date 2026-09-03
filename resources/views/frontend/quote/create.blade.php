@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Get a Free Quote')
 @section('content')
-<section class="bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 py-20">
+<section class="page-hero">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Get a Free Quote</h1>
         <p class="text-gray-300 max-w-2xl mx-auto">Tell us about your project and we'll get back to you within 24 hours.</p>
@@ -38,7 +38,7 @@
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
                         <option value="">Select a service</option>
                         @foreach($services as $service)
-                            <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->title }}</option>
+                        <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->title }}</option>
                         @endforeach
                     </select>
                 </div>

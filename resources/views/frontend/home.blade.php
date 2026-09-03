@@ -189,7 +189,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($featuredServices as $index => $service)
-                <a href="{{ route('services.show', $service->slug) }}" class="group card-hover bg-white rounded-3xl overflow-hidden border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="transition-delay: {{ $index * 100 }}ms">
+                <a href="{{ route('services.show', $service->slug) }}" class="group card-hover bg-white rounded-3xl overflow-hidden border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 100 }}ms">
                     <div class="aspect-[16/10] overflow-hidden relative">
                         @if($service->featured_image)
                             <img src="{{ asset('storage/' . $service->featured_image) }}" alt="{{ $service->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -257,7 +257,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse($beforeAfter as $index => $item)
-                <div x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100" style="transition-delay: {{ $index * 100 }}ms">
+                <div x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 scale-100' : 'opacity-0 scale-90'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 100 }}ms">
                     <x-before-after
                         before="{{ asset('storage/' . $item->before_image) }}"
                         after="{{ asset('storage/' . $item->after_image) }}"
@@ -296,7 +296,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($featuredPortfolio as $index => $project)
-                <a href="{{ route('portfolio.show', $project->slug) }}" class="group card-hover relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="transition-delay: {{ $index * 100 }}ms">
+                <a href="{{ route('portfolio.show', $project->slug) }}" class="group card-hover relative rounded-3xl overflow-hidden aspect-[4/3] bg-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 100 }}ms">
                     @if($project->featured_image)
                         <img src="{{ asset('storage/' . $project->featured_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     @else
@@ -351,7 +351,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($featuredProducts as $index => $product)
-                <a href="{{ route('products.show', $product->slug) }}" class="group card-hover bg-white rounded-3xl overflow-hidden border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="transition-delay: {{ $index * 100 }}ms">
+                <a href="{{ route('products.show', $product->slug) }}" class="group card-hover bg-white rounded-3xl overflow-hidden border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 100 }}ms">
                     <div class="aspect-square overflow-hidden relative bg-gradient-to-br from-accent-100 to-primary-100">
                         @if($product->featured_image)
                             <img src="{{ asset('storage/' . $product->featured_image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -417,7 +417,7 @@
             @endphp
 
             @foreach($features as $index => $feature)
-                <div class="group card-hover bg-white rounded-3xl p-8 border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="transition-delay: {{ $index * 100 }}ms">
+                <div class="group card-hover bg-white rounded-3xl p-8 border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 100 }}ms">
                     <div class="w-14 h-14 bg-{{ $feature['color'] }}-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-7 h-7 text-{{ $feature['color'] }}-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $feature['icon'] }}"/></svg>
                     </div>
@@ -454,7 +454,7 @@
             @endphp
 
             @foreach($steps as $index => $step)
-                <div class="text-center relative" x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="transition-delay: {{ $index * 150 }}ms">
+                <div class="text-center relative" x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 150 }}ms">
                     <div class="w-20 h-20 bg-gradient-to-br from-primary-600 to-accent-600 rounded-3xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-primary-500/25 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $step['icon'] }}"/></svg>
                     </div>
@@ -488,7 +488,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($testimonials as $index => $testimonial)
-                <div class="group card-hover bg-white rounded-3xl p-8 border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="transition-delay: {{ $index * 100 }}ms">
+                <div class="group card-hover bg-white rounded-3xl p-8 border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 100 }}ms">
                     @if($testimonial->rating)
                         <div class="flex gap-1 mb-4">
                             @for($i = 1; $i <= 5; $i++)
@@ -538,7 +538,7 @@
 
         <div class="grid md:grid-cols-3 gap-8">
             @foreach($latestPosts as $index => $post)
-                <a href="{{ route('blog.show', $post->slug) }}" class="group card-hover bg-white rounded-3xl overflow-hidden border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-show="shown" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="transition-delay: {{ $index * 100 }}ms">
+                <a href="{{ route('blog.show', $post->slug) }}" class="group card-hover bg-white rounded-3xl overflow-hidden border border-gray-100" x-data="{ shown: false }" x-intersect="shown = true" x-bind:class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'" style="transition: opacity .7s ease-out, transform .7s ease-out; transition-delay: {{ $index * 100 }}ms">
                     <div class="aspect-[16/10] overflow-hidden relative">
                         @if($post->featured_image)
                             <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Pricing')
 @section('content')
-<section class="bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 py-20">
+<section class="page-hero">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Pricing</h1>
         <p class="text-gray-300 max-w-2xl mx-auto">Choose the plan that works best for your needs.</p>

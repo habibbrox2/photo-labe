@@ -78,16 +78,16 @@ class PortfolioController extends Controller
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio project created successfully.');
     }
 
-    public function edit(PortfolioProject $project)
+    public function edit(PortfolioProject $portfolio)
     {
         $categories = PortfolioCategory::active()->ordered()->get();
         $tags = PortfolioTag::orderBy('name')->get();
-        $project->load('tags');
+        $portfolio->load('tags');
 
-        return view('admin.portfolio.edit', compact('project', 'categories', 'tags'));
+        return view('admin.portfolio.edit', ['project' => $portfolio, 'categories' => $categories, 'tags' => $tags]);
     }
 
-    public function update(Request $request, PortfolioProject $project)
+    public function update(Request $request, PortfolioProject $portfolio)
     {
         $validated = $request->validate([
             'category_id' => 'required|exists:portfolio_categories,id',
@@ -114,17 +114,17 @@ class PortfolioController extends Controller
         $tags = $validated['tags'] ?? [];
         unset($validated['tags'], $validated['gallery_images']);
 
-        $project->update($validated);
-        $project->tags()->sync($tags);
+        $portfolio->update($validated);
+        $portfolio->tags()->sync($tags);
 
         // Handle new gallery images
         if ($request->hasFile('gallery_images')) {
-            $existingCount = $project->images()->count();
+            $existingCount = $portfolio->images()->count();
             foreach ($request->file('gallery_images') as $index => $file) {
                 $path = $file->store('portfolio/gallery', 'public');
-                $project->images()->create([
+                $portfolio->images()->create([
                     'image' => $path,
-                    'alt' => $project->title . ' gallery ' . ($existingCount + $index + 1),
+                    'alt' => $portfolio->title . ' gallery ' . ($existingCount + $index + 1),
                     'sort_order' => $existingCount + $index,
                 ]);
             }
@@ -133,9 +133,9 @@ class PortfolioController extends Controller
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio project updated successfully.');
     }
 
-    public function destroy(PortfolioProject $project)
+    public function destroy(PortfolioProject $portfolio)
     {
-        $project->delete();
+        $portfolio->delete();
 
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio project deleted successfully.');
     }

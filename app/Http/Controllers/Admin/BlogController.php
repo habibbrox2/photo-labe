@@ -74,16 +74,16 @@ class BlogController extends Controller
         return redirect()->route('admin.blog.index')->with('success', 'Blog post created successfully.');
     }
 
-    public function edit(BlogPost $post)
+    public function edit(BlogPost $blog)
     {
         $categories = BlogCategory::active()->ordered()->get();
         $tags = BlogTag::orderBy('name')->get();
-        $post->load('tags');
+        $blog->load('tags');
 
-        return view('admin.blog.edit', compact('post', 'categories', 'tags'));
+        return view('admin.blog.edit', ['post' => $blog, 'categories' => $categories, 'tags' => $tags]);
     }
 
-    public function update(Request $request, BlogPost $post)
+    public function update(Request $request, BlogPost $blog)
     {
         $validated = $request->validate([
             'category_id' => 'nullable|exists:blog_categories,id',
@@ -104,7 +104,7 @@ class BlogController extends Controller
         $validated['is_featured'] = $request->boolean('is_featured');
 
         if ($validated['status'] === 'published' && empty($validated['published_at'])) {
-            $validated['published_at'] = $post->published_at ?? now();
+            $validated['published_at'] = $blog->published_at ?? now();
         }
 
         if ($request->hasFile('featured_image')) {
@@ -114,15 +114,15 @@ class BlogController extends Controller
         $tags = $validated['tags'] ?? [];
         unset($validated['tags']);
 
-        $post->update($validated);
-        $post->tags()->sync($tags);
+        $blog->update($validated);
+        $blog->tags()->sync($tags);
 
         return redirect()->route('admin.blog.index')->with('success', 'Blog post updated successfully.');
     }
 
-    public function destroy(BlogPost $post)
+    public function destroy(BlogPost $blog)
     {
-        $post->delete();
+        $blog->delete();
 
         return redirect()->route('admin.blog.index')->with('success', 'Blog post deleted successfully.');
     }

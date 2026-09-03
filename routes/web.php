@@ -174,19 +174,19 @@ Route::prefix('admin')
         Route::post('notifications/read-all', [AdminNotificationController::class, 'markAllRead'])->name('notifications.read-all');
 
         // Services
-        Route::resource('services', AdminServiceController::class);
+        Route::resource('services', AdminServiceController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Portfolio
-        Route::resource('portfolio', AdminPortfolioController::class);
+        Route::resource('portfolio', AdminPortfolioController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Before/After
-        Route::resource('before-after', AdminBeforeAfterController::class);
+        Route::resource('before-after', AdminBeforeAfterController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Products
-        Route::resource('products', AdminProductController::class);
+        Route::resource('products', AdminProductController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Blog
-        Route::resource('blog', AdminBlogController::class);
+        Route::resource('blog', AdminBlogController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Quotes
         Route::resource('quotes', AdminQuoteController::class)->only(['index', 'show', 'update', 'destroy']);
@@ -202,10 +202,10 @@ Route::prefix('admin')
         Route::resource('customers', AdminCustomerController::class)->only(['index', 'show', 'destroy']);
 
         // Testimonials
-        Route::resource('testimonials', AdminTestimonialController::class);
+        Route::resource('testimonials', AdminTestimonialController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Pages
-        Route::resource('pages', AdminPageController::class);
+        Route::resource('pages', AdminPageController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Reviews
         Route::resource('reviews', AdminReviewController::class)->only(['index', 'update', 'destroy']);

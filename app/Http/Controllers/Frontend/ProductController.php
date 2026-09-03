@@ -52,8 +52,42 @@ class ProductController extends Controller
             ->limit(4)
             ->get();
 
+        $beforeAfterItems = \App\Models\BeforeAfterProject::active()
+            ->featured()
+            ->ordered()
+            ->limit(3)
+            ->get();
+
+        // Hero demo: pick the before/after pair that best matches this product.
+        $heroBeforeAfter = null;
+        $demoPool = \App\Models\BeforeAfterProject::active()
+            ->ordered()
+            ->with('category')
+            ->get();
+        if ($demoPool->isNotEmpty()) {
+            $needle = strtolower(
+                trim(($product->title ?? '').' '.($product->category->name ?? '').' '.($product->short_description ?? ''))
+            );
+            $matched = $demoPool->filter(function ($project) use ($needle) {
+                $category = strtolower((string) ($project->category->name ?? ''));
+
+                if (str_contains($category, 'retouch') && preg_match('/portrait|skin|beauty|retouch|people|model/', $needle)) {
+                    return true;
+                }
+                if (str_contains($category, 'color') && preg_match('/color|cinematic|film|lut|preset|grade|tone/', $needle)) {
+                    return true;
+                }
+                if (str_contains($category, 'background') && preg_match('/background|remove|overlay|ecommerce/', $needle)) {
+                    return true;
+                }
+
+                return false;
+            });
+            $heroBeforeAfter = $matched->first() ?? $demoPool->first();
+        }
+
         $seoData = $seo->getProductMeta($product);
 
-        return view('frontend.products.show', compact('product', 'relatedProducts', 'seoData'));
+        return view('frontend.products.show', compact('product', 'relatedProducts', 'beforeAfterItems', 'heroBeforeAfter', 'seoData'));
     }
 }

@@ -56,14 +56,14 @@ class BeforeAfterController extends Controller
         return redirect()->route('admin.before-after.index')->with('success', 'Before/After project created successfully.');
     }
 
-    public function edit(BeforeAfterProject $project)
+    public function edit(BeforeAfterProject $beforeAfter)
     {
         $categories = BeforeAfterCategory::active()->ordered()->get();
 
-        return view('admin.before-after.edit', compact('project', 'categories'));
+        return view('admin.before-after.edit', ['project' => $beforeAfter, 'categories' => $categories]);
     }
 
-    public function update(Request $request, BeforeAfterProject $project)
+    public function update(Request $request, BeforeAfterProject $beforeAfter)
     {
         $validated = $request->validate([
             'category_id' => 'nullable|exists:before_after_categories,id',
@@ -85,14 +85,14 @@ class BeforeAfterController extends Controller
             $validated['after_image'] = $request->file('after_image')->store('before-after', 'public');
         }
 
-        $project->update($validated);
+        $beforeAfter->update($validated);
 
         return redirect()->route('admin.before-after.index')->with('success', 'Before/After project updated successfully.');
     }
 
-    public function destroy(BeforeAfterProject $project)
+    public function destroy(BeforeAfterProject $beforeAfter)
     {
-        $project->delete();
+        $beforeAfter->delete();
 
         return redirect()->route('admin.before-after.index')->with('success', 'Before/After project deleted successfully.');
     }

@@ -22,10 +22,7 @@ class BeforeAfterSeeder extends Seeder
         ];
 
         foreach ($projects as $project) {
-            BeforeAfterProject::create(array_merge($project, [
-                'before_image' => 'demo/before.jpg',
-                'after_image' => 'demo/after.jpg',
-            ]));
+            BeforeAfterProject::create($project);
         }
     }
 }
