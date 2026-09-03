@@ -27,3 +27,7 @@ Thumbs.db
 
 # Google Drive sync temp artifacts
 /.tmp.driveupload/
+
+# Local planning briefs (not part of the project)
+/AI CODING AGENT MASTER PROMPT.md
+/FRONTEND_UI_AUDIT.md
