@@ -143,8 +143,11 @@ class CacheService
             Cache::forget($key);
         }
 
-        // Also flush blog post caches by pattern
-        Cache::tags(['blog'])->flush();
+        // Also flush blog post caches
+        $blogKeys = ['blog_posts_3', 'blog_posts_6', 'blog_posts_10'];
+        foreach ($blogKeys as $key) {
+            Cache::forget($key);
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 # Remaining Implementation Steps
 
-PicLab — Creative Services + Photo Editing + Digital Products Platform
+PhotoLabe — Creative Services + Photo Editing + Digital Products Platform
 
 ---
 
@@ -19,12 +19,13 @@ PicLab — Creative Services + Photo Editing + Digital Products Platform
 - `resources/views/customer/payments.blade.php` — Payment history table
 - `app/Http/Controllers/Admin/QuoteController.php` — Added `convertToOrder()` method
 
-**NEXT SESSION — #1 PRIORITY:**
-Add ALL missing routes to `routes/web.php`. The views and controllers are built but the routes are not connected yet. Specifically:
+**✅ COMPLETED — 2026-09-03:**
+All missing routes have been added to `routes/web.php`. 131 routes verified via `php artisan route:list`.
 
-1. Customer routes: `orders/{order}`, `orders/{order}/message`, `orders/{order}/revision`, `quotes/{quote}/accept`, `quotes/{quote}/reject`, `purchases`, `purchases/{purchase}/download/{file}`, `payments`
-2. Admin route: `POST quotes/{quote}/convert` for quote-to-order conversion
-3. Then run `php artisan route:clear` and test all pages
+**NEXT SESSION — #1 PRIORITY:**
+1. Admin order file upload (deliver output files to customers)
+2. Email notifications (quote received, quoted, accepted, converted)
+3. Payment gateway interface (Stripe/bKash/SSLCommerz)
 
 ---
 
@@ -142,10 +143,10 @@ Add ALL missing routes to `routes/web.php`. The views and controllers are built 
 - [x] Quote accept/reject buttons in customer views
 
 ### Remaining:
-- [ ] **ADD ROUTE** for admin quote-to-order conversion: `Route::post('quotes/{quote}/convert', ...)->name('quotes.convert')`
-- [ ] **ADD ROUTES** for customer quote actions: `quotes/{quote}/accept`, `quotes/{quote}/reject`
-- [ ] **ADD ROUTES** for customer purchases & downloads
-- [ ] **ADD ROUTES** for customer payments history
+- [x] **ADD ROUTE** for admin quote-to-order conversion: `Route::post('quotes/{quote}/convert', ...)->name('quotes.convert')` ✅
+- [x] **ADD ROUTES** for customer quote actions: `quotes/{quote}/accept`, `quotes/{quote}/reject` ✅
+- [x] **ADD ROUTES** for customer purchases & downloads ✅
+- [x] **ADD ROUTES** for customer payments history ✅
 - [ ] Email notifications (quote received, quoted, accepted, converted)
 
 ---
@@ -162,7 +163,7 @@ Add ALL missing routes to `routes/web.php`. The views and controllers are built 
 - [x] Admin order management (list, show, update status) — built in Milestone 3
 
 ### Remaining:
-- [ ] **ADD ROUTES** for customer order actions: `orders/{order}`, `orders/{order}/message`, `orders/{order}/revision`
+- [x] **ADD ROUTES** for customer order actions: `orders/{order}`, `orders/{order}/message`, `orders/{order}/revision` ✅
 - [ ] Order delivery (mark complete + notify)
 - [ ] Admin order file upload (deliver output files)
 
@@ -183,10 +184,10 @@ Add ALL missing routes to `routes/web.php`. The views and controllers are built 
 - [x] Payment history view (`customer/payments.blade.php`)
 - [x] Profile management (via AuthController)
 
-### Remaining (BLOCKED — need routes):
-- [ ] **ADD ALL CUSTOMER ROUTES** to `routes/web.php` — this is the #1 priority next session
-- [ ] Connect purchases download to ProductFile model
-- [ ] Mark messages as read when viewing order
+### Remaining:
+- [x] **ADD ALL CUSTOMER ROUTES** to `routes/web.php` ✅
+- [x] Connect purchases download to ProductFile model ✅
+- [x] Mark messages as read when viewing order ✅
 
 ---
 
@@ -272,7 +273,7 @@ Add ALL missing routes to `routes/web.php`. The views and controllers are built 
 
 ### Database Connection
 - **Host:** 127.0.0.1:3306
-- **Database:** piclab
+- **Database:** photolab_db
 - **Username:** root
 - **Password:** (empty)
 - **Tool:** phpMyAdmin
@@ -280,9 +281,9 @@ Add ALL missing routes to `routes/web.php`. The views and controllers are built 
 ### Test Accounts
 | Role | Email | Password |
 |------|-------|----------|
-| Super Admin | admin@piclab.com | password |
-| Editor | editor@piclab.com | password |
-| Designer | designer@piclab.com | password |
+| Super Admin | admin@photolabe.com | password |
+| Editor | editor@photolabe.com | password |
+| Designer | designer@photolabe.com | password |
 | Customer | john@example.com | password |
 | Customer | jane@example.com | password |
 

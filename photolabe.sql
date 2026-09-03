@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `piclab`
+-- Database: `photolab_db`
 --
 
 -- --------------------------------------------------------
@@ -574,7 +574,7 @@ CREATE TABLE `pages` (
 --
 
 INSERT INTO `pages` (`id`, `title`, `slug`, `content`, `template`, `featured_image`, `status`, `seo_title`, `seo_description`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'About Us', 'about-us', '<h2>Our Story</h2><p>PicLab is a professional photo editing and creative design studio.</p><h2>Our Mission</h2><p>We combine technical expertise with creative vision.</p>', 'default', NULL, 'published', NULL, NULL, '2026-09-02 10:38:51', '2026-09-02 10:38:51', NULL);
+(1, 'About Us', 'about-us', '<h2>Our Story</h2><p>PhotoLabe is a professional photo editing and creative design studio.</p><h2>Our Mission</h2><p>We combine technical expertise with creative vision.</p>', 'default', NULL, 'published', NULL, NULL, '2026-09-02 10:38:51', '2026-09-02 10:38:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -1302,14 +1302,14 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `group`, `key`, `value`, `type`, `created_at`, `updated_at`) VALUES
-(1, 'general', 'site_name', 'PicLab', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
-(2, 'general', 'site_email', 'hello@piclab.com', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
-(3, 'general', 'support_email', 'support@piclab.com', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
+(1, 'general', 'site_name', 'PhotoLabe', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
+(2, 'general', 'site_email', 'hello@photolabe.com', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
+(3, 'general', 'support_email', 'support@photolabe.com', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
 (4, 'general', 'phone', '+1 (555) 123-4567', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
 (5, 'general', 'address', '123 Creative Street, Design City, DC 10001', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
 (6, 'general', 'currency', 'USD', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
 (7, 'general', 'timezone', 'UTC', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
-(8, 'seo', 'default_meta_title', 'PicLab - Professional Photo Editing & Creative Design Services', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
+(8, 'seo', 'default_meta_title', 'PhotoLabe - Professional Photo Editing & Creative Design Services', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19'),
 (9, 'seo', 'default_meta_description', 'Transform your images into professional, market-ready visuals with expert photo editing and creative design services.', 'text', '2026-09-02 09:53:19', '2026-09-02 09:53:19');
 
 -- --------------------------------------------------------
@@ -1430,9 +1430,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `avatar`, `role`, `status`, `address`, `city`, `country`, `timezone`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Super Admin', 'admin@piclab.com', '2026-09-02 09:53:17', '$2y$12$3y9u4ZK5E0yGKmC1yQyTWu4t50HAZjXtQMzJ/W1Pzc8.YiSM1Sl5m', NULL, NULL, 'super_admin', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:17', '2026-09-02 09:53:17', NULL),
-(2, 'Editor User', 'editor@piclab.com', '2026-09-02 09:53:17', '$2y$12$dbqIKgJDyw5hywkC2qH7z.oqmlbazPvyf6Kl3.hYJ9STRLYXUzst6', NULL, NULL, 'editor', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:17', '2026-09-02 09:53:17', NULL),
-(3, 'Designer User', 'designer@piclab.com', '2026-09-02 09:53:18', '$2y$12$PfjrX3aks.odfGW5IeUgFeajVGZwTKrEU2IxoSkZLlzNqJ1OMeBSa', NULL, NULL, 'designer', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:18', '2026-09-02 09:53:18', NULL),
+(1, 'Super Admin', 'admin@photolabe.com', '2026-09-02 09:53:17', '$2y$12$3y9u4ZK5E0yGKmC1yQyTWu4t50HAZjXtQMzJ/W1Pzc8.YiSM1Sl5m', NULL, NULL, 'super_admin', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:17', '2026-09-02 09:53:17', NULL),
+(2, 'Editor User', 'editor@photolabe.com', '2026-09-02 09:53:17', '$2y$12$dbqIKgJDyw5hywkC2qH7z.oqmlbazPvyf6Kl3.hYJ9STRLYXUzst6', NULL, NULL, 'editor', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:17', '2026-09-02 09:53:17', NULL),
+(3, 'Designer User', 'designer@photolabe.com', '2026-09-02 09:53:18', '$2y$12$PfjrX3aks.odfGW5IeUgFeajVGZwTKrEU2IxoSkZLlzNqJ1OMeBSa', NULL, NULL, 'designer', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:18', '2026-09-02 09:53:18', NULL),
 (4, 'John Customer', 'john@example.com', '2026-09-02 09:53:18', '$2y$12$KvDK19xzvpXnuxWZDd1Xu.Vs.OFlwksedhm06OPJU0LxNJXvcbwyq', '+1-555-0101', NULL, 'customer', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:18', '2026-09-02 09:53:18', NULL),
 (5, 'Jane Smith', 'jane@example.com', '2026-09-02 09:53:18', '$2y$12$VHTeDOrcdE/SsWRPiY.biudUiEWgiv1cQeklAL4KKHiA9CoRbUhtG', '+1-555-0102', NULL, 'customer', 'active', NULL, NULL, NULL, NULL, NULL, '2026-09-02 09:53:18', '2026-09-02 09:53:18', NULL);
 

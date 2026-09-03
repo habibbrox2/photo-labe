@@ -1,0 +1,23 @@
+{
+    "name": "PhotoLabe - Professional Photo Editing & Creative Design Services",
+    "short_name": "PhotoLabe",
+    "description": "Transform your images into professional, market-ready visuals with expert photo editing, background removal, color correction, and creative design services.",
+    "icons": [
+        {
+            "src": "/favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4c6ef5",
+    "orientation": "portrait-primary",
+    "categories": ["business", "photography", "design"]
+}

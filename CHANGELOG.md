@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the PicLab project will be documented in this file.
+All notable changes to the PhotoLabe project will be documented in this file.
 
 ---
 

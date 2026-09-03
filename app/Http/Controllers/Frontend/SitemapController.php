@@ -14,25 +14,30 @@ class SitemapController extends Controller
 {
     public function index(): Response
     {
-        $baseUrl = config('app.url', 'https://piclab.com');
+        $baseUrl = config('app.url', 'https://photolabe.com');
 
         $urls = collect();
 
         // Homepage
-        $urls->push(['loc' => $baseUrl, 'priority' => '1.0', 'changefreq' => 'daily']);
+        $urls->push([
+            'loc' => $baseUrl,
+            'priority' => '1.0',
+            'changefreq' => 'daily',
+            'images' => [asset('storage/demo/hero/main.jpg')],
+        ]);
 
         // Static pages
         $staticPages = [
-            ['loc' => '/services', 'priority' => '0.9', 'changefreq' => 'weekly'],
-            ['loc' => '/portfolio', 'priority' => '0.9', 'changefreq' => 'weekly'],
-            ['loc' => '/products', 'priority' => '0.9', 'changefreq' => 'weekly'],
-            ['loc' => '/blog', 'priority' => '0.8', 'changefreq' => 'daily'],
-            ['loc' => '/about', 'priority' => '0.7', 'changefreq' => 'monthly'],
-            ['loc' => '/contact', 'priority' => '0.7', 'changefreq' => 'monthly'],
-            ['loc' => '/faq', 'priority' => '0.6', 'changefreq' => 'monthly'],
-            ['loc' => '/pricing', 'priority' => '0.6', 'changefreq' => 'monthly'],
-            ['loc' => '/before-after', 'priority' => '0.7', 'changefreq' => 'weekly'],
-            ['loc' => '/get-a-quote', 'priority' => '0.8', 'changefreq' => 'monthly'],
+            ['loc' => '/services', 'priority' => '0.9', 'changefreq' => 'weekly', 'images' => []],
+            ['loc' => '/portfolio', 'priority' => '0.9', 'changefreq' => 'weekly', 'images' => []],
+            ['loc' => '/products', 'priority' => '0.9', 'changefreq' => 'weekly', 'images' => []],
+            ['loc' => '/blog', 'priority' => '0.8', 'changefreq' => 'daily', 'images' => []],
+            ['loc' => '/about', 'priority' => '0.7', 'changefreq' => 'monthly', 'images' => []],
+            ['loc' => '/contact', 'priority' => '0.7', 'changefreq' => 'monthly', 'images' => []],
+            ['loc' => '/faq', 'priority' => '0.6', 'changefreq' => 'monthly', 'images' => []],
+            ['loc' => '/pricing', 'priority' => '0.6', 'changefreq' => 'monthly', 'images' => []],
+            ['loc' => '/before-after', 'priority' => '0.7', 'changefreq' => 'weekly', 'images' => []],
+            ['loc' => '/get-a-quote', 'priority' => '0.8', 'changefreq' => 'monthly', 'images' => []],
         ];
 
         foreach ($staticPages as $page) {
@@ -42,11 +47,17 @@ class SitemapController extends Controller
         // Services
         Service::active()->orderBy('updated_at', 'desc')->chunk(50, function ($services) use ($urls, $baseUrl) {
             foreach ($services as $service) {
+                $images = [];
+                if ($service->featured_image) {
+                    $images[] = $baseUrl . '/storage/' . $service->featured_image;
+                }
+                
                 $urls->push([
                     'loc' => $baseUrl . '/services/' . $service->slug,
                     'lastmod' => $service->updated_at->format('Y-m-d'),
                     'priority' => '0.8',
                     'changefreq' => 'weekly',
+                    'images' => $images,
                 ]);
             }
         });
@@ -54,11 +65,17 @@ class SitemapController extends Controller
         // Portfolio
         PortfolioProject::active()->orderBy('updated_at', 'desc')->chunk(50, function ($projects) use ($urls, $baseUrl) {
             foreach ($projects as $project) {
+                $images = [];
+                if ($project->featured_image) {
+                    $images[] = $baseUrl . '/storage/' . $project->featured_image;
+                }
+                
                 $urls->push([
                     'loc' => $baseUrl . '/portfolio/' . $project->slug,
                     'lastmod' => $project->updated_at->format('Y-m-d'),
                     'priority' => '0.7',
                     'changefreq' => 'weekly',
+                    'images' => $images,
                 ]);
             }
         });
@@ -66,11 +83,17 @@ class SitemapController extends Controller
         // Products
         Product::active()->orderBy('updated_at', 'desc')->chunk(50, function ($products) use ($urls, $baseUrl) {
             foreach ($products as $product) {
+                $images = [];
+                if ($product->featured_image) {
+                    $images[] = $baseUrl . '/storage/' . $product->featured_image;
+                }
+                
                 $urls->push([
                     'loc' => $baseUrl . '/products/' . $product->slug,
                     'lastmod' => $product->updated_at->format('Y-m-d'),
                     'priority' => '0.8',
                     'changefreq' => 'weekly',
+                    'images' => $images,
                 ]);
             }
         });
@@ -78,11 +101,17 @@ class SitemapController extends Controller
         // Blog Posts
         BlogPost::active()->published()->orderBy('published_at', 'desc')->chunk(50, function ($posts) use ($urls, $baseUrl) {
             foreach ($posts as $post) {
+                $images = [];
+                if ($post->featured_image) {
+                    $images[] = $baseUrl . '/storage/' . $post->featured_image;
+                }
+                
                 $urls->push([
                     'loc' => $baseUrl . '/blog/' . $post->slug,
                     'lastmod' => $post->updated_at->format('Y-m-d'),
                     'priority' => '0.7',
                     'changefreq' => 'monthly',
+                    'images' => $images,
                 ]);
             }
         });
@@ -95,6 +124,7 @@ class SitemapController extends Controller
                     'lastmod' => $page->updated_at->format('Y-m-d'),
                     'priority' => '0.6',
                     'changefreq' => 'monthly',
+                    'images' => [],
                 ]);
             }
         });
@@ -109,16 +139,29 @@ class SitemapController extends Controller
     protected function buildXml($urls): string
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"' . "\n";
+        $xml .= '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
 
         foreach ($urls as $url) {
             $xml .= "  <url>\n";
             $xml .= "    <loc>" . e($url['loc']) . "</loc>\n";
+            
             if (isset($url['lastmod'])) {
                 $xml .= "    <lastmod>" . $url['lastmod'] . "</lastmod>\n";
             }
+            
             $xml .= "    <changefreq>" . ($url['changefreq'] ?? 'monthly') . "</changefreq>\n";
             $xml .= "    <priority>" . ($url['priority'] ?? '0.5') . "</priority>\n";
+            
+            // Images
+            if (!empty($url['images'])) {
+                foreach ($url['images'] as $image) {
+                    $xml .= "    <image:image>\n";
+                    $xml .= "      <image:loc>" . e($image) . "</image:loc>\n";
+                    $xml .= "    </image:image>\n";
+                }
+            }
+            
             $xml .= "  </url>\n";
         }
 

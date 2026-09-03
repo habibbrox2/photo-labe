@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -55,5 +58,55 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('admin.orders.index')->with('success', 'Order deleted successfully.');
+    }
+
+    /**
+     * Upload a file to an order (input from customer or output/deliverable)
+     */
+    public function uploadFile(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'file' => 'required|file|max:51200', // 50MB max
+            'type' => 'required|in:input,output',
+        ]);
+
+        $file = $request->file('file');
+        $type = $validated['type'];
+
+        // Store in order-specific directory
+        $directory = "order-files/{$order->id}";
+        $storedName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs($directory, $storedName, 'public');
+
+        OrderFile::create([
+            'order_id' => $order->id,
+            'original_name' => $file->getClientOriginalName(),
+            'stored_name' => $storedName,
+            'file_path' => "{$directory}/{$storedName}",
+            'mime_type' => $file->getMimeType(),
+            'file_size' => $file->getSize(),
+            'type' => $type,
+        ]);
+
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', ucfirst($type) . ' file uploaded successfully.');
+    }
+
+    /**
+     * Delete an order file
+     */
+    public function deleteFile(Order $order, OrderFile $file)
+    {
+        if ($file->order_id !== $order->id) {
+            abort(404);
+        }
+
+        // Delete from storage
+        Storage::disk('public')->delete($file->file_path);
+
+        $file->delete();
+
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', 'File deleted successfully.');
     }
 }

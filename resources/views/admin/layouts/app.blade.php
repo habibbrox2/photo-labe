@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Admin') - {{ config('app.name', 'PicLab') }} Admin</title>
+    <title>@yield('title', 'Admin') - {{ config('app.name', 'PhotoLabe') }} Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .admin-sidebar { width: 260px; min-height: 100vh; }
@@ -33,7 +33,7 @@
                 <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-sm">P</span>
                 </div>
-                <span class="text-lg font-bold text-white">PicLab</span>
+                <span class="text-lg font-bold text-white">PhotoLabe</span>
             </a>
             <span class="text-xs bg-indigo-600/20 text-indigo-400 px-2 py-0.5 rounded-full font-medium">Admin</span>
         </div>

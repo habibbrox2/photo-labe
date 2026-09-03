@@ -8,6 +8,12 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // First download images from the internet
+        $this->call([
+            DownloadImagesSeeder::class,
+        ]);
+
+        // Then seed the database with the downloaded images
         $this->call([
             UserSeeder::class,
             ServiceSeeder::class,

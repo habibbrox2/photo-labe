@@ -2,7 +2,7 @@
 
 ## Overview
 
-PicLab uses MySQL 8+ with 14 migration files creating 30+ tables.
+PhotoLabe uses MySQL 8+ with 14 migration files creating 30+ tables.
 
 ## Tables
 

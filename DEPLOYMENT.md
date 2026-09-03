@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers deploying PicLab to a shared hosting environment using cPanel.
+This guide covers deploying PhotoLabe to a shared hosting environment using cPanel.
 
 ## Directory Structure on Server
 
@@ -77,7 +77,7 @@ nano .env
 Key production settings:
 
 ```env
-APP_NAME="PicLab"
+APP_NAME="PhotoLabe"
 APP_ENV=production
 APP_KEY=base64:YOUR_KEY_HERE
 APP_DEBUG=false

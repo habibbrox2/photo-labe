@@ -8,7 +8,7 @@
                 <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-xl">P</span>
                 </div>
-                <span class="text-2xl font-bold text-gray-900">PicLab</span>
+                <span class="text-2xl font-bold text-gray-900">PhotoLabe</span>
             </a>
             <h1 class="text-2xl font-bold text-gray-900">Forgot your password?</h1>
             <p class="text-gray-500 mt-2">Enter your email and we'll send you a reset link.</p>

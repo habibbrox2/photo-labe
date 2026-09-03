@@ -30,6 +30,7 @@ class ServiceSeeder extends Seeder
                 'short_description' => 'Expert retouching for portraits, products, and commercial photography.',
                 'description' => '<p>Our professional photo retouching service covers everything from basic cleanup to advanced skin retouching, object removal, and compositing.</p><p>We work with photographers, e-commerce businesses, and brands to deliver pixel-perfect results.</p>',
                 'starting_price' => 2.99, 'delivery_time' => '24 hours', 'is_featured' => true, 'status' => 'published',
+                'featured_image' => 'demo/services/photo-retouching.jpg',
             ],
             [
                 'category_id' => 2, 'title' => 'Background Removal',
@@ -37,6 +38,7 @@ class ServiceSeeder extends Seeder
                 'short_description' => 'Precise background removal with clean edges for product photography.',
                 'description' => '<p>Get clean, professional product images with perfectly removed backgrounds. Our clipping path experts deliver pixel-perfect results.</p>',
                 'starting_price' => 1.49, 'delivery_time' => '12 hours', 'is_featured' => true, 'status' => 'published',
+                'featured_image' => 'demo/services/background-removal.jpg',
             ],
             [
                 'category_id' => 3, 'title' => 'Color Correction',
@@ -44,6 +46,7 @@ class ServiceSeeder extends Seeder
                 'short_description' => 'Professional color grading, white balance, and exposure correction.',
                 'description' => '<p>Transform your images with professional color correction. We fix white balance, exposure, contrast, and color grading.</p>',
                 'starting_price' => 1.99, 'delivery_time' => '12 hours', 'is_featured' => true, 'status' => 'published',
+                'featured_image' => 'demo/services/color-correction.jpg',
             ],
             [
                 'category_id' => 4, 'title' => 'Graphic Design',
@@ -51,6 +54,7 @@ class ServiceSeeder extends Seeder
                 'short_description' => 'Creative graphic design for marketing materials and branding.',
                 'description' => '<p>From social media graphics to print materials, our design team creates stunning visuals that capture attention.</p>',
                 'starting_price' => 29.99, 'delivery_time' => '48 hours', 'is_featured' => true, 'status' => 'published',
+                'featured_image' => 'demo/services/graphic-design.jpg',
             ],
             [
                 'category_id' => 1, 'title' => 'Jewelry Retouching',
@@ -58,6 +62,7 @@ class ServiceSeeder extends Seeder
                 'short_description' => 'Specialized retouching for jewelry photography.',
                 'description' => '<p>Expert jewelry retouching including stone enhancement, metal polishing, shadow creation, and background cleanup.</p>',
                 'starting_price' => 3.99, 'delivery_time' => '24 hours', 'is_featured' => true, 'status' => 'published',
+                'featured_image' => 'demo/services/jewelry-retouching.jpg',
             ],
             [
                 'category_id' => 2, 'title' => 'Clipping Path',
@@ -65,6 +70,7 @@ class ServiceSeeder extends Seeder
                 'short_description' => 'Precise manual clipping paths for complex objects.',
                 'description' => '<p>Hand-drawn clipping paths for products with complex shapes like hair, fur, and transparent objects.</p>',
                 'starting_price' => 1.99, 'delivery_time' => '12 hours', 'is_featured' => true, 'status' => 'published',
+                'featured_image' => 'demo/services/clipping-path.jpg',
             ],
         ];
 

@@ -8,11 +8,41 @@
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    
+    /* Modern 2026 Color Palette */
+    --color-primary-50: #f0f4ff;
+    --color-primary-100: #dbe4ff;
+    --color-primary-200: #bac8ff;
+    --color-primary-300: #91a7ff;
+    --color-primary-400: #748ffc;
+    --color-primary-500: #5c7cfa;
+    --color-primary-600: #4c6ef5;
+    --color-primary-700: #4263eb;
+    --color-primary-800: #3b5bdb;
+    --color-primary-900: #364fc7;
+    
+    --color-accent-400: #da77f2;
+    --color-accent-500: #cc5de8;
+    --color-accent-600: #be4bdb;
+    
+    --color-surface-50: #f8f9fc;
+    --color-surface-100: #f1f3f9;
+    --color-surface-200: #e2e6f0;
+    --color-surface-800: #1a1d2e;
+    --color-surface-900: #0f1119;
+    --color-surface-950: #080a10;
 }
 
 /* Smooth scroll */
 html {
     scroll-behavior: smooth;
+}
+
+/* Modern Selection */
+::selection {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-900);
 }
 
 /* Line clamp utility */
@@ -42,4 +72,228 @@ html {
 /* Before/After slider touch */
 .touch-none {
     touch-action: none;
+}
+
+/* Modern Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+    background: rgba(15, 17, 25, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient Mesh Background */
+.gradient-mesh {
+    background: 
+        radial-gradient(at 40% 20%, rgba(92, 124, 250, 0.3) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(204, 93, 232, 0.2) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, rgba(92, 124, 250, 0.2) 0px, transparent 50%),
+        radial-gradient(at 80% 50%, rgba(204, 93, 232, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(92, 124, 250, 0.1) 0px, transparent 50%);
+}
+
+/* Animated Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, var(--color-primary-500), var(--color-accent-500), var(--color-primary-400));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Scale In Animation */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+}
+
+/* Glow Effect */
+.glow {
+    box-shadow: 0 0 40px rgba(92, 124, 250, 0.3);
+}
+
+.glow-purple {
+    box-shadow: 0 0 40px rgba(204, 93, 232, 0.3);
+}
+
+/* Modern Card Hover Effect */
+.card-hover {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Bento Grid */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Noise Texture Overlay */
+.noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Modern Button Styles */
+.btn-modern {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-modern:hover::before {
+    left: 100%;
+}
+
+/* Scroll Reveal Animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Modern Input Focus */
+.input-modern {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.input-modern:focus {
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 4px rgba(92, 124, 250, 0.1);
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .dark-mode-auto {
+        background-color: var(--color-surface-900);
+        color: white;
+    }
+}
+
+/* Smooth Image Loading */
+.img-loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-surface-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary-300);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-400);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

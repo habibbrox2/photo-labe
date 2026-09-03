@@ -55,9 +55,10 @@ Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
 // SEO
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', function () {
-    $sitemapUrl = url('/sitemap.xml');
-    $content = "User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /account/\nDisallow: /cart/\nDisallow: /checkout/\n\nSitemap: {$sitemapUrl}\n";
-    return response($content, 200)->header('Content-Type', 'text/plain');
+    $content = file_get_contents(public_path('robots.txt'));
+    return response($content, 200)
+        ->header('Content-Type', 'text/plain')
+        ->header('Cache-Control', 'public, max-age=86400');
 })->name('robots');
 
 /*
@@ -101,13 +102,36 @@ Route::middleware('auth')->group(function () {
 | Customer Dashboard Routes
 |--------------------------------------------------------------------------
 */
+use App\Http\Controllers\Frontend\CustomerController;
+
 Route::prefix('account')
     ->middleware(['auth', 'verified'])
     ->name('account.')
     ->group(function () {
-        Route::get('/', fn () => view('customer.dashboard'))->name('dashboard');
-        Route::get('/orders', fn () => view('customer.orders'))->name('orders');
-        Route::get('/quotes', fn () => view('customer.quotes'))->name('quotes');
+        // Dashboard
+        Route::get('/', [CustomerController::class, 'dashboard'])->name('dashboard');
+
+        // Orders
+        Route::get('/orders', [CustomerController::class, 'orders'])->name('orders');
+        Route::get('/orders/{order}', [CustomerController::class, 'orderShow'])->name('orders.show');
+        Route::post('/orders/{order}/message', [CustomerController::class, 'orderMessage'])->name('orders.message');
+        Route::post('/orders/{order}/revision', [CustomerController::class, 'orderRevision'])->name('orders.revision');
+        Route::post('/orders/{order}/mark-read', [CustomerController::class, 'markMessagesRead'])->name('orders.mark-read');
+
+        // Quotes
+        Route::get('/quotes', [CustomerController::class, 'quotes'])->name('quotes');
+        Route::get('/quotes/{quote}', [CustomerController::class, 'quoteShow'])->name('quotes.show');
+        Route::post('/quotes/{quote}/accept', [CustomerController::class, 'quoteAccept'])->name('quotes.accept');
+        Route::post('/quotes/{quote}/reject', [CustomerController::class, 'quoteReject'])->name('quotes.reject');
+
+        // Purchases & Downloads
+        Route::get('/purchases', [CustomerController::class, 'purchases'])->name('purchases');
+        Route::get('/purchases/{purchase}/download/{file}', [CustomerController::class, 'downloadFile'])->name('purchases.download');
+
+        // Payments
+        Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
+
+        // Profile
         Route::get('/profile', fn () => view('auth.profile'))->name('profile');
     });
 
@@ -153,6 +177,7 @@ Route::prefix('admin')
 
         // Quotes
         Route::resource('quotes', AdminQuoteController::class)->only(['index', 'show', 'update', 'destroy']);
+        Route::post('quotes/{quote}/convert', [AdminQuoteController::class, 'convertToOrder'])->name('quotes.convert');
 
         // Orders
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update', 'destroy']);

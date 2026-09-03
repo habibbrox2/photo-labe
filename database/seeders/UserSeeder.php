@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
         // Super Admin
         User::create([
             'name' => 'Super Admin',
-            'email' => 'admin@piclab.com',
+            'email' => 'admin@photolabe.com',
             'password' => Hash::make('password'),
             'role' => 'super_admin',
             'email_verified_at' => now(),
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         // Editor
         User::create([
             'name' => 'Editor User',
-            'email' => 'editor@piclab.com',
+            'email' => 'editor@photolabe.com',
             'password' => Hash::make('password'),
             'role' => 'editor',
             'email_verified_at' => now(),
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         // Designer
         User::create([
             'name' => 'Designer User',
-            'email' => 'designer@piclab.com',
+            'email' => 'designer@photolabe.com',
             'password' => Hash::make('password'),
             'role' => 'designer',
             'email_verified_at' => now(),

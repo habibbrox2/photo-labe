@@ -2,7 +2,7 @@
 
 ## Overview
 
-PicLab implements industry-standard security practices to protect against common web vulnerabilities.
+PhotoLabe implements industry-standard security practices to protect against common web vulnerabilities.
 
 ## Security Features
 
@@ -134,7 +134,7 @@ Track sensitive actions in `audit_logs` table:
 
 ## Vulnerability Reporting
 
-Report security vulnerabilities to: security@piclab.com
+Report security vulnerabilities to: security@photolabe.com
 
 ## Security Updates
 
