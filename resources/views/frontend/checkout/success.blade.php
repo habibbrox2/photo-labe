@@ -11,6 +11,21 @@
             <h1 class="text-3xl font-bold text-gray-900 mb-3">Order Confirmed!</h1>
             <p class="text-gray-500 mb-8">Thank you for your purchase. Your order has been received.</p>
 
+            @if($payment && isset($payment['instructions']))
+                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-6 text-left mb-8">
+                    <h2 class="font-semibold text-indigo-900 mb-2">{{ $payment['instructions']['title'] ?? 'Payment Instructions' }}</h2>
+                    <ul class="space-y-2">
+                        @foreach($payment['instructions']['lines'] ?? [] as $line)
+                            <li class="flex items-start gap-2 text-sm text-indigo-800">
+                                <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>{{ $line }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <p class="text-xs text-indigo-500 mt-3">Your downloads unlock as soon as your payment is confirmed.</p>
+                </div>
+            @endif
+
             <div class="bg-gray-50 rounded-xl p-6 text-left mb-8">
                 <div class="grid grid-cols-2 gap-4 text-sm">
                     <div>
@@ -29,6 +44,12 @@
                         <span class="text-gray-500">Date</span>
                         <p class="font-medium text-gray-900">{{ $order->created_at->format('M d, Y') }}</p>
                     </div>
+                    @if($order->invoice)
+                        <div>
+                            <span class="text-gray-500">Invoice</span>
+                            <p class="font-mono font-bold text-gray-900">{{ $order->invoice->invoice_number }}</p>
+                        </div>
+                    @endif
                 </div>
 
                 @if($order->items->count())

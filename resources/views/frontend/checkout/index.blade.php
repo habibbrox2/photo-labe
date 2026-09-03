@@ -45,13 +45,21 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mt-6">
                         <h2 class="text-lg font-semibold text-gray-900 mb-4">Payment Method</h2>
                         <div class="space-y-3">
-                            <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
-                                <input type="radio" name="payment_method" value="manual" checked class="text-indigo-600 focus:ring-indigo-500">
-                                <div>
-                                    <p class="font-medium text-gray-900 text-sm">Manual Payment</p>
-                                    <p class="text-xs text-gray-500">Pay via bank transfer or other arrangement</p>
-                                </div>
-                            </label>
+                            @foreach($gateways as $gateway)
+                                <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+                                    <input type="radio" name="payment_method" value="{{ $gateway }}" @checked($loop->first) class="text-indigo-600 focus:ring-indigo-500">
+                                    <div>
+                                        <p class="font-medium text-gray-900 text-sm capitalize">{{ str_replace('_', ' ', $gateway) }} Payment</p>
+                                        <p class="text-xs text-gray-500">
+                                            @if($gateway === 'manual')
+                                                Pay via bank transfer / mobile banking, confirmed by our team
+                                            @else
+                                                Secure online payment
+                                            @endif
+                                        </p>
+                                    </div>
+                                </label>
+                            @endforeach
                         </div>
                         @error('payment_method') <p class="text-red-500 text-sm mt-2">{{ $message }}</p> @enderror
                     </div>

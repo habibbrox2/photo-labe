@@ -30,20 +30,45 @@
             </div>
 
             {{-- Files --}}
-            @if($order->files->count())
-                <div class="bg-white rounded-xl border border-gray-200 p-6">
-                    <h3 class="font-semibold text-gray-900 mb-4">Files</h3>
+            <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <h3 class="font-semibold text-gray-900 mb-4">Files</h3>
+
+                {{-- Upload Form --}}
+                <form method="POST" action="{{ route('admin.orders.files.upload', $order) }}" enctype="multipart/form-data" class="mb-4 p-4 bg-gray-50 rounded-lg">
+                    @csrf
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <select name="type" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+                            <option value="output">Deliverable (output)</option>
+                            <option value="input">Input / reference</option>
+                        </select>
+                        <input type="file" name="file" required accept=".jpg,.jpeg,.png,.webp,.tiff,.zip,.psd"
+                            class="flex-1 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600">
+                        <button type="submit" class="px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700">Upload</button>
+                    </div>
+                    @error('file') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
+                    <p class="text-xs text-gray-400 mt-2">Max 50MB. Allowed: JPG, PNG, WebP, TIFF, ZIP, PSD. Files are stored privately and never exposed publicly.</p>
+                </form>
+
+                @if($order->files->count())
                     <div class="space-y-2">
                         @foreach($order->files as $file)
                             <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                                 <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
-                                <span class="text-sm text-gray-700">{{ $file->original_name }}</span>
+                                <span class="text-sm text-gray-700 flex-1 min-w-0 truncate">{{ $file->original_name }}</span>
                                 <span class="px-2 py-0.5 text-xs rounded-full {{ $file->type === 'input' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700' }}">{{ ucfirst($file->type) }}</span>
+                                <a href="{{ route('admin.orders.files.download', [$order, $file]) }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-700">Download</a>
+                                <form method="POST" action="{{ route('admin.orders.files.destroy', [$order, $file]) }}"
+                                    onsubmit="return confirm('Delete this file? This cannot be undone.');">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="text-xs font-medium text-red-600 hover:text-red-700">Delete</button>
+                                </form>
                             </div>
                         @endforeach
                     </div>
-                </div>
-            @endif
+                @else
+                    <p class="text-sm text-gray-400 text-center py-4">No files uploaded yet.</p>
+                @endif
+            </div>
         </div>
 
         <div class="space-y-6">

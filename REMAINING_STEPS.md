@@ -19,13 +19,41 @@ PhotoLabe — Creative Services + Photo Editing + Digital Products Platform
 - `resources/views/customer/payments.blade.php` — Payment history table
 - `app/Http/Controllers/Admin/QuoteController.php` — Added `convertToOrder()` method
 
-**✅ COMPLETED — 2026-09-03:**
-All missing routes have been added to `routes/web.php`. 131 routes verified via `php artisan route:list`.
+**✅ VERIFIED & FIXED — 2026-09-03 (synced with origin/main @ 59ab6c6):**
+All customer + admin routes are wired and the full flows were tested end-to-end (quote submit → admin pricing → convert → order → messages). The repo's redesign introduced several Blade bugs that were fixed this session:
+- `home.blade.php`: `:keywords/:schema/:breadcrumb` mixed `:` with `{{ }}` (invalid compiled PHP)
+- `seo-meta.blade.php`: missing closing paren in `json_encode(array_filter(...))`
+- `layouts/app.blade.php`: `"@context"` in JSON-LD was compiled as Blade's `@context` directive → escaped as `@@context`
+- `components/header.blade.php`: `{{ scrolled ? ... }}` referenced an Alpine variable as PHP → static classes
+- `home/blog/product` views: `{{ }}` in component attrs double-escaped `&` → switched to `:` attrs; `seo-meta` avoids double appending app name
+- `routes/web.php`: `account/profile` → `AuthController@showProfile` (bare closure caused `Undefined variable $user`)
+- `config/session.php`: guards invalid cookie paths (Git Bash/MSYS rewrites `/` → `C:/Program Files/Git/`, caused 500 on every request)
+- `Admin\QuoteController::convertToOrder()`: fixed single-quoted string interpolation
+- `downloadFile()` + `purchases.blade.php`: `original_name` → `file_name` (field didn't exist on `ProductFile`)
+- New migration `2024_01_01_000097_add_download_count_to_purchases_table.php` (needed by download counting)
+- `admin/quotes/show.blade.php`: added **Convert to Order** button
 
-**NEXT SESSION — #1 PRIORITY:**
-1. Admin order file upload (deliver output files to customers)
-2. Email notifications (quote received, quoted, accepted, converted)
-3. Payment gateway interface (Stripe/bKash/SSLCommerz)
+**✅ COMPLETED — Email Notifications (2026-09-03):**
+Implemented full notification system (database + email channels, queued):
+- 5 notification classes: `QuoteReceived` (staff), `QuoteStatusUpdated` (customer — quoted/rejected/expired/cancelled), `QuoteAccepted` (staff), `QuoteConverted` (customer), `OrderStatus` (customer — incl. order completed)
+- Wired into: frontend `QuoteController::store`, admin `QuoteController::update` + `convertToOrder`, `CustomerController::quoteAccept`, admin `OrderController::update`
+- Branded email templates (`resources/views/emails/layout.blade.php` + `notification.blade.php`) with inline styles
+- Notifications freeze the status at creation time so queued emails report the state when the event happened
+- `notifications` migration + `User::staff()` scope; dashboard widgets on customer + admin dashboards with unread badge + mark-all-read
+- **Full notifications index pages** (`/account/notifications`, `/admin/notifications`): paginated (15/page), All/Unread filter tabs, per-item mark-read-on-open (redirects to the notification target), mark-all-read
+- Scheduler drains the database queue every minute (`queue:work --stop-when-empty` in `routes/console.php`) — cPanel-cron compatible, no permanent worker
+- Verified end-to-end: quote submit → staff notified; admin quotes → customer gets "Your Quote Is Ready"; accept → staff notified; order completed → customer notified. Emails render correctly (MAIL_MAILER=log locally).
+
+**✅ COMPLETED — Secure Files, Payments, Error Pages & Feature Tests (2026-09-03):**
+- **Private order-file downloads**: `FileService` stores order files on the private `local` disk (`storage/app/private/orders/{id}/{input|output}/`); customer downloads go through an authorized route with ownership checks (403) and output files are locked until the order is `completed`; admin upload/download/delete routes + UI; legacy files fall back to the public disk
+- **Payment gateway architecture**: `PaymentGateway` contract + `PaymentService` manager (registry in `config/payment.php`) + `ManualGateway` (bank-transfer instructions, works with zero credentials); checkout creates order → payment → invoice → pending purchases; admin marking an order `paid` runs idempotent server-side confirmation (marks payment paid, records transaction, unlocks purchases to `completed`, finalizes invoice). Stripe/bKash/SSLCommerz can be dropped in as classes implementing the contract
+- **Branded error pages** (404, 403, 419, 429, 500, 503)
+- **62 feature/security tests** (`tests/Feature/`): guest/auth/registration/login-role redirects, profile & password, email-verification gating, quote lifecycle (submit → staff notified → pricing → accept/reject → convert), order ownership, messages & revision guards, private-file security (cross-user 403, output gating, mime allowlist, delete), cart → checkout → manual payment → admin confirmation → purchase unlock, admin/editor authorization. `php artisan test` runs fully against in-memory SQLite
+- **Test env made deterministic**: `tests/TestCase` forces the testing env before boot (guards against shell-exported `.env` values on Windows/MSYS); added `.env.testing`; fixed `notifications` migration duplicate index; fixed `.env.example` (invalid `[TEMPLATE]` header, missing payment config, production-safe defaults)
+- **Security/robustness fixes found by the tests**: `User` now implements `MustVerifyEmail` so the `verified` middleware actually gates the account area (unverified users get the verify prompt); `/get-a-quote` POST now requires `auth`+`verified` (anonymous submissions created unattributed quotes); `services.category_id` required in fixtures
+- **Local DB fixed**: `.env` pointed at nonexistent `photolab_db` (masked by shell env) → now `piclab`, the real DB with all 16 migrations + full seed data applied
+
+**Remaining (optional / polish):** Stripe/bKash/SSLCommerz gateway classes behind the existing contract, payment webhook endpoint, and live-SMTP production mail credentials.
 
 ---
 
@@ -147,7 +175,7 @@ All missing routes have been added to `routes/web.php`. 131 routes verified via 
 - [x] **ADD ROUTES** for customer quote actions: `quotes/{quote}/accept`, `quotes/{quote}/reject` ✅
 - [x] **ADD ROUTES** for customer purchases & downloads ✅
 - [x] **ADD ROUTES** for customer payments history ✅
-- [ ] Email notifications (quote received, quoted, accepted, converted)
+- [x] Email notifications (quote received, quoted, accepted, converted) ✅
 
 ---
 
@@ -204,19 +232,19 @@ All missing routes have been added to `routes/web.php`. 131 routes verified via 
 
 ---
 
-## Milestone 11 — Checkout & Payments ✅ PARTIAL
+## Milestone 11 — Checkout & Payments ✅ COMPLETED
 
 - [x] Checkout page with billing info
 - [x] Checkout validation
 - [x] Order creation with database transactions
 - [x] Purchase recording
 - [x] Order confirmation page
-- [ ] Payment gateway interface
-- [ ] First gateway implementation (Stripe/bKash/SSLCommerz)
-- [ ] Payment verification (server-side)
-- [ ] Webhook handling
-- [ ] Invoice generation
-- [ ] Customer purchase access
+- [x] Payment gateway interface (`app/Contracts/PaymentGateway`)
+- [x] First gateway implementation (`ManualGateway` — bank transfer; Stripe/bKash/SSLCommerz slot in via `config/payment.php`)
+- [x] Payment verification (server-side, idempotent via `PaymentService::confirmPaymentForOrder`)
+- [ ] Webhook handling (only needed once an online gateway is configured)
+- [x] Invoice generation
+- [x] Customer purchase access (unlocked when payment confirmed; downloads increment counter)
 
 ---
 
@@ -257,7 +285,7 @@ All missing routes have been added to `routes/web.php`. 131 routes verified via 
 
 ---
 
-## Milestone 15 — Testing & Deployment ✅ COMPLETED
+## Milestone 15 — Testing & Deployment ✅ COMPLETED (62 feature/security tests added 2026-09-03)
 
 - [x] README.md — Project overview, setup, credentials
 - [x] DEPLOYMENT.md — Shared hosting deployment guide
@@ -273,7 +301,7 @@ All missing routes have been added to `routes/web.php`. 131 routes verified via 
 
 ### Database Connection
 - **Host:** 127.0.0.1:3306
-- **Database:** photolab_db
+- **Database:** piclab (fresh installs use `photolab_db` per `.env.example` — create it and update `.env`)
 - **Username:** root
 - **Password:** (empty)
 - **Tool:** phpMyAdmin

@@ -2,11 +2,11 @@
 
 @section('seo')
     <x-seo-meta
-        title="{{ $seoData['title'] ?? 'Professional Photo Editing & Creative Design Services' }}"
-        description="{{ $seoData['description'] ?? 'Transform your images into professional, market-ready visuals with expert photo editing and creative design services.' }}"
-        :keywords="{{ $seoData['keywords'] ?? [] }}"
-        :schema="{{ $seoData['schema'] ?? [] }}"
-        :breadcrumb="{{ $seoData['breadcrumb'] ?? [] }}"
+        :title="$seoData['title'] ?? 'Professional Photo Editing & Creative Design Services'"
+        :description="$seoData['description'] ?? 'Transform your images into professional, market-ready visuals with expert photo editing and creative design services.'"
+        :keywords="$seoData['keywords'] ?? []"
+        :schema="$seoData['schema'] ?? []"
+        :breadcrumb="$seoData['breadcrumb'] ?? []"
     />
 @endsection
 

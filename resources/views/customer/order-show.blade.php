@@ -139,8 +139,11 @@
                                         <div class="text-sm font-medium text-gray-900 truncate">{{ $file->original_name }}</div>
                                         <div class="text-xs text-gray-500">{{ ucfirst($file->type) }} · {{ round($file->file_size / 1024) }}KB</div>
                                     </div>
-                                    @if($file->type === 'output' && $order->status === 'completed')
-                                        <a href="{{ Storage::disk('public')->url($file->file_path) }}" download class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">Download</a>
+                                    @if($file->type === 'input' || ($file->type === 'output' && $order->status === 'completed'))
+                                        <a href="{{ route('account.orders.files.download', [$order, $file]) }}" class="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            Download
+                                        </a>
                                     @endif
                                 </div>
                             @endforeach

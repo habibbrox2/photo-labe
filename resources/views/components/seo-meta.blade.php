@@ -61,8 +61,10 @@
     $appName = config('app.name', 'PhotoLabe');
     $appUrl = config('app.url', 'https://photolabe.com');
     
-    // Title
-    $pageTitle = $title ? $title . ' - ' . $appName : $appName . ' - Professional Photo Editing & Creative Design';
+    // Title (avoid appending the app name twice when the title already contains it)
+    $pageTitle = $title
+        ? (str_contains($title, $appName) ? $title : $title . ' - ' . $appName)
+        : $appName . ' - Professional Photo Editing & Creative Design';
     
     // Description
     $pageDescription = $description ?? $appName . ' - Professional photo editing and creative design services. Transform your images into stunning visuals.';
@@ -202,6 +204,6 @@
             ];
         })->toArray(),
     ] : null,
-]) !!}
+])) !!}
 </script>
 @endif

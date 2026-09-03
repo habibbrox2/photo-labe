@@ -143,7 +143,20 @@ return [
     |
     */
 
-    'path' => env('SESSION_PATH', '/'),
+    'path' => (function () {
+        $path = env('SESSION_PATH', '/');
+
+        // Guard against invalid cookie paths. On Windows, Git Bash/MSYS can
+        // rewrite a value of "/" into a filesystem path (e.g. "C:/Program
+        // Files/Git/"), which is not a valid cookie path and would throw on
+        // every request. A valid cookie path must start with "/" and
+        // contain no whitespace.
+        if (is_string($path) && str_starts_with($path, '/') && !str_contains($path, ' ')) {
+            return $path;
+        }
+
+        return '/';
+    })(),
 
     /*
     |--------------------------------------------------------------------------

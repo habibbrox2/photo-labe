@@ -303,11 +303,14 @@ npm run dev                # Vite dev server with HMR
 ## Testing
 
 ```bash
-# Run all tests
-php test
+# Run all tests (uses the in-memory SQLite test database automatically)
+php artisan test
+
+# Run a single suite
+php artisan test --filter=QuoteFlowTest
 
 # Run with coverage report
-php test --coverage
+php artisan test --coverage
 ```
 
 ---

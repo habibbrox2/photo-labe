@@ -156,6 +156,49 @@
             </div>
         </div>
 
+        {{-- Notifications --}}
+        <div class="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <h2 class="font-semibold text-gray-900">
+                        Notifications
+                        @if($unreadNotifications > 0)
+                            <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700">{{ $unreadNotifications }} unread</span>
+                        @endif
+                    </h2>
+                    <a href="{{ route('account.notifications') }}" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">View all →</a>
+                </div>
+                @if($unreadNotifications > 0)
+                    <form method="POST" action="{{ route('account.notifications.read-all') }}">
+                        @csrf
+                        <button type="submit" class="text-xs font-medium text-indigo-600 hover:text-indigo-700">Mark all as read</button>
+                    </form>
+                @endif
+            </div>
+            @if($notifications->count())
+                <div class="divide-y divide-gray-50">
+                    @foreach($notifications as $notification)
+                        <a href="{{ route('account.notifications.open', $notification) }}" class="px-6 py-4 flex items-start justify-between hover:bg-gray-50 transition-colors">
+                            <div>
+                                <div class="text-sm font-medium {{ $notification->read_at ? 'text-gray-500' : 'text-gray-900' }}">
+                                    @if(!$notification->read_at)
+                                        <span class="inline-block w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                                    @endif
+                                    {{ $notification->data['title'] ?? 'Notification' }}
+                                </div>
+                                <div class="text-xs text-gray-500 mt-0.5">{{ $notification->data['message'] ?? '' }}</div>
+                            </div>
+                            <span class="text-xs text-gray-400 whitespace-nowrap ml-4">{{ $notification->created_at->diffForHumans() }}</span>
+                        </a>
+                    @endforeach
+                </div>
+            @else
+                <div class="px-6 py-8 text-center text-gray-400 text-sm">
+                    No notifications yet.
+                </div>
+            @endif
+        </div>
+
         {{-- Recent Purchases --}}
         @if($recentPurchases->count())
             <div class="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100">

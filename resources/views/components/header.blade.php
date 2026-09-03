@@ -162,7 +162,7 @@
                 </button>
 
                 {{-- Cart Button --}}
-                <a href="{{ route('cart.index') }}" class="relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:bg-white/10 {{ scrolled ? 'text-white/80 hover:text-white' : 'text-white/80 hover:text-white' }}">
+                <a href="{{ route('cart.index') }}" class="relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:bg-white/10 text-white/80 hover:text-white">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                     </svg>
@@ -171,16 +171,16 @@
 
                 {{-- Auth --}}
                 @auth
-                    <a href="{{ route('account.dashboard') }}" class="text-sm font-semibold transition-colors {{ scrolled ? 'text-white/80 hover:text-white' : 'text-white/80 hover:text-white' }}">
+                    <a href="{{ route('account.dashboard') }}" class="text-sm font-semibold transition-colors text-white/80 hover:text-white">
                         Dashboard
                     </a>
                     @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.dashboard') }}" class="text-sm font-semibold transition-colors {{ scrolled ? 'text-white/80 hover:text-white' : 'text-white/80 hover:text-white' }}">
+                        <a href="{{ route('admin.dashboard') }}" class="text-sm font-semibold transition-colors text-white/80 hover:text-white">
                             Admin
                         </a>
                     @endif
                 @else
-                    <a href="{{ route('login') }}" class="text-sm font-semibold transition-colors {{ scrolled ? 'text-white/80 hover:text-white' : 'text-white/80 hover:text-white' }}">
+                    <a href="{{ route('login') }}" class="text-sm font-semibold transition-colors text-white/80 hover:text-white">
                         Login
                     </a>
                 @endauth
@@ -193,7 +193,7 @@
             </div>
 
             {{-- Mobile Toggle --}}
-            <button @click="mobileOpen = !mobileOpen" class="lg:hidden w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 {{ scrolled ? 'bg-white/10 text-white' : 'bg-white/10 text-white' }}">
+            <button @click="mobileOpen = !mobileOpen" class="lg:hidden w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 bg-white/10 text-white">
                 <div class="w-5 h-4 flex flex-col justify-between">
                     <span class="w-full h-0.5 bg-current rounded-full transition-all duration-300" :class="mobileOpen ? 'rotate-45 translate-y-[7px]' : ''"></span>
                     <span class="w-full h-0.5 bg-current rounded-full transition-all duration-300" :class="mobileOpen ? 'opacity-0 scale-0' : ''"></span>

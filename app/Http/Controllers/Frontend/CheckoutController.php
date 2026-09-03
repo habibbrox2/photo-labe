@@ -6,24 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Payment;
 use App\Models\Purchase;
 use App\Models\Product;
+use App\Services\Payment\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
+    public function __construct(protected PaymentService $payments)
+    {
+    }
+
     public function show()
     {
         $cart = $this->getCart();
 
-        if (!$cart || $cart->items->isEmpty()) {
+        if (! $cart || $cart->items->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
-        return view('frontend.checkout.index', compact('cart'));
+        return view('frontend.checkout.index', [
+            'cart' => $cart,
+            'gateways' => $this->payments->available(),
+        ]);
     }
 
     public function process(Request $request)
@@ -33,12 +40,12 @@ class CheckoutController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:30',
             'address' => 'nullable|string|max:500',
-            'payment_method' => 'required|in:manual',
+            'payment_method' => 'required|in:' . implode(',', $this->payments->available()),
         ]);
 
         $cart = $this->getCart();
 
-        if (!$cart || $cart->items->isEmpty()) {
+        if (! $cart || $cart->items->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
@@ -61,6 +68,9 @@ class CheckoutController extends Controller
                 'status' => 'pending',
             ]);
 
+            // Payment + invoice for this order
+            $payment = $this->payments->createForOrder($order, $validated['payment_method']);
+
             foreach ($cart->items as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -71,11 +81,12 @@ class CheckoutController extends Controller
                     'total_price' => $item->price * $item->quantity,
                 ]);
 
-                // Record purchase for digital products
+                // Record purchase for digital products (unlocked once paid)
                 Purchase::create([
                     'purchase_number' => 'PUR-' . strtoupper(Str::random(8)),
                     'user_id' => auth()->id(),
                     'product_id' => $item->product_id,
+                    'payment_id' => $payment->id,
                     'amount' => $item->price * $item->quantity,
                     'currency' => 'USD',
                     'status' => 'pending',
@@ -91,10 +102,13 @@ class CheckoutController extends Controller
             return $order;
         });
 
-        // Auto-confirm for manual payment
-        $order->update(['status' => 'confirmed']);
+        // Server-side verification for the chosen gateway
+        $payment = $order->payments()->latest()->first();
+        $gateway = $this->payments->gateway($payment->gateway);
+        $result = $gateway->createPayment($payment, $order);
 
-        return redirect()->route('checkout.success', $order)->with('success', 'Order placed successfully!');
+        return redirect()->route('checkout.success', $order)
+            ->with('payment', $result);
     }
 
     public function success(Order $order)
@@ -103,9 +117,12 @@ class CheckoutController extends Controller
             abort(403);
         }
 
-        $order->load('items.product');
+        $order->load('items.product', 'payments', 'invoice');
 
-        return view('frontend.checkout.success', compact('order'));
+        return view('frontend.checkout.success', [
+            'order' => $order,
+            'payment' => session('payment'),
+        ]);
     }
 
     protected function getCart(): ?Cart

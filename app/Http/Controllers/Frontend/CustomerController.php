@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderFile;
 use App\Models\Quote;
 use App\Models\Purchase;
 use App\Models\OrderMessage;
 use App\Models\OrderRevision;
+use App\Models\User;
+use App\Services\FileService;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
@@ -51,9 +55,56 @@ class CustomerController extends Controller
             ->limit(5)
             ->get();
 
+        $notifications = $user->notifications()->latest()->limit(5)->get();
+        $unreadNotifications = $user->unreadNotifications()->count();
+
         return view('customer.dashboard', compact(
-            'stats', 'recentOrders', 'recentQuotes', 'recentPurchases'
+            'stats', 'recentOrders', 'recentQuotes', 'recentPurchases',
+            'notifications', 'unreadNotifications'
         ));
+    }
+
+    /**
+     * Customer notifications list with read/unread filter and pagination
+     */
+    public function notifications(Request $request)
+    {
+        $user = auth()->user();
+
+        $query = $user->notifications();
+
+        if ($request->input('filter') === 'unread') {
+            $query->whereNull('read_at');
+        }
+
+        $notifications = $query->latest()->paginate(15)->withQueryString();
+        $unreadCount = $user->unreadNotifications()->count();
+
+        return view('customer.notifications', compact('notifications', 'unreadCount'));
+    }
+
+    /**
+     * Mark a single notification as read and open its target
+     */
+    public function openNotification(DatabaseNotification $notification)
+    {
+        if ($notification->notifiable_id !== auth()->id() || $notification->notifiable_type !== User::class) {
+            abort(403);
+        }
+
+        $notification->markAsRead();
+
+        return redirect($notification->data['url'] ?? route('account.notifications'));
+    }
+
+    /**
+     * Mark all customer notifications as read
+     */
+    public function markNotificationsRead()
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+
+        return back()->with('success', 'All notifications marked as read.');
     }
 
     /**
@@ -94,7 +145,34 @@ class CustomerController extends Controller
 
         $order->load(['service', 'files', 'messages.user', 'revisions.user', 'payments']);
 
+        // Mark messages from the other party as read
+        $this->markMessagesRead($order);
+
         return view('customer.order-show', compact('order'));
+    }
+
+    /**
+     * Download an order file through an authorized route.
+     * Input files (customer's own uploads) are always available; output
+     * files are only released after the order is completed.
+     */
+    public function downloadOrderFile(Order $order, OrderFile $file, FileService $files)
+    {
+        $user = auth()->user();
+
+        if ($order->user_id !== $user->id) {
+            abort(403);
+        }
+
+        if ($file->order_id !== $order->id) {
+            abort(404);
+        }
+
+        if ($file->type === 'output' && $order->status !== 'completed') {
+            abort(403);
+        }
+
+        return $files->downloadOrderFile($file);
     }
 
     /**
@@ -239,6 +317,12 @@ class CustomerController extends Controller
 
         $quote->update(['status' => 'converted']);
 
+        // Notify staff that the quote was accepted
+        \Illuminate\Support\Facades\Notification::send(
+            \App\Models\User::staff()->get(),
+            new \App\Notifications\QuoteAcceptedNotification($quote)
+        );
+
         return redirect()->route('account.orders.show', $order)->with('success', 'Quote accepted! Your order has been created.');
     }
 
@@ -297,7 +381,7 @@ class CustomerController extends Controller
 
         return Storage::disk('public')->download(
             $file->file_path,
-            $file->original_name
+            $file->file_name
         );
     }
 

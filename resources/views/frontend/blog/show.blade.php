@@ -2,9 +2,9 @@
 
 @section('seo')
     <x-seo-meta
-        title="{{ $post->seo_title ?? $post->title }}"
-        description="{{ $post->seo_description ?? $post->excerpt }}"
-        image="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : '' }}"
+        :title="$post->seo_title ?? $post->title"
+        :description="$post->seo_description ?? $post->excerpt"
+        :image="$post->featured_image ? asset('storage/' . $post->featured_image) : null"
         type="article"
         :schema="[
             'type' => 'Article',

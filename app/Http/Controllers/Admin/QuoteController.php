@@ -45,6 +45,11 @@ class QuoteController extends Controller
 
         $quote->update($validated);
 
+        // Notify the customer about customer-facing status changes
+        if ($quote->user && in_array($quote->status, ['quoted', 'rejected', 'expired', 'cancelled'])) {
+            $quote->user->notify(new \App\Notifications\QuoteStatusUpdatedNotification($quote));
+        }
+
         return redirect()->route('admin.quotes.show', $quote)->with('success', 'Quote updated successfully.');
     }
 
@@ -85,8 +90,13 @@ class QuoteController extends Controller
 
             \DB::commit();
 
+            // Notify the customer that their quote was converted to an order
+            if ($quote->user) {
+                $quote->user->notify(new \App\Notifications\QuoteConvertedNotification($quote, $order));
+            }
+
             return redirect()->route('admin.orders.show', $order)
-                ->with('success', 'Quote converted to order #{$order->order_number} successfully.');
+                ->with('success', "Quote converted to order #{$order->order_number} successfully.");
         } catch (\Exception $e) {
             \DB::rollBack();
             return back()->with('error', 'Failed to convert quote: ' . $e->getMessage());

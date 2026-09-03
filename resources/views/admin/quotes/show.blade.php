@@ -74,6 +74,20 @@
                 </form>
             </div>
 
+            @if(!in_array($quote->status, ['converted', 'cancelled']))
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <h3 class="font-semibold text-gray-900 mb-3">Convert to Order</h3>
+                    <p class="text-sm text-gray-500 mb-4">Convert this quote into a service order for the customer.</p>
+                    <form method="POST" action="{{ route('admin.quotes.convert', $quote) }}"
+                        onsubmit="return confirm('Convert this quote to an order? The quote will be marked as converted.');">
+                        @csrf
+                        <button type="submit" class="w-full px-4 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700">
+                            Convert to Order
+                        </button>
+                    </form>
+                </div>
+            @endif
+
             <div class="bg-white rounded-xl border border-gray-200 p-6">
                 <h3 class="font-semibold text-gray-900 mb-3">Details</h3>
                 <div class="space-y-2 text-sm">

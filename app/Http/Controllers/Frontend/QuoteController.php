@@ -63,6 +63,12 @@ class QuoteController extends Controller
             return $quote;
         });
 
+        // Notify staff about the new quote request
+        \Illuminate\Support\Facades\Notification::send(
+            \App\Models\User::staff()->get(),
+            new \App\Notifications\QuoteReceivedNotification($quote)
+        );
+
         return redirect()
             ->route('home')
             ->with('success', 'Your quote request has been submitted successfully! We will get back to you within 24 hours.');

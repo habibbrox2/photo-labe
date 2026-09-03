@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderFile;
+use App\Services\FileService;
+use App\Services\Payment\PaymentService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -37,7 +37,7 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order'));
     }
 
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order, PaymentService $payments)
     {
         $validated = $request->validate([
             'status' => 'required|in:pending,confirmed,paid,processing,quality_check,revision,completed,cancelled',
@@ -48,7 +48,19 @@ class OrderController extends Controller
             $validated['completed_at'] = now();
         }
 
+        $oldStatus = $order->status;
+
         $order->update($validated);
+
+        // Confirm payment server-side when the order is marked paid (idempotent)
+        if ($validated['status'] === 'paid' && $oldStatus !== 'paid') {
+            $payments->confirmPaymentForOrder($order);
+        }
+
+        // Notify the customer when the order status actually changes
+        if ($order->user && $oldStatus !== $order->status) {
+            $order->user->notify(new \App\Notifications\OrderStatusNotification($order, $oldStatus));
+        }
 
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order updated successfully.');
     }
@@ -61,50 +73,44 @@ class OrderController extends Controller
     }
 
     /**
-     * Upload a file to an order (input from customer or output/deliverable)
+     * Upload a file to an order (input from customer or output/deliverable).
+     * Files are stored on the private disk — never publicly accessible.
      */
-    public function uploadFile(Request $request, Order $order)
+    public function uploadFile(Request $request, Order $order, FileService $files)
     {
         $validated = $request->validate([
-            'file' => 'required|file|max:51200', // 50MB max
+            'file' => ['required', 'file', 'mimes:' . implode(',', \App\Services\FileService::ALLOWED_EXTENSIONS), 'max:51200'],
             'type' => 'required|in:input,output',
         ]);
 
-        $file = $request->file('file');
-        $type = $validated['type'];
-
-        // Store in order-specific directory
-        $directory = "order-files/{$order->id}";
-        $storedName = Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs($directory, $storedName, 'public');
-
-        OrderFile::create([
-            'order_id' => $order->id,
-            'original_name' => $file->getClientOriginalName(),
-            'stored_name' => $storedName,
-            'file_path' => "{$directory}/{$storedName}",
-            'mime_type' => $file->getMimeType(),
-            'file_size' => $file->getSize(),
-            'type' => $type,
-        ]);
+        $files->storeOrderFile($request->file('file'), $order, $validated['type']);
 
         return redirect()->route('admin.orders.show', $order)
-            ->with('success', ucfirst($type) . ' file uploaded successfully.');
+            ->with('success', ucfirst($validated['type']) . ' file uploaded successfully.');
     }
 
     /**
-     * Delete an order file
+     * Download an order file (staff only, admin middleware applies)
      */
-    public function deleteFile(Order $order, OrderFile $file)
+    public function downloadFile(Order $order, OrderFile $file, FileService $files)
     {
         if ($file->order_id !== $order->id) {
             abort(404);
         }
 
-        // Delete from storage
-        Storage::disk('public')->delete($file->file_path);
+        return $files->downloadOrderFile($file);
+    }
 
-        $file->delete();
+    /**
+     * Delete an order file
+     */
+    public function deleteFile(Order $order, OrderFile $file, FileService $files)
+    {
+        if ($file->order_id !== $order->id) {
+            abort(404);
+        }
+
+        $files->deleteOrderFile($file);
 
         return redirect()->route('admin.orders.show', $order)
             ->with('success', 'File deleted successfully.');

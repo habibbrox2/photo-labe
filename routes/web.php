@@ -39,7 +39,7 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // Quote
 Route::get('/get-a-quote', [QuoteController::class, 'create'])->name('quote.create');
-Route::post('/get-a-quote', [QuoteController::class, 'store'])->middleware('throttle:5,1')->name('quote.store');
+Route::post('/get-a-quote', [QuoteController::class, 'store'])->middleware(['auth', 'verified', 'throttle:5,1'])->name('quote.store');
 
 // Contact
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
@@ -114,6 +114,7 @@ Route::prefix('account')
         // Orders
         Route::get('/orders', [CustomerController::class, 'orders'])->name('orders');
         Route::get('/orders/{order}', [CustomerController::class, 'orderShow'])->name('orders.show');
+        Route::get('/orders/{order}/files/{file}/download', [CustomerController::class, 'downloadOrderFile'])->name('orders.files.download');
         Route::post('/orders/{order}/message', [CustomerController::class, 'orderMessage'])->name('orders.message');
         Route::post('/orders/{order}/revision', [CustomerController::class, 'orderRevision'])->name('orders.revision');
         Route::post('/orders/{order}/mark-read', [CustomerController::class, 'markMessagesRead'])->name('orders.mark-read');
@@ -131,8 +132,13 @@ Route::prefix('account')
         // Payments
         Route::get('/payments', [CustomerController::class, 'payments'])->name('payments');
 
+        // Notifications
+        Route::get('/notifications', [CustomerController::class, 'notifications'])->name('notifications');
+        Route::get('/notifications/{notification}/open', [CustomerController::class, 'openNotification'])->name('notifications.open');
+        Route::post('/notifications/read-all', [CustomerController::class, 'markNotificationsRead'])->name('notifications.read-all');
+
         // Profile
-        Route::get('/profile', fn () => view('auth.profile'))->name('profile');
+        Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
     });
 
 /*
@@ -153,12 +159,19 @@ use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
-        Route::get('/', fn () => view('admin.dashboard'))->name('dashboard');
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        // Notifications
+        Route::get('notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notifications/{notification}/open', [AdminNotificationController::class, 'open'])->name('notifications.open');
+        Route::post('notifications/read-all', [AdminNotificationController::class, 'markAllRead'])->name('notifications.read-all');
 
         // Services
         Route::resource('services', AdminServiceController::class);
@@ -181,6 +194,9 @@ Route::prefix('admin')
 
         // Orders
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update', 'destroy']);
+        Route::post('orders/{order}/files', [AdminOrderController::class, 'uploadFile'])->name('orders.files.upload');
+        Route::get('orders/{order}/files/{file}/download', [AdminOrderController::class, 'downloadFile'])->name('orders.files.download');
+        Route::delete('orders/{order}/files/{file}', [AdminOrderController::class, 'deleteFile'])->name('orders.files.destroy');
 
         // Customers
         Route::resource('customers', AdminCustomerController::class)->only(['index', 'show', 'destroy']);
