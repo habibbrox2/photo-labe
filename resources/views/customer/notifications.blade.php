@@ -13,7 +13,7 @@
             @if($unreadCount > 0)
                 <form method="POST" action="{{ route('account.notifications.read-all') }}">
                     @csrf
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-colors">
+                    <button type="submit" class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-xl hover:bg-primary-700 transition-colors">
                         Mark all as read
                     </button>
                 </form>
@@ -23,11 +23,11 @@
         {{-- Filter Tabs --}}
         <div class="flex gap-2 mb-6">
             <a href="{{ route('account.notifications') }}"
-                class="px-4 py-2 rounded-full text-sm font-medium transition-colors {{ !request('filter') ? 'bg-indigo-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
+                class="px-4 py-2 rounded-full text-sm font-medium transition-colors {{ !request('filter') ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
                 All ({{ $notifications->total() }})
             </a>
             <a href="{{ route('account.notifications', ['filter' => 'unread']) }}"
-                class="px-4 py-2 rounded-full text-sm font-medium transition-colors {{ request('filter') === 'unread' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
+                class="px-4 py-2 rounded-full text-sm font-medium transition-colors {{ request('filter') === 'unread' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
                 Unread ({{ $unreadCount }})
             </a>
         </div>
@@ -39,7 +39,7 @@
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex items-start gap-3">
                         @if(!$notification->read_at)
-                            <span class="mt-1.5 w-2.5 h-2.5 bg-indigo-500 rounded-full flex-shrink-0"></span>
+                            <span class="mt-1.5 w-2.5 h-2.5 bg-primary-500 rounded-full flex-shrink-0"></span>
                         @endif
                         <div>
                             <div class="font-semibold {{ $notification->read_at ? 'text-gray-600' : 'text-gray-900' }}">
@@ -59,7 +59,7 @@
                     {{ request('filter') === 'unread' ? 'You are all caught up!' : 'No notifications yet' }}
                 </h3>
                 <p class="text-gray-500 text-sm mb-4">We'll notify you here about new quotes, orders, and updates.</p>
-                <a href="{{ route('quote.create') }}" class="inline-block px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 text-sm">
+                <a href="{{ route('quote.create') }}" class="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 text-sm">
                     Get a Free Quote
                 </a>
             </div>

@@ -13,8 +13,9 @@ class QuoteController extends Controller
     public function create()
     {
         $services = Service::active()->ordered()->get();
+        $testimonials = \App\Models\Testimonial::active()->featured()->limit(3)->get();
 
-        return view('frontend.quote.create', compact('services'));
+        return view('frontend.quote.create', compact('services', 'testimonials'));
     }
 
     public function store(Request $request)

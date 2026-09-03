@@ -16,7 +16,9 @@ use App\Policies\PortfolioPolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\BlogPostPolicy;
 use App\Policies\TestimonialPolicy;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,5 +37,14 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Product::class, ProductPolicy::class);
         Gate::policy(BlogPost::class, BlogPostPolicy::class);
         Gate::policy(Testimonial::class, TestimonialPolicy::class);
+
+        // Share the current cart item count with the header (badge).
+        View::composer('components.header', function (\Illuminate\View\View $view) {
+            $cart = auth()->check()
+                ? Cart::withCount('items')->where('user_id', auth()->id())->first()
+                : Cart::withCount('items')->where('session_id', session()->getId())->first();
+
+            $view->with('cartCount', $cart?->items_count ?? 0);
+        });
     }
 }

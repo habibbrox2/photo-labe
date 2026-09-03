@@ -14,8 +14,8 @@
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    <div class="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                     </div>
                     <div>
                         <div class="text-2xl font-bold text-gray-900">{{ $stats['active_orders'] }}</div>
@@ -47,8 +47,8 @@
             </div>
             <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="w-10 h-10 rounded-xl bg-accent-50 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <div>
                         <div class="text-2xl font-bold text-gray-900">${{ number_format($stats['total_spent'], 2) }}</div>
@@ -60,20 +60,20 @@
 
         {{-- Quick Actions --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <a href="{{ route('quote.create') }}" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow">
+            <a href="{{ route('quote.create') }}" class="bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 <span class="font-semibold text-sm">New Quote</span>
             </a>
             <a href="{{ route('products.index') }}" class="bg-white rounded-2xl p-4 border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 <span class="font-semibold text-sm text-gray-900">Shop</span>
             </a>
             <a href="{{ route('account.orders') }}" class="bg-white rounded-2xl p-4 border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 <span class="font-semibold text-sm text-gray-900">My Orders</span>
             </a>
             <a href="{{ route('contact') }}" class="bg-white rounded-2xl p-4 border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow">
-                <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                 <span class="font-semibold text-sm text-gray-900">Contact</span>
             </a>
         </div>
@@ -83,7 +83,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h2 class="font-semibold text-gray-900">Recent Orders</h2>
-                    <a href="{{ route('account.orders') }}" class="text-sm text-indigo-600 hover:text-indigo-700">View all →</a>
+                    <a href="{{ route('account.orders') }}" class="text-sm text-primary-600 hover:text-primary-700">View all →</a>
                 </div>
                 @if($recentOrders->count())
                     <div class="divide-y divide-gray-50">
@@ -109,7 +109,7 @@
                     </div>
                 @else
                     <div class="px-6 py-8 text-center text-gray-400 text-sm">
-                        No orders yet. <a href="{{ route('services.index') }}" class="text-indigo-600 hover:underline">Browse services</a>
+                        No orders yet. <a href="{{ route('services.index') }}" class="text-primary-600 hover:underline">Browse services</a>
                     </div>
                 @endif
             </div>
@@ -118,7 +118,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h2 class="font-semibold text-gray-900">Recent Quotes</h2>
-                    <a href="{{ route('account.quotes') }}" class="text-sm text-indigo-600 hover:text-indigo-700">View all →</a>
+                    <a href="{{ route('account.quotes') }}" class="text-sm text-primary-600 hover:text-primary-700">View all →</a>
                 </div>
                 @if($recentQuotes->count())
                     <div class="divide-y divide-gray-50">
@@ -133,10 +133,10 @@
                                         @match($quote->status) {
                                             'pending' => 'bg-amber-50 text-amber-700',
                                             'reviewing' => 'bg-blue-50 text-blue-700',
-                                            'quoted' => 'bg-indigo-50 text-indigo-700',
+                                            'quoted' => 'bg-primary-50 text-primary-700',
                                             'accepted' => 'bg-emerald-50 text-emerald-700',
                                             'rejected' => 'bg-red-50 text-red-700',
-                                            'converted' => 'bg-purple-50 text-purple-700',
+                                            'converted' => 'bg-accent-50 text-accent-700',
                                             default => 'bg-gray-50 text-gray-700',
                                         }">
                                         {{ ucfirst($quote->status) }}
@@ -150,7 +150,7 @@
                     </div>
                 @else
                     <div class="px-6 py-8 text-center text-gray-400 text-sm">
-                        No quotes yet. <a href="{{ route('quote.create') }}" class="text-indigo-600 hover:underline">Request a quote</a>
+                        No quotes yet. <a href="{{ route('quote.create') }}" class="text-primary-600 hover:underline">Request a quote</a>
                     </div>
                 @endif
             </div>
@@ -163,15 +163,15 @@
                     <h2 class="font-semibold text-gray-900">
                         Notifications
                         @if($unreadNotifications > 0)
-                            <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700">{{ $unreadNotifications }} unread</span>
+                            <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-primary-100 text-primary-700">{{ $unreadNotifications }} unread</span>
                         @endif
                     </h2>
-                    <a href="{{ route('account.notifications') }}" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">View all →</a>
+                    <a href="{{ route('account.notifications') }}" class="text-xs text-primary-600 hover:text-primary-700 font-medium">View all →</a>
                 </div>
                 @if($unreadNotifications > 0)
                     <form method="POST" action="{{ route('account.notifications.read-all') }}">
                         @csrf
-                        <button type="submit" class="text-xs font-medium text-indigo-600 hover:text-indigo-700">Mark all as read</button>
+                        <button type="submit" class="text-xs font-medium text-primary-600 hover:text-primary-700">Mark all as read</button>
                     </form>
                 @endif
             </div>
@@ -182,7 +182,7 @@
                             <div>
                                 <div class="text-sm font-medium {{ $notification->read_at ? 'text-gray-500' : 'text-gray-900' }}">
                                     @if(!$notification->read_at)
-                                        <span class="inline-block w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                                        <span class="inline-block w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
                                     @endif
                                     {{ $notification->data['title'] ?? 'Notification' }}
                                 </div>
@@ -204,7 +204,7 @@
             <div class="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h2 class="font-semibold text-gray-900">Recent Purchases</h2>
-                    <a href="{{ route('account.purchases') }}" class="text-sm text-indigo-600 hover:text-indigo-700">View all →</a>
+                    <a href="{{ route('account.purchases') }}" class="text-sm text-primary-600 hover:text-primary-700">View all →</a>
                 </div>
                 <div class="divide-y divide-gray-50">
                     @foreach($recentPurchases as $purchase)

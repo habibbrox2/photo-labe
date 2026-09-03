@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Validation\Rules;
+use Laravel\Socialite\Facades\Socialite;
+use Throwable;
 
 class AuthController extends Controller
 {
     // ─── Login ────────────────────────────────────────────
     public function showLogin()
     {
-        return view('auth.login');
+        return view('auth.login', ['socialProviders' => $this->availableSocialProviders()]);
     }
 
     public function login(Request $request)
@@ -38,7 +40,7 @@ class AuthController extends Controller
     // ─── Register ─────────────────────────────────────────
     public function showRegister()
     {
-        return view('auth.register');
+        return view('auth.register', ['socialProviders' => $this->availableSocialProviders()]);
     }
 
     public function register(Request $request)
@@ -225,5 +227,93 @@ class AuthController extends Controller
         }
 
         return redirect()->intended(route('home'));
+    }
+
+    // ─── Social Login ─────────────────────────────────────
+    /** Providers supported via Laravel Socialite. */
+    protected array $socialProviders = ['google', 'facebook'];
+
+    /** Providers that have OAuth credentials configured in .env. */
+    protected function availableSocialProviders(): array
+    {
+        return array_values(array_filter(
+            $this->socialProviders,
+            fn (string $provider) => !empty(config("services.{$provider}.client_id"))
+        ));
+    }
+
+    /** Send the visitor to the OAuth provider's consent screen. */
+    public function redirectToProvider(string $provider)
+    {
+        if (!in_array($provider, $this->availableSocialProviders())) {
+            return redirect()->route('login')
+                ->with('error', ucfirst($provider) . ' login is not configured yet. Please sign in with your email.');
+        }
+
+        $driver = Socialite::driver($provider);
+
+        // Fall back to the callback route when no explicit redirect URI is set.
+        if (empty(config("services.{$provider}.redirect"))) {
+            $driver->redirectUrl(route('auth.social.callback', $provider));
+        }
+
+        return $driver->redirect();
+    }
+
+    /** Handle the OAuth provider's callback. */
+    public function handleProviderCallback(string $provider)
+    {
+        if (!in_array($provider, $this->availableSocialProviders())) {
+            return redirect()->route('login')
+                ->with('error', ucfirst($provider) . ' login is not configured yet. Please sign in with your email.');
+        }
+
+        try {
+            $socialUser = Socialite::driver($provider)->user();
+        } catch (Throwable) {
+            return redirect()->route('login')
+                ->withErrors(['email' => 'We could not sign you in with ' . ucfirst($provider) . '. Please try again or use your email.']);
+        }
+
+        if (empty($socialUser->getEmail())) {
+            return redirect()->route('login')
+                ->withErrors(['email' => ucfirst($provider) . ' did not return an email address for your account. Please sign up with your email instead.']);
+        }
+
+        // Match an existing social account first, then a local account by email.
+        $user = User::where('provider', $provider)
+            ->where('provider_id', (string) $socialUser->getId())
+            ->first()
+            ?? User::where('email', $socialUser->getEmail())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $socialUser->getName()
+                    ?: $socialUser->getNickname()
+                    ?: explode('@', $socialUser->getEmail())[0],
+                'email' => $socialUser->getEmail(),
+                'password' => Hash::make(Str::random(32)),
+                'role' => 'customer',
+                'email_verified_at' => now(), // verified by the OAuth provider
+                'provider' => $provider,
+                'provider_id' => (string) $socialUser->getId(),
+                'avatar' => $socialUser->getAvatar(),
+            ]);
+        } else {
+            // First social sign-in for an existing account: link it and mark verified.
+            if (empty($user->provider_id)) {
+                $user->forceFill([
+                    'provider' => $provider,
+                    'provider_id' => (string) $socialUser->getId(),
+                    'email_verified_at' => $user->email_verified_at ?? now(),
+                    'avatar' => $user->avatar ?? $socialUser->getAvatar(),
+                ])->save();
+            }
+        }
+
+        auth()->login($user, true);
+        request()->session()->regenerate();
+
+        return $this->redirectBasedOnRole();
     }
 }

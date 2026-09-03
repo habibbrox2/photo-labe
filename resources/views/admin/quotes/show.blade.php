@@ -3,9 +3,7 @@
 
 @section('content')
 <div class="max-w-4xl">
-    <div class="flex items-center justify-between mb-6">
-        <a href="{{ route('admin.quotes.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700">← Back to Quotes</a>
-    </div>
+    <x-breadcrumbs :items="[['label' => 'Quotes', 'url' => route('admin.quotes.index')], ['label' => 'Quote #' . $quote->id]]" />
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
@@ -54,7 +52,7 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Status</label>
-                            <select name="status" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+                            <select name="status" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
                                 @foreach(['pending','reviewing','quoted','accepted','rejected','expired','converted','cancelled'] as $s)
                                     <option value="{{ $s }}" {{ $quote->status === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
                                 @endforeach
@@ -63,13 +61,13 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Quoted Price ($)</label>
                             <input type="number" name="quoted_price" value="{{ $quote->quoted_price }}" step="0.01" min="0"
-                                class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+                                class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Admin Notes</label>
-                            <textarea name="admin_notes" rows="4" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">{{ $quote->admin_notes }}</textarea>
+                            <textarea name="admin_notes" rows="4" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">{{ $quote->admin_notes }}</textarea>
                         </div>
-                        <button type="submit" class="w-full px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700">Update Quote</button>
+                        <button type="submit" class="w-full px-4 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">Update Quote</button>
                     </div>
                 </form>
             </div>
@@ -79,7 +77,7 @@
                     <h3 class="font-semibold text-gray-900 mb-3">Convert to Order</h3>
                     <p class="text-sm text-gray-500 mb-4">Convert this quote into a service order for the customer.</p>
                     <form method="POST" action="{{ route('admin.quotes.convert', $quote) }}"
-                        onsubmit="return confirm('Convert this quote to an order? The quote will be marked as converted.');">
+                        data-confirm="Convert this quote to an order? The quote will be marked as converted." data-confirm-label="Convert">
                         @csrf
                         <button type="submit" class="w-full px-4 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700">
                             Convert to Order

@@ -3,11 +3,11 @@
 
 @section('content')
 <div class="max-w-4xl">
-    <a href="{{ route('admin.customers.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700 mb-6 inline-block">← Back to Customers</a>
+    <x-breadcrumbs :items="[['label' => 'Customers', 'url' => route('admin.customers.index')], ['label' => $customer->name]]" />
 
     <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div class="flex items-center gap-4 mb-6">
-            <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-2xl font-bold">{{ substr($customer->name, 0, 1) }}</div>
+            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 text-2xl font-bold">{{ substr($customer->name, 0, 1) }}</div>
             <div>
                 <h2 class="text-xl font-bold text-gray-900">{{ $customer->name }}</h2>
                 <p class="text-gray-500">{{ $customer->email }}</p>

@@ -4,11 +4,12 @@
 @section('content')
 <div class="flex items-center justify-between mb-6">
     <p class="text-sm text-gray-500">{{ $testimonials->total() }} total testimonials</p>
-    <a href="{{ route('admin.testimonials.create') }}" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700">+ Add Testimonial</a>
+    <a href="{{ route('admin.testimonials.create') }}" class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">+ Add Testimonial</a>
 </div>
 
-<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-white rounded-xl border border-gray-200">
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Name</th>
@@ -29,8 +30,8 @@
                     </td>
                     <td class="px-5 py-3 text-right">
                         <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('admin.testimonials.edit', $testimonial) }}" class="px-3 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50 rounded-lg">Edit</a>
-                            <form method="POST" action="{{ route('admin.testimonials.destroy', $testimonial) }}" onsubmit="return confirm('Delete?')">
+                            <a href="{{ route('admin.testimonials.edit', $testimonial) }}" class="px-3 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 rounded-lg">Edit</a>
+                            <form method="POST" action="{{ route('admin.testimonials.destroy', $testimonial) }}" data-confirm="Delete this testimonial?" data-confirm-label="Delete">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg">Delete</button>
                             </form>
@@ -38,10 +39,11 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="px-5 py-12 text-center text-gray-400">No testimonials found.</td></tr>
+                <tr><td colspan="5"><x-empty-state icon="chat" title="No testimonials found" description="Collect customer praise to build trust on your homepage."><a href="{{ route('admin.testimonials.create') }}" class="btn btn-primary btn-sm">Add a testimonial</a></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 <div class="mt-4">{{ $testimonials->links() }}</div>
 @endsection

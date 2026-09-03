@@ -4,12 +4,12 @@
 @section('content')
 <div class="flex items-center justify-between mb-6">
     <p class="text-sm text-gray-500">{{ $products->total() }} total products</p>
-    <a href="{{ route('admin.products.create') }}" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700">+ Add Product</a>
+    <a href="{{ route('admin.products.create') }}" class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">+ Add Product</a>
 </div>
 
 <form method="GET" class="flex gap-3 mb-6">
-    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
-    <select name="status" class="px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+    <select name="status" class="px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
         <option value="">All Status</option>
         <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
         <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
@@ -17,8 +17,9 @@
     <button type="submit" class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200">Filter</button>
 </form>
 
-<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-white rounded-xl border border-gray-200">
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
@@ -39,8 +40,8 @@
                     </td>
                     <td class="px-5 py-3 text-right">
                         <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('admin.products.edit', $product) }}" class="px-3 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50 rounded-lg">Edit</a>
-                            <form method="POST" action="{{ route('admin.products.destroy', $product) }}" onsubmit="return confirm('Delete?')">
+                            <a href="{{ route('admin.products.edit', $product) }}" class="px-3 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 rounded-lg">Edit</a>
+                            <form method="POST" action="{{ route('admin.products.destroy', $product) }}" data-confirm="Delete this product?" data-confirm-label="Delete">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg">Delete</button>
                             </form>
@@ -48,10 +49,11 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="px-5 py-12 text-center text-gray-400">No products found.</td></tr>
+                <tr><td colspan="5"><x-empty-state icon="package" title="No products found" description="Add your first digital product to start selling instantly."><a href="{{ route('admin.products.create') }}" class="btn btn-primary btn-sm">Add a product</a></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 <div class="mt-4">{{ $products->links() }}</div>
 @endsection

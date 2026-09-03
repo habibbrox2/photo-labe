@@ -5,7 +5,7 @@
 <section class="bg-gray-50 py-12 min-h-screen">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Back link --}}
-        <a href="{{ route('account.orders') }}" class="text-sm text-indigo-600 hover:text-indigo-700 mb-6 inline-block">← Back to Orders</a>
+        <a href="{{ route('account.orders') }}" class="text-sm text-primary-600 hover:text-primary-700 mb-6 inline-block">← Back to Orders</a>
 
         @if(session('success'))
             <div class="mb-6 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700 text-sm">{{ session('success') }}</div>
@@ -52,7 +52,7 @@
                         </div>
                         <div>
                             <div class="text-xs text-gray-500 mb-1">Total</div>
-                            <div class="text-sm font-bold text-indigo-600">${{ number_format($order->total, 2) }}</div>
+                            <div class="text-sm font-bold text-primary-600">${{ number_format($order->total, 2) }}</div>
                         </div>
                     </div>
 
@@ -95,14 +95,14 @@
                             @endphp
                             <div class="flex items-center gap-4">
                                 <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg
-                                    {{ $isCompleted ? 'bg-indigo-100' : 'bg-gray-100' }}">
+                                    {{ $isCompleted ? 'bg-primary-100' : 'bg-gray-100' }}">
                                     {{ $step['icon'] }}
                                 </div>
                                 <div class="flex-1">
                                     <div class="text-sm font-medium {{ $isCompleted ? 'text-gray-900' : 'text-gray-400' }}">{{ $step['label'] }}</div>
                                 </div>
                                 @if($isCurrent)
-                                    <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700">Current</span>
+                                    <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-700">Current</span>
                                 @elseif($isCompleted && $key !== 'pending')
                                     <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 @endif
@@ -130,7 +130,7 @@
                                 <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                                     <div class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
                                         @if(str_starts_with($file->mime_type, 'image/'))
-                                            <svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                            <svg class="w-5 h-5 text-accent-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                         @else
                                             <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                         @endif
@@ -140,7 +140,7 @@
                                         <div class="text-xs text-gray-500">{{ ucfirst($file->type) }} · {{ round($file->file_size / 1024) }}KB</div>
                                     </div>
                                     @if($file->type === 'input' || ($file->type === 'output' && $order->status === 'completed'))
-                                        <a href="{{ route('account.orders.files.download', [$order, $file]) }}" class="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                                        <a href="{{ route('account.orders.files.download', [$order, $file]) }}" class="inline-flex items-center gap-1.5 text-primary-600 hover:text-primary-700 text-sm font-medium">
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                             Download
                                         </a>
@@ -164,7 +164,7 @@
                                     </div>
                                     <div class="max-w-xs lg:max-w-md">
                                         <div class="px-4 py-2.5 rounded-2xl text-sm
-                                            {{ $msg->user_id === auth()->id() ? 'bg-indigo-600 text-white rounded-tr-sm' : 'bg-gray-100 text-gray-900 rounded-tl-sm' }}">
+                                            {{ $msg->user_id === auth()->id() ? 'bg-primary-600 text-white rounded-tr-sm' : 'bg-gray-100 text-gray-900 rounded-tl-sm' }}">
                                             {{ $msg->message }}
                                         </div>
                                         <div class="text-xs text-gray-400 mt-1 {{ $msg->user_id === auth()->id() ? 'text-right' : '' }}">
@@ -182,8 +182,8 @@
                     <form method="POST" action="{{ route('account.orders.message', $order) }}" class="flex gap-3">
                         @csrf
                         <input type="text" name="message" placeholder="Type a message..." required
-                            class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-indigo-500 outline-none">
-                        <button type="submit" class="px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 text-sm">
+                            class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                        <button type="submit" class="px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 text-sm">
                             Send
                         </button>
                     </form>
@@ -205,7 +205,7 @@
                         @endif
                         <div class="flex justify-between pt-3 border-t border-gray-100 font-bold">
                             <span class="text-gray-900">Total</span>
-                            <span class="text-indigo-600">${{ number_format($order->total, 2) }}</span>
+                            <span class="text-primary-600">${{ number_format($order->total, 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -229,7 +229,7 @@
                         <form method="POST" action="{{ route('account.orders.revision', $order) }}">
                             @csrf
                             <textarea name="message" rows="3" placeholder="Describe the changes you need..." required
-                                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-indigo-500 outline-none mb-3"></textarea>
+                                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-accent-500 outline-none mb-3"></textarea>
                             <button type="submit" class="w-full px-4 py-2.5 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 text-sm">
                                 Submit Revision
                             </button>

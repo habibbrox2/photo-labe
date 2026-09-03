@@ -9,7 +9,7 @@
                 <h1 class="text-3xl font-bold text-gray-900">My Orders</h1>
                 <p class="text-gray-500 mt-1">Track and manage your service orders.</p>
             </div>
-            <a href="{{ route('quote.create') }}" class="px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors text-sm">
+            <a href="{{ route('quote.create') }}" class="px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors text-sm">
                 Request a Quote
             </a>
         </div>
@@ -19,8 +19,8 @@
             <div class="px-6 py-4 flex flex-wrap items-center gap-4">
                 <form method="GET" action="{{ route('account.orders') }}" class="flex-1 flex items-center gap-3">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search orders..."
-                        class="flex-1 px-4 py-2 rounded-xl border border-gray-200 text-sm focus:border-indigo-500 outline-none">
-                    <select name="status" class="px-4 py-2 rounded-xl border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+                        class="flex-1 px-4 py-2 rounded-xl border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                    <select name="status" class="px-4 py-2 rounded-xl border border-gray-200 text-sm focus:border-accent-500 outline-none">
                         <option value="">All Status</option>
                         @foreach(['pending', 'in_progress', 'revision', 'completed', 'cancelled'] as $s)
                             <option value="{{ $s }}" {{ request('status') === $s ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $s)) }}</option>
@@ -72,7 +72,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="{{ route('account.orders.show', $order) }}" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View →</a>
+                                        <a href="{{ route('account.orders.show', $order) }}" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View →</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -88,7 +88,7 @@
                 <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 <h3 class="text-lg font-semibold text-gray-900 mb-1">No orders found</h3>
                 <p class="text-gray-500 text-sm mb-4">You haven't placed any orders yet.</p>
-                <a href="{{ route('services.index') }}" class="inline-block px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 text-sm">
+                <a href="{{ route('services.index') }}" class="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 text-sm">
                     Browse Services
                 </a>
             </div>

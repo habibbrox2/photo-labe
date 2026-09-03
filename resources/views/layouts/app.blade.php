@@ -92,6 +92,9 @@
 </head>
 
 <body class="bg-surface-50 text-gray-900 antialiased font-sans">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:shadow-lg">
+        Skip to main content
+    </a>
 
     @include('components.header')
 
@@ -111,7 +114,7 @@
     </div>
     @endif
 
-    <main>
+    <main id="main" tabindex="-1">
         @yield('content')
     </main>
 

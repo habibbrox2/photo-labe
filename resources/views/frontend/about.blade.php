@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title', 'About Us')
 @section('content')
-<section class="page-hero">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">About PhotoLabe</h1>
-        <p class="text-gray-300 max-w-2xl mx-auto">Professional photo editing and creative design studio.</p>
-    </div>
-</section>
+<x-page-hero
+    eyebrow="Our Studio"
+    title="About PhotoLabe"
+    subtitle="A professional photo editing and creative design studio helping businesses look their best."
+    :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => 'About']]"
+/>
 <section class="py-20">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-lg">
         <h2>Our Story</h2>

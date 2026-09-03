@@ -23,8 +23,8 @@
                     <p class="text-sm text-gray-500">Total Orders</p>
                     <p class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['orders'] }}</p>
                 </div>
-                <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                <div class="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 </div>
             </div>
         </div>
@@ -47,8 +47,8 @@
                     <p class="text-sm text-gray-500">Total Customers</p>
                     <p class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['customers'] }}</p>
                 </div>
-                <div class="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                <div class="w-10 h-10 bg-accent-50 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </div>
             </div>
         </div>
@@ -81,15 +81,15 @@
                 <h3 class="font-semibold text-gray-900">
                     Notifications
                     @if($unreadNotifications > 0)
-                        <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700">{{ $unreadNotifications }} unread</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-primary-100 text-primary-700">{{ $unreadNotifications }} unread</span>
                     @endif
                 </h3>
-                <a href="{{ route('admin.notifications.index') }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-700">View all →</a>
+                <a href="{{ route('admin.notifications.index') }}" class="text-xs font-medium text-primary-600 hover:text-primary-700">View all →</a>
             </div>
             @if($unreadNotifications > 0)
                 <form method="POST" action="{{ route('admin.notifications.read-all') }}">
                     @csrf
-                    <button type="submit" class="text-xs font-medium text-indigo-600 hover:text-indigo-700">Mark all as read</button>
+                    <button type="submit" class="text-xs font-medium text-primary-600 hover:text-primary-700">Mark all as read</button>
                 </form>
             @endif
         </div>
@@ -99,7 +99,7 @@
                     <div>
                         <p class="text-sm font-medium {{ $notification->read_at ? 'text-gray-500' : 'text-gray-900' }}">
                             @if(!$notification->read_at)
-                                <span class="inline-block w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                                <span class="inline-block w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
                             @endif
                             {{ $notification->data['title'] ?? 'Notification' }}
                         </p>
@@ -130,7 +130,7 @@
                             {{ $quote->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
                             {{ $quote->status === 'quoted' ? 'bg-blue-100 text-blue-700' : '' }}
                             {{ $quote->status === 'accepted' ? 'bg-green-100 text-green-700' : '' }}
-                            {{ $quote->status === 'converted' ? 'bg-purple-100 text-purple-700' : '' }}">
+                            {{ $quote->status === 'converted' ? 'bg-accent-100 text-accent-700' : '' }}">
                             {{ ucfirst($quote->status) }}
                         </span>
                     </a>

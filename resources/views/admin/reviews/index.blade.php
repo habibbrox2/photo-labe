@@ -7,7 +7,7 @@
 </div>
 
 <form method="GET" class="flex gap-3 mb-6">
-    <select name="status" class="px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+    <select name="status" class="px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
         <option value="">All Status</option>
         @foreach(['pending','approved','rejected','spam'] as $s)
             <option value="{{ $s }}" {{ request('status') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
@@ -16,8 +16,9 @@
     <button type="submit" class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200">Filter</button>
 </form>
 
-<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-white rounded-xl border border-gray-200">
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">User</th>
@@ -60,7 +61,7 @@
                                     <button type="submit" class="px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg">Reject</button>
                                 </form>
                             @endif
-                            <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" onsubmit="return confirm('Delete?')">
+                            <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" data-confirm="Delete this review?" data-confirm-label="Delete">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-lg">Delete</button>
                             </form>
@@ -68,10 +69,11 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6" class="px-5 py-12 text-center text-gray-400">No reviews found.</td></tr>
+                <tr><td colspan="6"><x-empty-state icon="star" title="No reviews found" description="Reviews customers leave on products and services will appear here for moderation."></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 <div class="mt-4">{{ $reviews->links() }}</div>
 @endsection

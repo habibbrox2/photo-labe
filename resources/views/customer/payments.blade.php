@@ -38,7 +38,7 @@
                                                 'completed' => 'bg-emerald-50 text-emerald-700',
                                                 'pending' => 'bg-amber-50 text-amber-700',
                                                 'failed' => 'bg-red-50 text-red-700',
-                                                'refunded' => 'bg-purple-50 text-purple-700',
+                                                'refunded' => 'bg-accent-50 text-accent-700',
                                                 default => 'bg-gray-50 text-gray-700',
                                             }">
                                             {{ ucfirst($payment->status) }}

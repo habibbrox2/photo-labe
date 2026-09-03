@@ -6,7 +6,7 @@
     <div>
         <p class="text-sm text-gray-500">{{ $services->total() }} total services</p>
     </div>
-    <a href="{{ route('admin.services.create') }}" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
+    <a href="{{ route('admin.services.create') }}" class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors">
         + Add Service
     </a>
 </div>
@@ -14,8 +14,8 @@
 {{-- Filters --}}
 <form method="GET" class="flex gap-3 mb-6">
     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search services..."
-        class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
-    <select name="status" class="px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+        class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 focus:ring-1 focus:ring-primary-500 outline-none">
+    <select name="status" class="px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
         <option value="">All Status</option>
         <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
         <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
@@ -24,8 +24,9 @@
 </form>
 
 {{-- Table --}}
-<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-    <table class="w-full text-sm">
+<div class="bg-white rounded-xl border border-gray-200">
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
@@ -40,7 +41,13 @@
             @forelse($services as $service)
                 <tr class="hover:bg-gray-50">
                     <td class="px-5 py-3">
-                        <div class="font-medium text-gray-900">{{ $service->title }}</div>
+                        <div class="font-medium text-gray-900">
+                            @if($service->status === 'published')
+                                <a href="{{ route('services.show', $service->slug) }}" target="_blank" rel="noopener" class="hover:text-primary-600 transition-colors">{{ $service->title }}</a>
+                            @else
+                                {{ $service->title }}
+                            @endif
+                        </div>
                         <div class="text-xs text-gray-400">/{{ $service->slug }}</div>
                     </td>
                     <td class="px-5 py-3 text-gray-500">{{ $service->category->name ?? '-' }}</td>
@@ -53,8 +60,11 @@
                     <td class="px-5 py-3 text-gray-500 text-xs">{{ $service->created_at->format('M d, Y') }}</td>
                     <td class="px-5 py-3 text-right">
                         <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('admin.services.edit', $service) }}" class="px-3 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50 rounded-lg">Edit</a>
-                            <form method="POST" action="{{ route('admin.services.destroy', $service) }}" onsubmit="return confirm('Delete this service?')">
+                            @if($service->status === 'published')
+                                <a href="{{ route('services.show', $service->slug) }}" target="_blank" rel="noopener" class="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-lg" title="View on site">View</a>
+                            @endif
+                            <a href="{{ route('admin.services.edit', $service) }}" class="px-3 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 rounded-lg">Edit</a>
+                            <form method="POST" action="{{ route('admin.services.destroy', $service) }}" data-confirm="Delete this service?" data-confirm-label="Delete">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg">Delete</button>
                             </form>
@@ -62,10 +72,11 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6" class="px-5 py-12 text-center text-gray-400">No services found.</td></tr>
+                <tr><td colspan="6"><x-empty-state icon="sparkles" title="No services found" description="Create your first service so customers can request quotes for it."><a href="{{ route('admin.services.create') }}" class="btn btn-primary btn-sm">Add a service</a></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 
 <div class="mt-4">{{ $services->links() }}</div>

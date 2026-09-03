@@ -4,7 +4,7 @@
 @section('content')
 <section class="bg-gray-50 py-12 min-h-screen">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <a href="{{ route('account.quotes') }}" class="text-sm text-indigo-600 hover:text-indigo-700 mb-6 inline-block">← Back to Quotes</a>
+        <a href="{{ route('account.quotes') }}" class="text-sm text-primary-600 hover:text-primary-700 mb-6 inline-block">← Back to Quotes</a>
 
         @if(session('success'))
             <div class="mb-6 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700 text-sm">{{ session('success') }}</div>
@@ -26,10 +26,10 @@
                             @match($quote->status) {
                                 'pending' => 'bg-amber-50 text-amber-700',
                                 'reviewing' => 'bg-blue-50 text-blue-700',
-                                'quoted' => 'bg-indigo-50 text-indigo-700',
+                                'quoted' => 'bg-primary-50 text-primary-700',
                                 'accepted' => 'bg-emerald-50 text-emerald-700',
                                 'rejected' => 'bg-red-50 text-red-700',
-                                'converted' => 'bg-purple-50 text-purple-700',
+                                'converted' => 'bg-accent-50 text-accent-700',
                                 'expired' => 'bg-gray-50 text-gray-500',
                                 default => 'bg-gray-50 text-gray-700',
                             }">
@@ -89,7 +89,7 @@
                     <h3 class="font-semibold text-gray-900 mb-4">Pricing</h3>
                     @if($quote->quoted_price)
                         <div class="text-center mb-4">
-                            <div class="text-3xl font-bold text-indigo-600">${{ number_format($quote->quoted_price, 2) }}</div>
+                            <div class="text-3xl font-bold text-primary-600">${{ number_format($quote->quoted_price, 2) }}</div>
                             <div class="text-sm text-gray-500 mt-1">Quoted Price</div>
                         </div>
 
@@ -110,7 +110,7 @@
                             </div>
                         @elseif($quote->status === 'converted')
                             @if($quote->order)
-                                <a href="{{ route('account.orders.show', $quote->order) }}" class="block w-full text-center px-4 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 text-sm">
+                                <a href="{{ route('account.orders.show', $quote->order) }}" class="block w-full text-center px-4 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 text-sm">
                                     View Order →
                                 </a>
                             @endif

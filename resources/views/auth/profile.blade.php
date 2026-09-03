@@ -15,9 +15,9 @@
             <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf @method('PUT')
                 <div class="flex items-center gap-6 mb-6">
-                    <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-2xl font-bold overflow-hidden">
+                    <div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 text-2xl font-bold overflow-hidden">
                         @if($user->avatar)
-                            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
                         @else
                             {{ substr($user->name, 0, 1) }}
                         @endif
@@ -25,7 +25,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Avatar</label>
                         <input type="file" name="avatar" accept="image/*"
-                            class="text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600">
+                            class="text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
                     </div>
                 </div>
 
@@ -33,19 +33,19 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
                         <input type="text" name="name" value="{{ old('name', $user->name) }}" required
-                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('name') ? 'border-red-300' : 'border-gray-200' }} focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('name') ? 'border-red-300' : 'border-gray-200' }} focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all">
                         @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
                         <input type="email" name="email" value="{{ old('email', $user->email) }}" required
-                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('email') ? 'border-red-300' : 'border-gray-200' }} focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('email') ? 'border-red-300' : 'border-gray-200' }} focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all">
                         @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
                         <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
-                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('phone') ? 'border-red-300' : 'border-gray-200' }} focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('phone') ? 'border-red-300' : 'border-gray-200' }} focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all">
                         @error('phone') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div class="flex items-end">
@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="mt-6">
-                    <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-full hover:bg-indigo-700 transition-colors">
+                    <button type="submit" class="px-6 py-3 bg-primary-600 text-white font-semibold rounded-full hover:bg-primary-700 transition-colors">
                         Update Profile
                     </button>
                 </div>
@@ -87,19 +87,19 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Current Password</label>
                         <input type="password" name="current_password" required
-                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('current_password') ? 'border-red-300' : 'border-gray-200' }} focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('current_password') ? 'border-red-300' : 'border-gray-200' }} focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all">
                         @error('current_password') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
                         <input type="password" name="password" required
-                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('password') ? 'border-red-300' : 'border-gray-200' }} focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('password') ? 'border-red-300' : 'border-gray-200' }} focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all">
                         @error('password') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Confirm New Password</label>
                         <input type="password" name="password_confirmation" required
-                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('password_confirmation') ? 'border-red-300' : 'border-gray-200' }} focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border {{ $errors->has('password_confirmation') ? 'border-red-300' : 'border-gray-200' }} focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all">
                     </div>
                     <div>
                         <button type="submit" class="px-6 py-3 bg-gray-900 text-white font-semibold rounded-full hover:bg-gray-800 transition-colors">

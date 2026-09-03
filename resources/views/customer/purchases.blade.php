@@ -16,11 +16,11 @@
                         <div class="flex items-start justify-between">
                             <div class="flex items-start gap-4">
                                 @if($purchase->product?->featured_image)
-                                    <img src="{{ asset('storage/' . $purchase->product->featured_image) }}" alt="{{ $purchase->product->title }}"
+                                    <img loading="lazy" decoding="async" src="{{ asset('storage/' . $purchase->product->featured_image) }}" alt="{{ $purchase->product->title }}"
                                         class="w-16 h-16 rounded-xl object-cover">
                                 @else
-                                    <div class="w-16 h-16 rounded-xl bg-indigo-50 flex items-center justify-center">
-                                        <svg class="w-7 h-7 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                                    <div class="w-16 h-16 rounded-xl bg-primary-50 flex items-center justify-center">
+                                        <svg class="w-7 h-7 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
                                     </div>
                                 @endif
                                 <div>
@@ -48,9 +48,9 @@
                                 <div class="space-y-2">
                                     @foreach($purchase->product->files as $file)
                                         <a href="{{ route('account.purchases.download', ['purchase' => $purchase, 'file' => $file]) }}"
-                                            class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-indigo-50 transition-colors group">
-                                            <div class="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center group-hover:border-indigo-300">
-                                                <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-primary-50 transition-colors group">
+                                            <div class="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center group-hover:border-primary-300">
+                                                <svg class="w-4 h-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                             </div>
                                             <span class="text-sm font-medium text-gray-900">{{ $file->file_name }}</span>
                                             <span class="text-xs text-gray-400">{{ round($file->file_size / 1024) }}KB</span>
@@ -71,7 +71,7 @@
                 <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 <h3 class="text-lg font-semibold text-gray-900 mb-1">No purchases yet</h3>
                 <p class="text-gray-500 text-sm mb-4">Browse our digital products to get started.</p>
-                <a href="{{ route('products.index') }}" class="inline-block px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 text-sm">
+                <a href="{{ route('products.index') }}" class="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 text-sm">
                     Browse Products
                 </a>
             </div>

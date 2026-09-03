@@ -3,9 +3,7 @@
 
 @section('content')
 <div class="max-w-4xl">
-    <div class="flex items-center justify-between mb-6">
-        <a href="{{ route('admin.orders.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700">← Back to Orders</a>
-    </div>
+    <x-breadcrumbs :items="[['label' => 'Orders', 'url' => route('admin.orders.index')], ['label' => $order->order_number]]" />
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
@@ -37,13 +35,13 @@
                 <form method="POST" action="{{ route('admin.orders.files.upload', $order) }}" enctype="multipart/form-data" class="mb-4 p-4 bg-gray-50 rounded-lg">
                     @csrf
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <select name="type" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+                        <select name="type" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
                             <option value="output">Deliverable (output)</option>
                             <option value="input">Input / reference</option>
                         </select>
                         <input type="file" name="file" required accept=".jpg,.jpeg,.png,.webp,.tiff,.zip,.psd"
-                            class="flex-1 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600">
-                        <button type="submit" class="px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700">Upload</button>
+                            class="flex-1 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                        <button type="submit" class="px-4 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">Upload</button>
                     </div>
                     @error('file') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
                     <p class="text-xs text-gray-400 mt-2">Max 50MB. Allowed: JPG, PNG, WebP, TIFF, ZIP, PSD. Files are stored privately and never exposed publicly.</p>
@@ -56,9 +54,9 @@
                                 <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
                                 <span class="text-sm text-gray-700 flex-1 min-w-0 truncate">{{ $file->original_name }}</span>
                                 <span class="px-2 py-0.5 text-xs rounded-full {{ $file->type === 'input' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700' }}">{{ ucfirst($file->type) }}</span>
-                                <a href="{{ route('admin.orders.files.download', [$order, $file]) }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-700">Download</a>
+                                <a href="{{ route('admin.orders.files.download', [$order, $file]) }}" class="text-xs font-medium text-primary-600 hover:text-primary-700">Download</a>
                                 <form method="POST" action="{{ route('admin.orders.files.destroy', [$order, $file]) }}"
-                                    onsubmit="return confirm('Delete this file? This cannot be undone.');">
+                                    data-confirm="Delete this file? This cannot be undone." data-confirm-label="Delete">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-xs font-medium text-red-600 hover:text-red-700">Delete</button>
                                 </form>
@@ -79,7 +77,7 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Status</label>
-                            <select name="status" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">
+                            <select name="status" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
                                 @foreach(['pending','confirmed','paid','processing','quality_check','revision','completed','cancelled'] as $s)
                                     <option value="{{ $s }}" {{ $order->status === $s ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $s)) }}</option>
                                 @endforeach
@@ -87,9 +85,9 @@
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Admin Notes</label>
-                            <textarea name="admin_notes" rows="4" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-indigo-500 outline-none">{{ $order->admin_notes }}</textarea>
+                            <textarea name="admin_notes" rows="4" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">{{ $order->admin_notes }}</textarea>
                         </div>
-                        <button type="submit" class="w-full px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700">Update Order</button>
+                        <button type="submit" class="w-full px-4 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">Update Order</button>
                     </div>
                 </form>
             </div>
