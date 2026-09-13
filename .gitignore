@@ -1,4 +1,7 @@
 *.log
+/.freebuff/
+/start-dev.bat
+/stop-dev.bat
 .DS_Store
 .env
 .env.backup
