@@ -48,12 +48,7 @@
 
 <section class="py-12 lg:py-16 bg-white min-h-[55vh]">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        @if(session('error'))
-        <div class="mb-8 p-5 rounded-2xl bg-red-50 border border-red-200 text-red-800 flex items-center gap-3" role="alert">
-            <span class="w-8 h-8 shrink-0 rounded-full bg-red-500/15 flex items-center justify-center"><x-icon name="warning" class="w-4 h-4 text-red-600" /></span>
-            <span class="text-sm font-medium">{{ session('error') }}</span>
-        </div>
-        @endif
+        <x-flash class="mb-8" />
 
         <form method="POST" action="{{ route('checkout.process') }}">
             @csrf

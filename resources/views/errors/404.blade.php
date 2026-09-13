@@ -1,24 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Page Not Found — {{ config('app.name', 'PhotoLabe') }}</title>
-<style>
-    body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;color:#111827;display:flex;align-items:center;justify-content:center;min-height:100vh}
-    .card{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.06);padding:48px;text-align:center;max-width:480px;margin:24px}
-    .code{font-size:72px;font-weight:800;letter-spacing:-.03em;background:linear-gradient(135deg,#4f46e5,#7c3aed);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin:0}
-    h1{font-size:22px;margin:8px 0}
-    p{color:#6b7280;line-height:1.6;margin:0 0 24px}
-    a{display:inline-block;background:#4f46e5;color:#fff;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600}
-</style>
-</head>
-<body>
-    <div class="card">
-        <p class="code">404</p>
-        <h1>Page Not Found</h1>
-        <p>The page you're looking for doesn't exist or may have been moved.</p>
-        <a href="{{ url('/') }}">Back to Home</a>
-    </div>
-</body>
-</html>
+@extends('errors.layout')
+
+@section('title', 'Page Not Found')
+@section('icon')
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+</svg>
+@endsection
+@section('code', '404')
+@section('heading', 'Page not found')
+@section('message', "The page you're looking for doesn't exist or may have been moved.")
+@section('primary_url', url('/'))

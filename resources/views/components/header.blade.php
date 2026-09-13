@@ -30,7 +30,6 @@
                 ['route' => 'services.index', 'label' => 'Services', 'hasDropdown' => true],
                 ['route' => 'portfolio.index', 'label' => 'Portfolio', 'hasDropdown' => false],
                 ['route' => 'products.index', 'label' => 'Products', 'hasDropdown' => false],
-                ['route' => 'blog.index', 'label' => 'Blog', 'hasDropdown' => false],
                 ['route' => 'about', 'label' => 'About', 'hasDropdown' => false],
                 ['route' => 'contact', 'label' => 'Contact', 'hasDropdown' => false],
                 ];
@@ -178,7 +177,7 @@
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
-                    @if($cartCount > 0)
+                    @if(($cartCount ?? 0) > 0)
                     <span class="absolute -top-0.5 -right-0.5 min-w-4.5 h-4.5 px-1 bg-accent-500 text-primary-950 text-[10px] font-bold rounded-full flex items-center justify-center" aria-label="{{ $cartCount }} items in cart">{{ $cartCount }}</span>
                     @endif
                 </a>
@@ -240,7 +239,7 @@
                     <input
                         type="text"
                         name="search"
-                        placeholder="Search services, products, blog..."
+                        placeholder="Search services, products..."
                         class="w-full pl-12 pr-14 py-3 bg-gray-100 border border-transparent rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-all"
                         autofocus>
                     <kbd class="absolute right-4 top-1/2 -translate-y-1/2 px-1.5 py-0.5 bg-gray-200/70 rounded text-[11px] text-gray-500">ESC</kbd>
@@ -248,7 +247,7 @@
 
                 <div class="mt-3 flex items-center gap-3">
                     <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Popular:</span>
-                    <a href="{{ route('services.show', 'photo-retouching') }}" class="px-3 py-1.5 bg-gray-100 rounded-lg text-xs text-gray-600 hover:bg-accent-100 hover:text-primary-900 transition-colors">Photo Retouching</a>
+                    <a href="{{ route('services.show', 'professional-photo-retouching') }}" class="px-3 py-1.5 bg-gray-100 rounded-lg text-xs text-gray-600 hover:bg-accent-100 hover:text-primary-900 transition-colors">Photo Retouching</a>
                     <a href="{{ route('services.show', 'background-removal') }}" class="px-3 py-1.5 bg-gray-100 rounded-lg text-xs text-gray-600 hover:bg-accent-100 hover:text-primary-900 transition-colors">Background Removal</a>
                     <a href="{{ route('services.show', 'color-correction') }}" class="px-3 py-1.5 bg-gray-100 rounded-lg text-xs text-gray-600 hover:bg-accent-100 hover:text-primary-900 transition-colors">Color Correction</a>
                 </div>
@@ -306,7 +305,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
                             Cart
-                            @if($cartCount > 0)
+                            @if(($cartCount ?? 0) > 0)
                             <span class="ml-auto px-2 py-0.5 bg-accent-500 text-primary-950 text-xs font-bold rounded-full">{{ $cartCount }}</span>
                             @endif
                         </a>

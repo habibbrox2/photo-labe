@@ -26,7 +26,7 @@
 
     @if(!empty($actionUrl))
         <div style="margin:24px 0 8px;">
-            <a href="{{ $actionUrl }}" style="display:inline-block;background-color:#4f46e5;color:#ffffff;padding:13px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">{{ $actionText ?? 'View Details' }}</a>
+            <a href="{{ $actionUrl }}" style="display:inline-block;background-color:#f59e0b;color:#1a1613;padding:13px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;">{{ $actionText ?? 'View Details' }}</a>
         </div>
     @endif
 

@@ -5,7 +5,7 @@
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 mb-6">
-                <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-accent-600 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-xl">P</span>
                 </div>
                 <span class="text-2xl font-bold text-gray-900">PhotoLabe</span>

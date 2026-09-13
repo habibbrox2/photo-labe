@@ -2,147 +2,148 @@
 @section('title', 'Order ' . $order->order_number)
 
 @section('content')
-<section class="bg-gray-50 py-12 min-h-screen">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Back link --}}
-        <a href="{{ route('account.orders') }}" class="text-sm text-primary-600 hover:text-primary-700 mb-6 inline-block">← Back to Orders</a>
+<section class="page-hero-light">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <nav aria-label="Breadcrumb">
+            <ol class="flex items-center gap-1.5 text-sm text-gray-500">
+                <li><a href="{{ route('account.dashboard') }}" class="hover:text-primary-600 transition-colors">Account</a></li>
+                <li aria-hidden="true" class="text-gray-300">/</li>
+                <li><a href="{{ route('account.orders') }}" class="hover:text-primary-600 transition-colors">Orders</a></li>
+                <li aria-hidden="true" class="text-gray-300">/</li>
+                <li aria-current="page" class="text-gray-700 font-medium">{{ $order->order_number }}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <span class="eyebrow">Order</span>
+                <h1 class="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 font-mono">{{ $order->order_number }}</h1>
+                <p class="mt-2 text-sm text-gray-500">Placed {{ $order->created_at->format('M d, Y \a\t g:i A') }}</p>
+            </div>
+            <x-status-badge :status="$order->status" class="!text-sm !px-4 !py-2" />
+        </div>
+    </div>
+</section>
 
-        @if(session('success'))
-            <div class="mb-6 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700 text-sm">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="mb-6 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">{{ session('error') }}</div>
-        @endif
+<section class="py-12 lg:py-14 bg-white min-h-[60vh]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <x-flash class="mb-8" />
 
         <div class="grid lg:grid-cols-3 gap-6">
             {{-- Main Content --}}
             <div class="lg:col-span-2 space-y-6">
-                {{-- Order Header --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <div class="flex items-center justify-between mb-4">
+                {{-- Order Facts --}}
+                <div class="surface-card p-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
                         <div>
-                            <h1 class="text-2xl font-bold text-gray-900">{{ $order->order_number }}</h1>
-                            <p class="text-gray-500 text-sm">Placed {{ $order->created_at->format('M d, Y \a\t g:i A') }}</p>
-                        </div>
-                        <span class="px-3 py-1.5 rounded-full text-sm font-medium
-                            @match($order->status) {
-                                'pending' => 'bg-amber-50 text-amber-700',
-                                'in_progress' => 'bg-blue-50 text-blue-700',
-                                'revision' => 'bg-orange-50 text-orange-700',
-                                'completed' => 'bg-emerald-50 text-emerald-700',
-                                'cancelled' => 'bg-red-50 text-red-700',
-                                default => 'bg-gray-50 text-gray-700',
-                            }">
-                            {{ ucfirst(str_replace('_', ' ', $order->status)) }}
-                        </span>
-                    </div>
-
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
-                        <div>
-                            <div class="text-xs text-gray-500 mb-1">Service</div>
-                            <div class="text-sm font-medium text-gray-900">{{ $order->service->title ?? 'N/A' }}</div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Service</div>
+                            <div class="text-sm font-semibold text-gray-900">{{ $order->service->title ?? 'N/A' }}</div>
                         </div>
                         <div>
-                            <div class="text-xs text-gray-500 mb-1">Quantity</div>
-                            <div class="text-sm font-medium text-gray-900">{{ $order->quantity }}</div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Quantity</div>
+                            <div class="text-sm font-semibold text-gray-900">{{ $order->quantity }}</div>
                         </div>
                         <div>
-                            <div class="text-xs text-gray-500 mb-1">Deadline</div>
-                            <div class="text-sm font-medium text-gray-900">{{ $order->deadline?->format('M d, Y') ?? 'Flexible' }}</div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Deadline</div>
+                            <div class="text-sm font-semibold text-gray-900">{{ $order->deadline?->format('M d, Y') ?? 'Flexible' }}</div>
                         </div>
                         <div>
-                            <div class="text-xs text-gray-500 mb-1">Total</div>
-                            <div class="text-sm font-bold text-primary-600">${{ number_format($order->total, 2) }}</div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Total</div>
+                            <div class="text-sm font-extrabold text-gray-900">${{ number_format($order->total, 2) }}</div>
                         </div>
                     </div>
 
                     @if($order->notes)
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="text-xs text-gray-500 mb-1">Your Notes</div>
+                        <div class="mt-5 pt-5 border-t border-surface-200">
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Your Notes</div>
                             <p class="text-sm text-gray-700">{{ $order->notes }}</p>
                         </div>
                     @endif
 
                     @if($order->admin_notes)
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="text-xs text-gray-500 mb-1">Admin Notes</div>
+                        <div class="mt-5 pt-5 border-t border-surface-200">
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Studio Notes</div>
                             <p class="text-sm text-gray-700">{{ $order->admin_notes }}</p>
                         </div>
                     @endif
                 </div>
 
                 {{-- Order Progress Timeline --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="font-semibold text-gray-900 mb-4">Order Progress</h3>
-                    <div class="space-y-4">
-                        @php
-                            $steps = [
-                                'pending' => ['label' => 'Order Placed', 'icon' => '📋'],
-                                'in_progress' => ['label' => 'In Progress', 'icon' => '⚙️'],
-                                'revision' => ['label' => 'Revision', 'icon' => '🔄'],
-                                'completed' => ['label' => 'Completed', 'icon' => '✅'],
-                            ];
-                            $statusOrder = ['pending', 'in_progress', 'revision', 'completed'];
-                            $currentIndex = array_search($order->status, $statusOrder);
-                            if ($currentIndex === false) $currentIndex = -1;
-                        @endphp
+                <div class="surface-card p-6">
+                    <h3 class="font-bold text-gray-900 mb-5">Order Progress</h3>
+                    @php
+                        $steps = [
+                            'pending' => 'Order Placed',
+                            'in_progress' => 'In Progress',
+                            'revision' => 'Revision',
+                            'completed' => 'Completed',
+                        ];
+                        $statusOrder = array_keys($steps);
+                        $currentIndex = array_search($order->status, $statusOrder);
+                        if ($currentIndex === false) $currentIndex = -1;
+                    @endphp
 
-                        @foreach($steps as $key => $step)
+                    <ol class="relative space-y-5">
+                        @foreach($steps as $key => $label)
                             @php
                                 $stepIndex = array_search($key, $statusOrder);
-                                $isCompleted = $stepIndex !== false && $stepIndex <= $currentIndex;
+                                $isCompleted = $stepIndex <= $currentIndex;
                                 $isCurrent = $key === $order->status;
                             @endphp
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg
-                                    {{ $isCompleted ? 'bg-primary-100' : 'bg-gray-100' }}">
-                                    {{ $step['icon'] }}
-                                </div>
-                                <div class="flex-1">
-                                    <div class="text-sm font-medium {{ $isCompleted ? 'text-gray-900' : 'text-gray-400' }}">{{ $step['label'] }}</div>
-                                </div>
+                            <li class="flex items-center gap-4">
+                                <span class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center
+                                    {{ $isCurrent ? 'bg-accent-500 text-gray-900' : ($isCompleted ? 'bg-emerald-50 text-emerald-600' : 'bg-surface-100 text-gray-300 border border-surface-200') }}">
+                                    @if($isCurrent)
+                                        <span class="w-2.5 h-2.5 rounded-full bg-gray-900"></span>
+                                    @elseif($isCompleted)
+                                        <x-icon name="check" class="w-4 h-4" />
+                                    @else
+                                        <span class="w-2 h-2 rounded-full bg-current"></span>
+                                    @endif
+                                </span>
+                                <span class="flex-1 text-sm {{ $isCurrent ? 'font-bold text-gray-900' : ($isCompleted ? 'font-semibold text-gray-700' : 'text-gray-400') }}">{{ $label }}</span>
                                 @if($isCurrent)
-                                    <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-700">Current</span>
-                                @elseif($isCompleted && $key !== 'pending')
-                                    <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-accent-700 bg-accent-100 rounded-full px-2.5 py-1">Current</span>
+                                @elseif($isCompleted)
+                                    <span class="text-xs text-gray-400">Done</span>
                                 @endif
-                            </div>
+                            </li>
                         @endforeach
 
                         @if($order->status === 'cancelled')
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-lg">❌</div>
-                                <div class="flex-1">
-                                    <div class="text-sm font-medium text-red-600">Cancelled</div>
-                                </div>
-                                <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Current</span>
-                            </div>
+                            <li class="flex items-center gap-4">
+                                <span class="w-9 h-9 shrink-0 rounded-full bg-red-50 text-red-500 flex items-center justify-center">
+                                    <x-icon name="x" class="w-4 h-4" />
+                                </span>
+                                <span class="flex-1 text-sm font-bold text-red-600">Cancelled</span>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-red-700 bg-red-50 rounded-full px-2.5 py-1">Current</span>
+                            </li>
                         @endif
-                    </div>
+                    </ol>
                 </div>
 
                 {{-- Files --}}
                 @if($order->files->count())
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="font-semibold text-gray-900 mb-4">Files</h3>
+                    <div class="surface-card p-6">
+                        <h3 class="font-bold text-gray-900 mb-4">Files</h3>
                         <div class="space-y-3">
                             @foreach($order->files as $file)
-                                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                                    <div class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
+                                <div class="flex items-center gap-3 p-3.5 bg-surface-50 border border-surface-200/70 rounded-2xl">
+                                    <div class="w-10 h-10 rounded-xl bg-white border border-surface-200 flex items-center justify-center shrink-0">
                                         @if(str_starts_with($file->mime_type, 'image/'))
-                                            <svg class="w-5 h-5 text-accent-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                            <x-icon name="image" class="w-5 h-5 text-accent-600" />
                                         @else
-                                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                            <x-icon name="document" class="w-5 h-5 text-gray-500" />
                                         @endif
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-900 truncate">{{ $file->original_name }}</div>
+                                        <div class="text-sm font-semibold text-gray-900 truncate">{{ $file->original_name }}</div>
                                         <div class="text-xs text-gray-500">{{ ucfirst($file->type) }} · {{ round($file->file_size / 1024) }}KB</div>
                                     </div>
                                     @if($file->type === 'input' || ($file->type === 'output' && $order->status === 'completed'))
-                                        <a href="{{ route('account.orders.files.download', [$order, $file]) }}" class="inline-flex items-center gap-1.5 text-primary-600 hover:text-primary-700 text-sm font-medium">
-                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                            Download
+                                        <a href="{{ route('account.orders.files.download', [$order, $file]) }}" class="btn btn-sm btn-secondary shrink-0">
+                                            <x-icon name="download" class="w-3.5 h-3.5" /> Download
                                         </a>
                                     @endif
                                 </div>
@@ -152,22 +153,22 @@
                 @endif
 
                 {{-- Messages --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="font-semibold text-gray-900 mb-4">Messages ({{ $order->messages->count() }})</h3>
+                <div class="surface-card p-6">
+                    <h3 class="font-bold text-gray-900 mb-4">Messages ({{ $order->messages->count() }})</h3>
 
                     @if($order->messages->count())
-                        <div class="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                        <div class="space-y-4 mb-6 max-h-96 overflow-y-auto pr-1">
                             @foreach($order->messages as $msg)
-                                <div class="flex gap-3 {{ $msg->user_id === auth()->id() ? 'flex-row-reverse' : '' }}">
-                                    <div class="w-8 h-8 rounded-full bg-{{ $msg->user_id === auth()->id() ? 'indigo' : 'gray' }}-100 flex items-center justify-center text-xs font-bold text-{{ $msg->user_id === auth()->id() ? 'indigo' : 'gray' }}-600 flex-shrink-0">
+                                @php $mine = $msg->user_id === auth()->id(); @endphp
+                                <div class="flex gap-3 {{ $mine ? 'flex-row-reverse' : '' }}">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 {{ $mine ? 'bg-gray-900 text-white' : 'bg-accent-100 text-accent-800' }}">
                                         {{ strtoupper(substr($msg->user->name ?? 'A', 0, 1)) }}
                                     </div>
                                     <div class="max-w-xs lg:max-w-md">
-                                        <div class="px-4 py-2.5 rounded-2xl text-sm
-                                            {{ $msg->user_id === auth()->id() ? 'bg-primary-600 text-white rounded-tr-sm' : 'bg-gray-100 text-gray-900 rounded-tl-sm' }}">
+                                        <div class="px-4 py-2.5 rounded-2xl text-sm {{ $mine ? 'bg-gray-900 text-white rounded-tr-sm' : 'bg-surface-100 text-gray-900 rounded-tl-sm' }}">
                                             {{ $msg->message }}
                                         </div>
-                                        <div class="text-xs text-gray-400 mt-1 {{ $msg->user_id === auth()->id() ? 'text-right' : '' }}">
+                                        <div class="text-xs text-gray-400 mt-1 {{ $mine ? 'text-right' : '' }}">
                                             {{ $msg->user->name ?? 'Admin' }} · {{ $msg->created_at->diffForHumans() }}
                                         </div>
                                     </div>
@@ -175,17 +176,13 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-sm text-gray-400 mb-6">No messages yet.</p>
+                        <p class="text-sm text-gray-400 mb-6">No messages yet — ask anything about this order.</p>
                     @endif
 
-                    {{-- Send Message --}}
                     <form method="POST" action="{{ route('account.orders.message', $order) }}" class="flex gap-3">
                         @csrf
-                        <input type="text" name="message" placeholder="Type a message..." required
-                            class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-accent-500 outline-none">
-                        <button type="submit" class="px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 text-sm">
-                            Send
-                        </button>
+                        <input type="text" name="message" placeholder="Type a message..." required class="form-control-modern flex-1">
+                        <button type="submit" class="btn btn-primary shrink-0">Send</button>
                     </form>
                 </div>
             </div>
@@ -193,58 +190,52 @@
             {{-- Sidebar --}}
             <div class="space-y-6">
                 {{-- Order Summary --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="font-semibold text-gray-900 mb-4">Order Summary</h3>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span class="text-gray-900">${{ number_format($order->subtotal, 2) }}</span></div>
+                <div class="surface-card p-6">
+                    <h3 class="font-bold text-gray-900 mb-4">Order Summary</h3>
+                    <dl class="space-y-3 text-sm">
+                        <div class="flex justify-between"><dt class="text-gray-500">Subtotal</dt><dd class="font-semibold text-gray-900">${{ number_format($order->subtotal, 2) }}</dd></div>
                         @if($order->discount > 0)
-                            <div class="flex justify-between"><span class="text-gray-500">Discount</span><span class="text-emerald-600">-${{ number_format($order->discount, 2) }}</span></div>
+                            <div class="flex justify-between"><dt class="text-gray-500">Discount</dt><dd class="font-semibold text-emerald-600">-${{ number_format($order->discount, 2) }}</dd></div>
                         @endif
                         @if($order->tax > 0)
-                            <div class="flex justify-between"><span class="text-gray-500">Tax</span><span class="text-gray-900">${{ number_format($order->tax, 2) }}</span></div>
+                            <div class="flex justify-between"><dt class="text-gray-500">Tax</dt><dd class="font-semibold text-gray-900">${{ number_format($order->tax, 2) }}</dd></div>
                         @endif
-                        <div class="flex justify-between pt-3 border-t border-gray-100 font-bold">
-                            <span class="text-gray-900">Total</span>
-                            <span class="text-primary-600">${{ number_format($order->total, 2) }}</span>
+                        <div class="flex justify-between pt-3 border-t border-surface-200 text-base">
+                            <dt class="font-extrabold text-gray-900">Total</dt>
+                            <dd class="font-extrabold text-gray-900">${{ number_format($order->total, 2) }}</dd>
                         </div>
-                    </div>
+                    </dl>
                 </div>
 
                 {{-- Order Info --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="font-semibold text-gray-900 mb-4">Details</h3>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between"><span class="text-gray-500">Priority</span><span class="text-gray-900">{{ ucfirst($order->priority ?? 'Normal') }}</span></div>
-                        <div class="flex justify-between"><span class="text-gray-500">Created</span><span class="text-gray-900">{{ $order->created_at->format('M d, Y') }}</span></div>
+                <div class="surface-card p-6">
+                    <h3 class="font-bold text-gray-900 mb-4">Details</h3>
+                    <dl class="space-y-3 text-sm">
+                        <div class="flex justify-between"><dt class="text-gray-500">Priority</dt><dd class="font-medium text-gray-900">{{ ucfirst($order->priority ?? 'Normal') }}</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Created</dt><dd class="font-medium text-gray-900">{{ $order->created_at->format('M d, Y') }}</dd></div>
                         @if($order->completed_at)
-                            <div class="flex justify-between"><span class="text-gray-500">Completed</span><span class="text-gray-900">{{ $order->completed_at->format('M d, Y') }}</span></div>
+                            <div class="flex justify-between"><dt class="text-gray-500">Completed</dt><dd class="font-medium text-gray-900">{{ $order->completed_at->format('M d, Y') }}</dd></div>
                         @endif
-                    </div>
+                    </dl>
                 </div>
 
                 {{-- Revision Request --}}
                 @if(in_array($order->status, ['in_progress', 'revision']))
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="font-semibold text-gray-900 mb-4">Request Revision</h3>
+                    <div class="surface-card p-6 border-accent-300">
+                        <h3 class="font-bold text-gray-900 mb-2">Request Revision</h3>
+                        <p class="text-xs text-gray-500 mb-4">Revisions are always free — describe what to change.</p>
                         <form method="POST" action="{{ route('account.orders.revision', $order) }}">
                             @csrf
-                            <textarea name="message" rows="3" placeholder="Describe the changes you need..." required
-                                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-accent-500 outline-none mb-3"></textarea>
-                            <button type="submit" class="w-full px-4 py-2.5 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 text-sm">
-                                Submit Revision
-                            </button>
+                            <textarea name="message" rows="3" placeholder="Describe the changes you need..." required class="form-control-modern mb-3"></textarea>
+                            <button type="submit" class="btn btn-gradient w-full">Submit Revision</button>
                         </form>
                     </div>
                 @endif
 
                 {{-- Actions --}}
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="font-semibold text-gray-900 mb-4">Actions</h3>
-                    <div class="space-y-3">
-                        <a href="{{ route('contact') }}" class="block w-full text-center px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            Contact Support
-                        </a>
-                    </div>
+                <div class="surface-card p-6">
+                    <h3 class="font-bold text-gray-900 mb-4">Actions</h3>
+                    <a href="{{ route('contact') }}" class="btn btn-secondary w-full">Contact Support</a>
                 </div>
             </div>
         </div>

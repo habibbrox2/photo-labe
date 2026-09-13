@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Server Error — {{ config('app.name', 'PhotoLabe') }}</title>
-<style>
-    body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;color:#111827;display:flex;align-items:center;justify-content:center;min-height:100vh}
-    .card{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.06);padding:48px;text-align:center;max-width:480px;margin:24px}
-    .code{font-size:72px;font-weight:800;letter-spacing:-.03em;background:linear-gradient(135deg,#6b7280,#111827);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin:0}
-    h1{font-size:22px;margin:8px 0}
-    p{color:#6b7280;line-height:1.6;margin:0 0 24px}
-    a{display:inline-block;background:#4f46e5;color:#fff;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600}
-</style>
-</head>
-<body>
-    <div class="card">
-        <p class="code">500</p>
-        <h1>Something Went Wrong</h1>
-        <p>An unexpected error occurred. Our team has been notified — please try again in a moment.</p>
-        <a href="{{ url('/') }}">Back to Home</a>
-    </div>
-</body>
-</html>
+@extends('errors.layout')
+
+@section('title', 'Server Error')
+@section('icon')
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-2.47 2.47a2.25 2.25 0 01-1.591.659H8.56a2.25 2.25 0 01-1.591-.659L4.5 14.5m14.5 0v3.25a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25V14.5" />
+</svg>
+@endsection
+@section('code', '500')
+@section('heading', 'Something went wrong')
+@section('message', 'An unexpected error occurred. Our team has been notified — please try again in a moment.')
+@section('primary_url', url('/'))
+@endsection

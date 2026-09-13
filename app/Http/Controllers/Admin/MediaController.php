@@ -36,12 +36,14 @@ class MediaController extends Controller
             'files.*' => 'file|max:10240|mimes:jpg,jpeg,png,webp,gif,svg,pdf,zip,psd',
         ]);
 
+        $created = [];
+
         foreach ($request->file('files') as $file) {
             $originalName = $file->getClientOriginalName();
             $fileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('media', $fileName, 'public');
 
-            Media::create([
+            $media = Media::create([
                 'user_id' => auth()->id(),
                 'original_name' => $originalName,
                 'file_name' => $fileName,
@@ -49,6 +51,22 @@ class MediaController extends Controller
                 'mime_type' => $file->getMimeType(),
                 'file_size' => $file->getSize(),
             ]);
+
+            $size = $media->file_size;
+            $created[] = [
+                'id' => $media->id,
+                'url' => asset('storage/' . $media->file_path),
+                'name' => $media->original_name,
+                'mime' => $media->mime_type,
+                'isImage' => str_starts_with($media->mime_type, 'image/'),
+                'size' => $size >= 1048576 ? round($size / 1048576, 1) . ' MB' : round($size / 1024) . ' KB',
+                'date' => $media->created_at->format('M d, Y'),
+                'deleteUrl' => route('admin.media.destroy', $media),
+            ];
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['uploaded' => $created], 201);
         }
 
         return redirect()->route('admin.media.index')->with('success', 'Files uploaded successfully.');
@@ -59,5 +77,24 @@ class MediaController extends Controller
         $media->delete();
 
         return redirect()->route('admin.media.index')->with('success', 'Media deleted successfully.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted = Media::whereIn('id', $validated['ids'])->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'deleted' => $deleted,
+                'remaining' => Media::count(),
+            ]);
+        }
+
+        return redirect()->route('admin.media.index')->with('success', $deleted . ' files deleted successfully.');
     }
 }

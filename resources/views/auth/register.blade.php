@@ -4,12 +4,8 @@
 <section class="min-h-[calc(100vh-8rem)] bg-gray-50 lg:grid lg:grid-cols-2">
 
     {{-- Brand panel (desktop) --}}
-    <div class="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 p-12 text-white">
-        {{-- Decorative shapes --}}
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-2xl"></div>
-        <div class="absolute top-1/3 -left-32 w-80 h-80 bg-accent-400/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 right-0 w-full h-1/2 opacity-10"
-            style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 28px 28px;"></div>
+    <div class="relative hidden lg:flex flex-col justify-between overflow-hidden bg-surface-950 p-12 text-white">
+        <div class="absolute inset-0 gradient-mesh opacity-40" aria-hidden="true"></div>
 
         <div class="relative">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5">
@@ -22,24 +18,24 @@
 
         <div class="relative max-w-md">
             <h2 class="text-3xl font-bold leading-tight">Your editing studio, in your pocket.</h2>
-            <p class="mt-4 text-primary-100 leading-relaxed">Join thousands of photographers and e-commerce teams who trust PhotoLabe with their images.</p>
-            <ul class="mt-8 space-y-3.5 text-sm text-primary-50">
+            <p class="mt-4 text-white/70 leading-relaxed">Join thousands of photographers and e-commerce teams who trust PhotoLabe with their images.</p>
+            <ul class="mt-8 space-y-3.5 text-sm text-white/80">
                 <li class="flex items-start gap-3">
-                    <svg class="w-5 h-5 shrink-0 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <svg class="w-5 h-5 shrink-0 text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                     Free account — no setup fees, ever
                 </li>
                 <li class="flex items-start gap-3">
-                    <svg class="w-5 h-5 shrink-0 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <svg class="w-5 h-5 shrink-0 text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                     Quotes within 24 hours, guaranteed
                 </li>
                 <li class="flex items-start gap-3">
-                    <svg class="w-5 h-5 shrink-0 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <svg class="w-5 h-5 shrink-0 text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                     Cancel anytime — no lock-in
                 </li>
             </ul>
         </div>
 
-        <p class="relative text-xs text-primary-200">© {{ date('Y') }} PhotoLabe Studio. All rights reserved.</p>
+        <p class="relative text-xs text-white/40">© {{ date('Y') }} PhotoLabe Studio. All rights reserved.</p>
     </div>
 
     {{-- Form panel --}}
@@ -48,14 +44,14 @@
 
             {{-- Mobile logo --}}
             <a href="{{ route('home') }}" class="lg:hidden inline-flex items-center gap-2 mb-8">
-                <div class="w-9 h-9 bg-gradient-to-br from-primary-600 to-accent-600 rounded-lg flex items-center justify-center">
+                <div class="w-9 h-9 bg-gray-900 rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-lg">P</span>
                 </div>
                 <span class="text-xl font-bold text-gray-900">PhotoLabe</span>
             </a>
 
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Create your account 🚀</h1>
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Create your account</h1>
                 <p class="text-gray-500 mt-2">Free forever. Takes less than a minute.</p>
             </div>
 
@@ -63,9 +59,7 @@
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
 
-                @if(session('error'))
-                    <div class="mb-4 p-3.5 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl">{{ session('error') }}</div>
-                @endif
+                <x-flash class="mb-4" />
 
                 <form method="POST" action="{{ route('register.post') }}" class="space-y-5">
                     @csrf
@@ -130,8 +124,8 @@
 
                     <p class="text-xs text-gray-400 text-center leading-relaxed">
                         By creating an account you agree to our
-                        <a href="#" class="text-primary-500 hover:text-primary-600">Terms</a> and
-                        <a href="#" class="text-primary-500 hover:text-primary-600">Privacy Policy</a>.
+                        <a href="#" class="text-gray-700 font-semibold underline decoration-gray-300 underline-offset-2 hover:text-gray-900">Terms</a> and
+                        <a href="#" class="text-gray-700 font-semibold underline decoration-gray-300 underline-offset-2 hover:text-gray-900">Privacy Policy</a>.
                     </p>
                 </form>
             </div>

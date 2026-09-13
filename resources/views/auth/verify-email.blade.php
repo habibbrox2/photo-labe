@@ -5,7 +5,7 @@
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 mb-6">
-                <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-accent-600 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-xl">P</span>
                 </div>
                 <span class="text-2xl font-bold text-gray-900">PhotoLabe</span>
@@ -15,12 +15,10 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
-            @if(session('success'))
-                <div class="mb-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-lg">{{ session('success') }}</div>
-            @endif
+            <x-flash class="mb-4" />
 
             <div class="mb-6">
-                <svg class="w-16 h-16 mx-auto text-primary-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-16 h-16 mx-auto text-surface-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
             </div>

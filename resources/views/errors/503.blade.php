@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maintenance — {{ config('app.name', 'PhotoLabe') }}</title>
-<style>
-    body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;color:#111827;display:flex;align-items:center;justify-content:center;min-height:100vh}
-    .card{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.06);padding:48px;text-align:center;max-width:480px;margin:24px}
-    .code{font-size:72px;font-weight:800;letter-spacing:-.03em;background:linear-gradient(135deg,#4f46e5,#7c3aed);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin:0}
-    h1{font-size:22px;margin:8px 0}
-    p{color:#6b7280;line-height:1.6;margin:0 0 24px}
-    a{display:inline-block;background:#4f46e5;color:#fff;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600}
-</style>
-</head>
-<body>
-    <div class="card">
-        <p class="code">503</p>
-        <h1>We'll Be Right Back</h1>
-        <p>We're performing scheduled maintenance right now. Please check back shortly.</p>
-        <a href="{{ url('/') }}">Back to Home</a>
-    </div>
-</body>
-</html>
+@extends('errors.layout')
+
+@section('title', 'Maintenance')
+@section('icon')
+<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085" />
+</svg>
+@endsection
+@section('code', '503')
+@section('heading', "We'll be right back")
+@section('message', "We're performing scheduled maintenance right now. Please check back shortly.")
+@section('primary_url', url('/'))
+@endsection

@@ -17,12 +17,7 @@
 
 <section class="py-12 lg:py-16 bg-white min-h-[55vh]">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        @if(session('success'))
-        <div class="mb-8 p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center gap-3" role="alert">
-            <span class="w-8 h-8 shrink-0 rounded-full bg-emerald-500/15 flex items-center justify-center"><x-icon name="check" class="w-4 h-4 text-emerald-600" /></span>
-            <span class="text-sm font-medium">{{ session('success') }}</span>
-        </div>
-        @endif
+        <x-flash class="mb-8" />
 
         @if($cart && $cart->items->count())
         <div class="grid lg:grid-cols-3 gap-10">

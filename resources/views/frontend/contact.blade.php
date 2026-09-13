@@ -75,12 +75,7 @@
 
             {{-- Form --}}
             <div class="lg:col-span-8">
-                @if(session('success'))
-                <div class="mb-6 p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center gap-3" role="alert">
-                    <span class="w-8 h-8 shrink-0 rounded-full bg-emerald-500/15 flex items-center justify-center"><x-icon name="check" class="w-4 h-4 text-emerald-600" /></span>
-                    <span class="text-sm font-medium">{{ session('success') }}</span>
-                </div>
-                @endif
+                <x-flash class="mb-6" />
 
                 <form action="{{ route('contact.store') }}" method="POST" class="rounded-3xl border border-surface-200 bg-white p-7 md:p-10 shadow-[0_20px_50px_-30px_rgba(28,25,23,0.2)]">
                     @csrf

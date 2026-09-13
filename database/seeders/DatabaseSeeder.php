@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             PortfolioSeeder::class,
             BeforeAfterSeeder::class,
             ProductSeeder::class,
-            BlogSeeder::class,
+            HeroSlideSeeder::class,
             TestimonialSeeder::class,
             SettingSeeder::class,
         ]);

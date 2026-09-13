@@ -75,7 +75,6 @@
                 <ul class="space-y-4 text-sm">
                     <li><a href="{{ route('about') }}" class="text-gray-400 hover:text-accent-200 transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-accent-400 rounded-full"></span>About Us</a></li>
                     <li><a href="{{ route('portfolio.index') }}" class="text-gray-400 hover:text-accent-200 transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-accent-400 rounded-full"></span>Portfolio</a></li>
-                    <li><a href="{{ route('blog.index') }}" class="text-gray-400 hover:text-accent-200 transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-accent-400 rounded-full"></span>Blog</a></li>
                     <li><a href="{{ route('contact') }}" class="text-gray-400 hover:text-accent-200 transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-accent-400 rounded-full"></span>Contact</a></li>
                     <li><a href="{{ route('faq') }}" class="text-gray-400 hover:text-accent-200 transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-accent-400 rounded-full"></span>FAQ</a></li>
                 </ul>

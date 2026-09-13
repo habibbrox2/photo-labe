@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Service;
 use App\Models\PortfolioProject;
 use App\Models\Product;
-use App\Models\BlogPost;
 use Illuminate\Support\Collection;
 
 class SeoService
@@ -85,26 +84,6 @@ class SeoService
             'keywords' => $this->getProductKeywords($product),
             'schema' => $this->getProductSchema($product),
             'breadcrumb' => $this->getProductBreadcrumb($product),
-        ]);
-    }
-
-    /**
-     * Get blog post meta
-     */
-    public function getBlogMeta(BlogPost $post): array
-    {
-        return $this->getMeta([
-            'title' => $post->seo_title ?: $post->title,
-            'description' => $post->seo_description ?: $post->excerpt,
-            'image' => $post->featured_image ? asset('storage/' . $post->featured_image) : null,
-            'type' => 'article',
-            'keywords' => $this->getBlogKeywords($post),
-            'schema' => $this->getBlogSchema($post),
-            'breadcrumb' => $this->getBlogBreadcrumb($post),
-            'published_time' => $post->published_at?->toIso8601String(),
-            'modified_time' => $post->updated_at?->toIso8601String(),
-            'author' => $post->author?->name,
-            'section' => $post->category?->name,
         ]);
     }
 
@@ -276,38 +255,6 @@ class SeoService
     }
 
     /**
-     * Get blog schema
-     */
-    protected function getBlogSchema(BlogPost $post): array
-    {
-        return [
-            '@type' => 'Article',
-            'headline' => $post->title,
-            'description' => $post->excerpt,
-            'url' => route('blog.show', $post->slug),
-            'image' => $post->featured_image ? asset('storage/' . $post->featured_image) : null,
-            'author' => $post->author ? [
-                '@type' => 'Person',
-                'name' => $post->author->name,
-            ] : null,
-            'publisher' => [
-                '@type' => 'Organization',
-                'name' => $this->appName,
-                'logo' => [
-                    '@type' => 'ImageObject',
-                    'url' => asset('storage/demo/hero/main.jpg'),
-                ],
-            ],
-            'datePublished' => $post->published_at?->toIso8601String(),
-            'dateModified' => $post->updated_at?->toIso8601String(),
-            'mainEntityOfPage' => [
-                '@type' => 'WebPage',
-                '@id' => route('blog.show', $post->slug),
-            ],
-        ];
-    }
-
-    /**
      * Get breadcrumbs
      */
     protected function getServiceBreadcrumb(Service $service): array
@@ -334,15 +281,6 @@ class SeoService
             ['name' => 'Home', 'url' => '/'],
             ['name' => 'Products', 'url' => '/products'],
             ['name' => $product->title, 'url' => '/products/' . $product->slug],
-        ];
-    }
-
-    protected function getBlogBreadcrumb(BlogPost $post): array
-    {
-        return [
-            ['name' => 'Home', 'url' => '/'],
-            ['name' => 'Blog', 'url' => '/blog'],
-            ['name' => $post->title, 'url' => '/blog/' . $post->slug],
         ];
     }
 
@@ -397,18 +335,6 @@ class SeoService
             'photo editing tools',
             'presets',
             'actions',
-        ];
-    }
-
-    protected function getBlogKeywords(BlogPost $post): array
-    {
-        return [
-            strtolower($post->title),
-            strtolower($post->category->name ?? ''),
-            'blog',
-            'tutorial',
-            'guide',
-            'tips',
         ];
     }
 

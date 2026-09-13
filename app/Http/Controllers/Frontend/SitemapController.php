@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\PortfolioProject;
 use App\Models\Product;
-use App\Models\BlogPost;
 use App\Models\Page;
 use Illuminate\Http\Response;
 
@@ -31,7 +30,6 @@ class SitemapController extends Controller
             ['loc' => '/services', 'priority' => '0.9', 'changefreq' => 'weekly', 'images' => []],
             ['loc' => '/portfolio', 'priority' => '0.9', 'changefreq' => 'weekly', 'images' => []],
             ['loc' => '/products', 'priority' => '0.9', 'changefreq' => 'weekly', 'images' => []],
-            ['loc' => '/blog', 'priority' => '0.8', 'changefreq' => 'daily', 'images' => []],
             ['loc' => '/about', 'priority' => '0.7', 'changefreq' => 'monthly', 'images' => []],
             ['loc' => '/contact', 'priority' => '0.7', 'changefreq' => 'monthly', 'images' => []],
             ['loc' => '/faq', 'priority' => '0.6', 'changefreq' => 'monthly', 'images' => []],
@@ -93,24 +91,6 @@ class SitemapController extends Controller
                     'lastmod' => $product->updated_at->format('Y-m-d'),
                     'priority' => '0.8',
                     'changefreq' => 'weekly',
-                    'images' => $images,
-                ]);
-            }
-        });
-
-        // Blog Posts
-        BlogPost::active()->published()->orderBy('published_at', 'desc')->chunk(50, function ($posts) use ($urls, $baseUrl) {
-            foreach ($posts as $post) {
-                $images = [];
-                if ($post->featured_image) {
-                    $images[] = $baseUrl . '/storage/' . $post->featured_image;
-                }
-                
-                $urls->push([
-                    'loc' => $baseUrl . '/blog/' . $post->slug,
-                    'lastmod' => $post->updated_at->format('Y-m-d'),
-                    'priority' => '0.7',
-                    'changefreq' => 'monthly',
                     'images' => $images,
                 ]);
             }

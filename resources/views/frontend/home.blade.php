@@ -11,113 +11,195 @@
 @endsection
 
 @section('content')
-{{-- ============ HERO ============ --}}
-<section class="relative overflow-hidden border-b border-surface-200/70" x-data="{ loaded: false }" x-init="$nextTick(() => setTimeout(() => loaded = true, 80))">
-    {{-- Ambient background --}}
-    <div class="absolute inset-0 bg-gradient-to-b from-surface-50 via-white to-surface-100/60" aria-hidden="true"></div>
-    <div class="absolute -top-32 -left-32 w-[480px] h-[480px] bg-accent-200/40 rounded-full blur-[130px]" aria-hidden="true"></div>
-    <div class="absolute top-1/3 -right-40 w-[520px] h-[520px] bg-primary-200/30 rounded-full blur-[140px]" aria-hidden="true"></div>
+{{-- ============ HERO: IMAGE SLIDER ============ --}}
+@php
+    $slides = $heroSlides->filter(fn ($s) => ! empty($s->image))->take(6)->values();
+    $defaultHeadline = 'Pixel-perfect photo editing for brands that <em class="italic text-accent-400">refuse to look average.</em>';
+@endphp
+<script>window.__heroHeadlines = @json($slides->pluck('headline'));</script>
+<section x-data="{
+            active: 0,
+            count: {{ $slides->count() }},
+            headlines: [],
+            timer: null,
+            dragging: false,
+            dragX: 0,
+            startX: 0,
+            startT: 0,
+            width: 1,
+            start() { this.stop(); this.timer = setInterval(() => this.next(), 6000) },
+            stop() { if (this.timer) { clearInterval(this.timer); this.timer = null } },
+            next() { this.active = (this.active + 1) % this.count },
+            prev() { this.active = (this.active - 1 + this.count) % this.count },
+            go(i) { this.active = i },
+            onDown(e) {
+                if (this.count < 2 || e.button !== 0 || e.target.closest('a, button')) return;
+                this.dragging = true;
+                this.startX = e.clientX;
+                this.startT = performance.now();
+                this.dragX = 0;
+                this.width = this.$el.clientWidth || 1;
+                try { this.$el.setPointerCapture(e.pointerId) } catch (_) {}
+                this.stop();
+            },
+            onMove(e) {
+                if (!this.dragging) return;
+                this.dragX = e.clientX - this.startX;
+            },
+            onUp() {
+                if (!this.dragging) return;
+                const dt = performance.now() - this.startT;
+                const threshold = Math.max(50, this.width * 0.15);
+                const flick = Math.abs(this.dragX) > 30 && dt < 250;
+                if (this.dragX <= -threshold || (flick && this.dragX < 0)) this.next();
+                else if (this.dragX >= threshold || (flick && this.dragX > 0)) this.prev();
+                this.dragging = false;
+                this.dragX = 0;
+                this.start();
+            },
+            onCancel() {
+                this.dragging = false;
+                this.dragX = 0;
+                this.start();
+            },
+            slideStyle(i) {
+                const dx = this.dragging ? this.dragX : 0;
+                if (i === this.active) return { opacity: 1, transform: 'translateX(' + dx + 'px)', zIndex: 2 };
+                if (!this.dragging || !dx) return { opacity: 0, transform: 'translateX(0px)', zIndex: 0 };
+                const p = Math.min(1, Math.abs(dx) / this.width);
+                if (dx < 0 && i === (this.active + 1) % this.count) return { opacity: p, transform: 'translateX(' + ((1 - p) * 60) + 'px)', zIndex: 1 };
+                if (dx > 0 && i === (this.active - 1 + this.count) % this.count) return { opacity: p, transform: 'translateX(' + ((1 - p) * -60) + 'px)', zIndex: 1 };
+                return { opacity: 0, transform: 'translateX(0px)', zIndex: 0 };
+            },
+        }"
+        x-init="start(); headlines = window.__heroHeadlines || []"
+        @pointerdown="onDown"
+        @pointermove="onMove"
+        @pointerup="onUp"
+        @pointercancel="onCancel"
+        @visibilitychange.document="document.hidden ? stop() : start()"
+        class="relative overflow-hidden bg-gray-950 text-white select-none touch-pan-y cursor-grab active:cursor-grabbing"
+        aria-roledescription="carousel"
+        aria-label="Featured work">
+    {{-- Slides (z-0 contains slide z-indexes so overlays stay on top) --}}
+    <div class="absolute inset-0 z-0">
+        @forelse($slides as $i => $slide)
+        <div x-cloak
+             :style="slideStyle({{ $i }})"
+             :class="dragging ? '' : 'transition-[opacity,transform] duration-700 ease-out'"
+             class="absolute inset-0"
+             :aria-hidden="active !== {{ $i }}"
+             role="group"
+             aria-roledescription="slide"
+             aria-label="{{ $i + 1 }} of {{ $slides->count() }}: {{ $slide->caption_text ?? $slide->caption_label ?? 'Slide' }}">
+            @if(!empty($slide->link_url))<a href="{{ $slide->link_url }}" class="absolute inset-0 z-20" tabindex="-1" :aria-hidden="active !== {{ $i }}" aria-label="{{ $slide->caption_text ?? 'View slide' }}"></a>@endif
+            <img src="{{ asset('storage/' . $slide->image) }}"
+                 alt="{{ $slide->caption_text ?? $slide->caption_label ?? 'Slide ' . ($i + 1) }}"
+                 class="w-full h-full object-cover pointer-events-none"
+                 draggable="false"
+                 x-bind:class="active === {{ $i }} ? 'kenburns' : ''"
+                 loading="{{ $i === 0 ? 'eager' : 'lazy' }}" decoding="async" fetchpriority="{{ $i === 0 ? 'high' : 'low' }}">
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/60 to-gray-950/30" aria-hidden="true"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-gray-950/85 via-gray-950/40 to-transparent" aria-hidden="true"></div>
+        </div>
+        @empty
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-black" aria-hidden="true"></div>
+        @endforelse
+    </div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28">
-        <div class="grid lg:grid-cols-12 gap-14 items-center">
-            {{-- Copy --}}
-            <div class="lg:col-span-6">
-                <div x-show="loaded" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
-                    <div class="inline-flex items-center gap-2.5 bg-white border border-surface-200 shadow-sm pl-1.5 pr-4 py-1.5 rounded-full">
-                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-white bg-accent-500 rounded-full px-2.5 py-1">
-                            <x-icon name="star" class="w-3 h-3" /> 4.9
-                        </span>
-                        <span class="text-sm font-medium text-gray-600">Rated excellent by 500+ studios &amp; brands</span>
-                    </div>
-                </div>
-
-                <h1 x-show="loaded" x-transition:enter="transition ease-out duration-500 delay-75" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="mt-7 text-[2.6rem] leading-[1.06] sm:text-6xl xl:text-[4.2rem] xl:leading-[1.02] font-extrabold tracking-tight text-gray-900">
-                    Pixel-perfect photo editing for brands that <em class="italic text-accent-600">refuse to look average.</em>
-                </h1>
-
-                <p x-show="loaded" x-transition:enter="transition ease-out duration-500 delay-150" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="mt-6 text-lg text-gray-500 leading-relaxed max-w-xl">
-                    Retouching, background removal, color grading and creative design — delivered by specialists in as little as 12 hours, with unlimited free revisions.
-                </p>
-
-                <div x-show="loaded" x-transition:enter="transition ease-out duration-500 delay-200" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
-                    class="mt-9 flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('quote.create') }}" class="btn btn-lg btn-gradient shadow-xl shadow-accent-500/25">
-                        Get a Free Quote
-                        <x-icon name="arrow-right" class="w-5 h-5" />
-                    </a>
-                    <a href="{{ route('portfolio.index') }}" class="btn btn-lg btn-secondary">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>
-                        View Our Work
-                    </a>
-                </div>
-
-                <div x-show="loaded" x-transition:enter="transition ease-out duration-500 delay-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-                    <div>
-                        <div class="text-2xl font-extrabold text-gray-900 leading-none">24h</div>
-                        <div class="mt-1 text-sm text-gray-500">avg. turnaround</div>
-                    </div>
-                    <div class="w-px h-10 bg-surface-200 hidden sm:block" aria-hidden="true"></div>
-                    <div>
-                        <div class="text-2xl font-extrabold text-gray-900 leading-none">10k+</div>
-                        <div class="mt-1 text-sm text-gray-500">projects delivered</div>
-                    </div>
-                    <div class="w-px h-10 bg-surface-200 hidden sm:block" aria-hidden="true"></div>
-                    <div>
-                        <div class="text-2xl font-extrabold text-gray-900 leading-none">100%</div>
-                        <div class="mt-1 text-sm text-gray-500">revision guarantee</div>
-                    </div>
-                </div>
+    {{-- Copy overlay --}}
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-40 lg:pt-40 lg:pb-56">
+        <div class="max-w-2xl">
+            <div class="inline-flex items-center gap-2.5 bg-white/10 border border-white/15 backdrop-blur pl-1.5 pr-4 py-1.5 rounded-full">
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-gray-900 bg-accent-500 rounded-full px-2.5 py-1">
+                    <x-icon name="star" class="w-3 h-3" /> 4.9
+                </span>
+                <span class="text-sm font-medium text-white/80">Rated excellent by 500+ studios &amp; brands</span>
             </div>
 
-            {{-- Visual: layered editorial collage --}}
-            <div class="lg:col-span-6" x-show="loaded" x-transition:enter="transition ease-out duration-700 delay-150" x-transition:enter-start="opacity-0 scale-[0.97]" x-transition:enter-end="opacity-100 scale-100">
-                @php $collage = $featuredPortfolio->take(2); @endphp
-                <div class="relative max-w-xl mx-auto">
-                    {{-- Soft glow behind --}}
-                    <div class="absolute -inset-8 bg-gradient-to-tr from-accent-200/50 via-transparent to-primary-200/40 blur-2xl rounded-full" aria-hidden="true"></div>
+            <h1 class="mt-7 text-[2.6rem] leading-[1.06] sm:text-6xl xl:text-[4.2rem] xl:leading-[1.02] font-extrabold tracking-tight text-white drop-shadow-lg">
+                <span x-show="!headlines[active]">{!! $defaultHeadline !!}</span>
+                <span x-show="headlines[active]" x-cloak x-text="headlines[active]"></span>
+            </h1>
 
-                    <div class="relative grid grid-cols-12 gap-4 items-start">
-                        @foreach($collage as $i => $project)
-                        <a href="{{ route('portfolio.show', $project->slug) }}" class="group {{ $i === 0 ? 'col-span-7' : 'col-span-5 mt-16' }} block">
-                            <div class="overflow-hidden rounded-3xl border border-surface-200/80 bg-white shadow-[0_30px_60px_-30px_rgba(28,25,23,0.35)] group-hover:shadow-[0_36px_70px_-30px_rgba(28,25,23,0.45)] transition-shadow duration-500 {{ $i === 0 ? 'aspect-[4/5]' : 'aspect-[3/4]' }}">
-                                @if($project->featured_image)
-                                <img loading="lazy" decoding="async" src="{{ asset('storage/' . $project->featured_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700">
-                                @else
-                                <div class="w-full h-full bg-gradient-to-br from-surface-100 to-surface-200 flex items-center justify-center">
-                                    <x-icon name="image" class="w-14 h-14 text-gray-300" />
-                                </div>
-                                @endif
-                            </div>
-                            <div class="mt-3 flex items-center justify-between px-1">
-                                <div>
-                                    <div class="text-[11px] font-semibold uppercase tracking-wider text-accent-600">{{ $project->category->name ?? 'Project' }}</div>
-                                    <div class="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">{{ $project->title }}</div>
-                                </div>
-                                <span class="w-7 h-7 shrink-0 rounded-full bg-white border border-surface-200 flex items-center justify-center text-gray-500 group-hover:bg-gray-900 group-hover:border-gray-900 group-hover:text-white transition-colors duration-200">
-                                    <x-icon name="arrow-right" class="w-3.5 h-3.5" />
-                                </span>
-                            </div>
-                        </a>
-                        @endforeach
-                    </div>
+            <p class="mt-6 text-lg text-white/70 leading-relaxed max-w-xl">
+                Retouching, background removal, color grading and creative design — delivered by specialists in as little as 12 hours, with unlimited free revisions.
+            </p>
 
-                    {{-- Floating chip: before/after CTA --}}
-                    <a href="{{ route('before-after') }}" class="absolute -bottom-4 -right-2 sm:-right-6 group inline-flex items-center gap-3 bg-gray-900 text-white rounded-2xl pl-4 pr-5 py-3.5 shadow-2xl shadow-gray-900/30 hover:-translate-y-0.5 hover:shadow-gray-900/40 transition-all duration-300">
-                        <span class="relative flex w-9 h-9 items-center justify-center rounded-full bg-accent-500 text-gray-900">
-                            <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/></svg>
-                        </span>
-                        <span>
-                            <span class="block text-[11px] uppercase tracking-wider text-white/60 font-medium">Drag to compare</span>
-                            <span class="block text-sm font-bold">See our editing</span>
-                        </span>
-                    </a>
+            <div class="mt-9 flex flex-col sm:flex-row gap-4">
+                <a href="{{ route('quote.create') }}" class="btn btn-lg btn-gradient shadow-xl shadow-accent-500/25">
+                    Get a Free Quote
+                    <x-icon name="arrow-right" class="w-5 h-5" />
+                </a>
+                <a href="{{ route('portfolio.index') }}" class="btn btn-lg bg-white/10 border border-white/20 text-white backdrop-blur hover:bg-white/20">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>
+                    View Our Work
+                </a>
+            </div>
+
+            <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <div>
+                    <div class="text-2xl font-extrabold text-white leading-none">24h</div>
+                    <div class="mt-1 text-sm text-white/60">avg. turnaround</div>
+                </div>
+                <div class="w-px h-10 bg-white/20 hidden sm:block" aria-hidden="true"></div>
+                <div>
+                    <div class="text-2xl font-extrabold text-white leading-none">10k+</div>
+                    <div class="mt-1 text-sm text-white/60">projects delivered</div>
+                </div>
+                <div class="w-px h-10 bg-white/20 hidden sm:block" aria-hidden="true"></div>
+                <div>
+                    <div class="text-2xl font-extrabold text-white leading-none">100%</div>
+                    <div class="mt-1 text-sm text-white/60">revision guarantee</div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Slide caption --}}
+    @if($slides->count())
+    <div class="absolute bottom-24 left-0 right-0 z-10 pointer-events-none">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <template x-for='(slide, i) in @json($slides->map(fn ($s) => ["label" => $s->caption_label ?? "", "text" => $s->caption_text ?? ""]))'
+                      :key="i">
+                <div x-show="active === i" x-cloak
+                     x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
+                    @if($slides->where('caption_label')->isNotEmpty())
+                    <div class="text-[11px] font-semibold uppercase tracking-wider text-accent-400" x-show="slide.label" x-text="slide.label"></div>
+                    @endif
+                    <div class="text-lg font-bold text-white" x-show="slide.text" x-text="slide.text"></div>
+                </div>
+            </template>
+        </div>
+    </div>
+    @endif
+
+    {{-- Controls --}}
+    @if($slides->count() > 1)
+    <div class="absolute inset-x-0 bottom-8 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <button type="button" @click="prev(); start()" aria-label="Previous slide"
+                        class="w-11 h-11 rounded-full bg-white/10 border border-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button type="button" @click="next(); start()" aria-label="Next slide"
+                        class="w-11 h-11 rounded-full bg-white/10 border border-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+            <div class="flex items-center gap-2" role="tablist" aria-label="Choose slide">
+                @foreach($slides as $i => $slide)
+                <button type="button" role="tab" @click="go({{ $i }}); start()"
+                        :aria-selected="active === {{ $i }}"
+                        :aria-label="'Go to slide {{ $i + 1 }}: {{ $slide->caption_text ?? $slide->caption_label ?? 'Slide' }}'"
+                        class="h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
+                        x-bind:class="active === {{ $i }} ? 'w-8 bg-accent-400' : 'w-2 bg-white/40 hover:bg-white/70'"></button>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
 </section>
 
 {{-- ============ TRUST STRIP (real proof points) ============ --}}
@@ -440,54 +522,6 @@
                     </span>
                 </figcaption>
             </figure>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- ============ BLOG ============ --}}
-@if($latestPosts->count())
-<section class="py-20 lg:py-28 bg-surface-50/70">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-12 gap-10 items-end mb-14">
-            <div class="lg:col-span-8">
-                <span class="eyebrow">From the Blog</span>
-                <h2 class="mt-5 text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">Guides &amp; <em class="italic text-accent-600">insights</em></h2>
-                <p class="mt-5 text-lg text-gray-500 max-w-xl">Tips, tutorials and industry news from our editing experts.</p>
-            </div>
-            <div class="lg:col-span-4 lg:text-right">
-                <a href="{{ route('blog.index') }}" class="btn btn-md btn-secondary">
-                    Read More Articles
-                    <x-icon name="arrow-right" class="w-4 h-4" />
-                </a>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-x-8 gap-y-12">
-            @foreach($latestPosts as $post)
-            <a href="{{ route('blog.show', $post->slug) }}" class="group block">
-                <div class="relative aspect-[16/10] overflow-hidden rounded-2xl border border-surface-200/80 bg-surface-100">
-                    @if($post->featured_image)
-                    <img loading="lazy" decoding="async" src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-700">
-                    @else
-                    <div class="w-full h-full flex items-center justify-center">
-                        <x-icon name="document" class="w-12 h-12 text-gray-300" />
-                    </div>
-                    @endif
-                </div>
-                <div class="pt-5 px-0.5">
-                    <div class="flex items-center gap-3">
-                        @if($post->category)
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-accent-600">{{ $post->category->name }}</span>
-                        <span class="w-1 h-1 rounded-full bg-surface-300" aria-hidden="true"></span>
-                        @endif
-                        <span class="text-xs text-gray-400">{{ $post->published_at?->diffForHumans() ?? '' }}</span>
-                    </div>
-                    <h3 class="mt-2 text-lg font-bold text-gray-900 tracking-tight leading-snug line-clamp-2 group-hover:text-primary-600 transition-colors">{{ $post->title }}</h3>
-                    <p class="mt-2 text-sm text-gray-500 line-clamp-2">{{ $post->excerpt }}</p>
-                </div>
-            </a>
             @endforeach
         </div>
     </div>

@@ -54,13 +54,6 @@ class DownloadImagesSeeder extends Seeder
             'cinematic-luts-pack' => 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80',
         ],
 
-        // Blog images
-        'blog' => [
-            'product-photography-tips' => 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
-            'background-removal-guide' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
-            'color-correction-tutorial' => 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80',
-        ],
-
         // Testimonial avatars
         'avatars' => [
             'sarah-johnson' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80',

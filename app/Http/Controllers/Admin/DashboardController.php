@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\BlogPost;
 use App\Models\Order;
 use App\Models\PortfolioProject;
 use App\Models\Product;
@@ -23,7 +22,6 @@ class DashboardController extends Controller
             'services' => Service::count(),
             'portfolio' => PortfolioProject::count(),
             'products' => Product::count(),
-            'blog_posts' => BlogPost::count(),
         ];
 
         $recentQuotes = Quote::with('service')->latest()->take(5)->get();

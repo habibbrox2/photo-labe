@@ -17,11 +17,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
-    <meta name="theme-color" content="#4c6ef5">
+    <meta name="theme-color" content="#f59e0b">
 
     {{-- Additional SEO Meta --}}
     <meta name="application-name" content="{{ config('app.name', 'PhotoLabe') }}">
-    <meta name="msapplication-TileColor" content="#4c6ef5">
+    <meta name="msapplication-TileColor" content="#f59e0b">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
 
     {{-- Geo Meta --}}
@@ -98,21 +98,7 @@
 
     @include('components.header')
 
-    @if(session('success'))
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-        <div class="surface-card bg-emerald-50/90 border-emerald-200 text-emerald-800 px-5 py-4" role="alert">
-            {{ session('success') }}
-        </div>
-    </div>
-    @endif
-
-    @if(session('error'))
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-        <div class="surface-card bg-red-50/90 border-red-200 text-red-800 px-5 py-4" role="alert">
-            {{ session('error') }}
-        </div>
-    </div>
-    @endif
+    <x-flash class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4" />
 
     <main id="main" tabindex="-1">
         @yield('content')

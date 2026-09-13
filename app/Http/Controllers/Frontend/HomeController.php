@@ -11,6 +11,23 @@ class HomeController extends Controller
 {
     public function index(SeoService $seo)
     {
+        $heroSlides = Cache::remember(
+            'home_hero_slides', 3600,
+            fn () => \App\Models\HeroSlide::active()->ordered()->get()
+        );
+
+        // Fallback: derive slides from featured portfolio when none are managed
+        if ($heroSlides->isEmpty()) {
+            $heroSlides = \App\Models\PortfolioProject::active()->featured()->with('category')->limit(6)->get()
+                ->map(fn ($p) => (object) [
+                    'image' => $p->featured_image,
+                    'headline' => null,
+                    'caption_label' => $p->category->name ?? 'Project',
+                    'caption_text' => trim(($p->title ?? '') . ($p->client ? ' — ' . $p->client : '')),
+                    'link_url' => $p->slug ? '/portfolio/' . $p->slug : null,
+                ]);
+        }
+
         $featuredServices = Cache::remember(
             'home_featured_services', 3600,
             fn () => \App\Models\Service::active()->featured()->with('category')->limit(6)->get()
@@ -29,11 +46,6 @@ class HomeController extends Controller
         $featuredProducts = Cache::remember(
             'home_featured_products', 3600,
             fn () => \App\Models\Product::active()->featured()->with('category')->limit(4)->get()
-        );
-
-        $latestPosts = Cache::remember(
-            'home_latest_posts', 1800,
-            fn () => \App\Models\BlogPost::active()->published()->recent()->with('category', 'author')->limit(3)->get()
         );
 
         $testimonials = Cache::remember(
@@ -63,11 +75,11 @@ class HomeController extends Controller
         ]);
 
         return view('frontend.home', compact(
+            'heroSlides',
             'featuredServices',
             'featuredPortfolio',
             'beforeAfter',
             'featuredProducts',
-            'latestPosts',
             'testimonials',
             'seoData'
         ));

@@ -25,7 +25,6 @@ class WarmCache extends Command
         $this->line('  • Active services');
         $this->line('  • Portfolio projects');
         $this->line('  • Featured products');
-        $this->line('  • Blog posts');
         $this->line('  • Testimonials');
         $this->line('  • Before/After items');
 

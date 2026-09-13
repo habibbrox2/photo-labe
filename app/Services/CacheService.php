@@ -8,7 +8,6 @@ use App\Models\Setting;
 use App\Models\Service;
 use App\Models\PortfolioProject;
 use App\Models\Product;
-use App\Models\BlogPost;
 use App\Models\Testimonial;
 use App\Models\BeforeAfter;
 
@@ -88,20 +87,6 @@ class CacheService
     }
 
     /**
-     * Get cached blog posts
-     */
-    public static function blogPosts(int $limit = 6)
-    {
-        return Cache::remember("blog_posts_{$limit}", 1800, function () use ($limit) {
-            return BlogPost::where('status', 'published')
-                ->with('author')
-                ->orderByDesc('published_at')
-                ->limit($limit)
-                ->get();
-        });
-    }
-
-    /**
      * Get cached testimonials
      */
     public static function testimonials()
@@ -142,12 +127,6 @@ class CacheService
         foreach ($keys as $key) {
             Cache::forget($key);
         }
-
-        // Also flush blog post caches
-        $blogKeys = ['blog_posts_3', 'blog_posts_6', 'blog_posts_10'];
-        foreach ($blogKeys as $key) {
-            Cache::forget($key);
-        }
     }
 
     /**
@@ -159,7 +138,6 @@ class CacheService
         self::services();
         self::portfolioProjects();
         self::featuredProducts();
-        self::blogPosts();
         self::testimonials();
         self::beforeAfterItems();
     }

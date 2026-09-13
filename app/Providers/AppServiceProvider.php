@@ -7,14 +7,12 @@ use App\Models\Quote;
 use App\Models\Service;
 use App\Models\PortfolioProject;
 use App\Models\Product;
-use App\Models\BlogPost;
 use App\Models\Testimonial;
 use App\Policies\OrderPolicy;
 use App\Policies\QuotePolicy;
 use App\Policies\ServicePolicy;
 use App\Policies\PortfolioPolicy;
 use App\Policies\ProductPolicy;
-use App\Policies\BlogPostPolicy;
 use App\Policies\TestimonialPolicy;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Gate;
@@ -35,7 +33,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Service::class, ServicePolicy::class);
         Gate::policy(PortfolioProject::class, PortfolioPolicy::class);
         Gate::policy(Product::class, ProductPolicy::class);
-        Gate::policy(BlogPost::class, BlogPostPolicy::class);
         Gate::policy(Testimonial::class, TestimonialPolicy::class);
 
         // Share the current cart item count with the header (badge).

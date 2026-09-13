@@ -2,58 +2,56 @@
 @section('title', 'My Purchases')
 
 @section('content')
-<section class="bg-gray-50 py-12 min-h-screen">
+<section class="page-hero-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
+        <span class="eyebrow">Your Account</span>
+        <h1 class="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">My Purchases</h1>
+        <p class="mt-2 text-gray-500">Access your digital product downloads.</p>
+    </div>
+</section>
+
+<section class="py-12 lg:py-14 bg-white min-h-[60vh]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">My Purchases</h1>
-            <p class="text-gray-500 mt-1">Access your digital product downloads.</p>
-        </div>
 
         @if($purchases->count())
             <div class="space-y-4">
                 @foreach($purchases as $purchase)
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-start gap-4">
+                    <div class="surface-card p-6">
+                        <div class="flex flex-wrap items-start justify-between gap-4">
+                            <div class="flex items-start gap-4 min-w-0">
                                 @if($purchase->product?->featured_image)
                                     <img loading="lazy" decoding="async" src="{{ asset('storage/' . $purchase->product->featured_image) }}" alt="{{ $purchase->product->title }}"
-                                        class="w-16 h-16 rounded-xl object-cover">
+                                        class="w-16 h-16 rounded-2xl object-cover border border-surface-200 shrink-0">
                                 @else
-                                    <div class="w-16 h-16 rounded-xl bg-primary-50 flex items-center justify-center">
-                                        <svg class="w-7 h-7 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                                    <div class="w-16 h-16 rounded-2xl bg-surface-100 border border-surface-200 flex items-center justify-center shrink-0">
+                                        <x-icon name="package" class="w-7 h-7 text-gray-400" />
                                     </div>
                                 @endif
-                                <div>
-                                    <h3 class="font-semibold text-gray-900">{{ $purchase->product->title ?? 'Product' }}</h3>
-                                    <div class="text-sm text-gray-500 mt-1">
-                                        {{ $purchase->purchase_number }} · {{ $purchase->created_at->format('M d, Y') }}
-                                    </div>
-                                    @if($purchase->completed_at)
-                                        <div class="text-xs text-gray-400 mt-1">Completed {{ $purchase->completed_at->format('M d, Y') }}</div>
-                                    @endif
+                                <div class="min-w-0">
+                                    <h3 class="font-bold text-gray-900">{{ $purchase->product->title ?? 'Product' }}</h3>
+                                    <div class="text-sm text-gray-500 mt-1 font-mono">{{ $purchase->purchase_number }}</div>
+                                    <div class="text-xs text-gray-400 mt-0.5">{{ $purchase->created_at->format('M d, Y') }}@if($purchase->completed_at) · completed {{ $purchase->completed_at->format('M d, Y') }}@endif</div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <div class="font-bold text-gray-900">${{ number_format($purchase->amount, 2) }}</div>
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 mt-1 inline-block">
-                                    {{ ucfirst($purchase->status) }}
-                                </span>
+                            <div class="text-right shrink-0">
+                                <div class="font-extrabold text-gray-900">${{ number_format($purchase->amount, 2) }}</div>
+                                <div class="mt-1"><x-status-badge :status="$purchase->status" /></div>
                             </div>
                         </div>
 
                         {{-- Download Files --}}
                         @if($purchase->status === 'completed' && $purchase->product?->files?->count())
-                            <div class="mt-4 pt-4 border-t border-gray-100">
-                                <div class="text-xs text-gray-500 mb-2">Download Files ({{ $purchase->download_count ?? 0 }} downloads)</div>
+                            <div class="mt-5 pt-5 border-t border-surface-200">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-3">Download Files ({{ $purchase->download_count ?? 0 }} downloads)</div>
                                 <div class="space-y-2">
                                     @foreach($purchase->product->files as $file)
                                         <a href="{{ route('account.purchases.download', ['purchase' => $purchase, 'file' => $file]) }}"
-                                            class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-primary-50 transition-colors group">
-                                            <div class="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center group-hover:border-primary-300">
-                                                <svg class="w-4 h-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                            </div>
-                                            <span class="text-sm font-medium text-gray-900">{{ $file->file_name }}</span>
-                                            <span class="text-xs text-gray-400">{{ round($file->file_size / 1024) }}KB</span>
+                                            class="group flex items-center gap-3 p-3.5 bg-surface-50 border border-surface-200/70 rounded-2xl hover:border-accent-300 hover:bg-accent-50/40 transition-colors">
+                                            <span class="w-9 h-9 rounded-xl bg-white border border-surface-200 flex items-center justify-center shrink-0 group-hover:border-accent-300 transition-colors">
+                                                <x-icon name="download" class="w-4 h-4 text-accent-700" />
+                                            </span>
+                                            <span class="text-sm font-semibold text-gray-900 flex-1 min-w-0 truncate">{{ $file->file_name }}</span>
+                                            <span class="text-xs text-gray-400 shrink-0">{{ round($file->file_size / 1024) }}KB</span>
                                         </a>
                                     @endforeach
                                 </div>
@@ -62,18 +60,16 @@
                     </div>
                 @endforeach
 
-                <div class="mt-6">
-                    {{ $purchases->links() }}
-                </div>
+                <div class="mt-6">{{ $purchases->links() }}</div>
             </div>
         @else
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
-                <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                <h3 class="text-lg font-semibold text-gray-900 mb-1">No purchases yet</h3>
-                <p class="text-gray-500 text-sm mb-4">Browse our digital products to get started.</p>
-                <a href="{{ route('products.index') }}" class="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 text-sm">
-                    Browse Products
-                </a>
+            <div class="surface-card">
+                <x-empty-state
+                    icon="cart"
+                    title="No purchases yet"
+                    description="Browse our digital products to get started.">
+                    <a href="{{ route('products.index') }}" class="btn btn-primary">Browse Products</a>
+                </x-empty-state>
             </div>
         @endif
     </div>

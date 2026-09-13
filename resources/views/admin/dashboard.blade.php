@@ -3,167 +3,167 @@
 
 @section('content')
 <div class="space-y-6">
-    {{-- Stats Grid --}}
+
+    
+    <div>
+        <span class="eyebrow">Studio Overview</span>
+        <p class="mt-3 text-sm text-gray-500">Welcome back, {{ auth()->user()->name }} — here's what's happening today.</p>
+    </div>
+
+    
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-500">Total Revenue</p>
-                    <p class="text-2xl font-bold text-gray-900 mt-1">${{ number_format($stats['revenue'], 2) }}</p>
+        <div class="surface-card p-5 border-accent-200/70">
+            <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Total Revenue</p>
+                    <p class="text-2xl font-extrabold text-gray-900 mt-1.5">${{ number_format($stats['revenue'], 2) }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">completed orders</p>
                 </div>
-                <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
+                <span class="w-11 h-11 shrink-0 rounded-2xl bg-accent-500 flex items-center justify-center shadow-sm shadow-accent-500/25">
+                    <x-icon name="credit-card" class="w-5 h-5 text-gray-900" />
+                </span>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-500">Total Orders</p>
-                    <p class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['orders'] }}</p>
+        <div class="surface-card p-5">
+            <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Total Orders</p>
+                    <p class="text-2xl font-extrabold text-gray-900 mt-1.5">{{ $stats['orders'] }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">all time</p>
                 </div>
-                <div class="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                </div>
+                <span class="w-11 h-11 shrink-0 rounded-2xl bg-surface-100 border border-surface-200 flex items-center justify-center">
+                    <x-icon name="cart" class="w-5 h-5 text-gray-600" />
+                </span>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-500">Pending Quotes</p>
-                    <p class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['pending_quotes'] }}</p>
+        <div class="surface-card p-5">
+            <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Pending Quotes</p>
+                    <p class="text-2xl font-extrabold text-gray-900 mt-1.5">{{ $stats['pending_quotes'] }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">awaiting your review</p>
                 </div>
-                <div class="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                </div>
+                <span class="w-11 h-11 shrink-0 rounded-2xl bg-surface-100 border border-surface-200 flex items-center justify-center">
+                    <x-icon name="document" class="w-5 h-5 text-gray-600" />
+                </span>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-500">Total Customers</p>
-                    <p class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['customers'] }}</p>
+        <div class="surface-card p-5">
+            <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Customers</p>
+                    <p class="text-2xl font-extrabold text-gray-900 mt-1.5">{{ $stats['customers'] }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">registered accounts</p>
                 </div>
-                <div class="w-10 h-10 bg-accent-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                </div>
+                <span class="w-11 h-11 shrink-0 rounded-2xl bg-surface-100 border border-surface-200 flex items-center justify-center">
+                    <x-icon name="user" class="w-5 h-5 text-gray-600" />
+                </span>
             </div>
         </div>
     </div>
 
-    {{-- Quick Stats Row --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <p class="text-sm text-gray-500">Services</p>
-            <p class="text-lg font-bold text-gray-900 mt-1">{{ $stats['services'] }}</p>
-        </div>
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <p class="text-sm text-gray-500">Portfolio Projects</p>
-            <p class="text-lg font-bold text-gray-900 mt-1">{{ $stats['portfolio'] }}</p>
-        </div>
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <p class="text-sm text-gray-500">Products</p>
-            <p class="text-lg font-bold text-gray-900 mt-1">{{ $stats['products'] }}</p>
-        </div>
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <p class="text-sm text-gray-500">Blog Posts</p>
-            <p class="text-lg font-bold text-gray-900 mt-1">{{ $stats['blog_posts'] }}</p>
-        </div>
+    
+    <div class="surface-card px-5 py-4 flex flex-wrap items-center gap-x-10 gap-y-3">
+        <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 shrink-0">Content library</p>
+        <a href="{{ route('admin.services.index') }}" class="flex items-center gap-2 text-sm group">
+            <span class="font-extrabold text-gray-900 group-hover:text-primary-600 transition-colors">{{ $stats['services'] }}</span>
+            <span class="text-gray-500">services</span>
+        </a>
+        <a href="{{ route('admin.portfolio.index') }}" class="flex items-center gap-2 text-sm group">
+            <span class="font-extrabold text-gray-900 group-hover:text-primary-600 transition-colors">{{ $stats['portfolio'] }}</span>
+            <span class="text-gray-500">portfolio projects</span>
+        </a>
+        <a href="{{ route('admin.products.index') }}" class="flex items-center gap-2 text-sm group">
+            <span class="font-extrabold text-gray-900 group-hover:text-primary-600 transition-colors">{{ $stats['products'] }}</span>
+            <span class="text-gray-500">products</span>
+        </a>
     </div>
 
-    {{-- Notifications --}}
-    <div class="bg-white rounded-xl border border-gray-200">
-        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+    
+    <div class="surface-card overflow-hidden">
+        <div class="px-5 py-4 border-b border-surface-200 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-4">
-                <h3 class="font-semibold text-gray-900">
+                <h3 class="font-bold text-gray-900 flex items-center gap-2">
                     Notifications
                     @if($unreadNotifications > 0)
-                        <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-primary-100 text-primary-700">{{ $unreadNotifications }} unread</span>
+                        <span class="px-2 py-0.5 text-xs font-bold rounded-full bg-accent-500 text-gray-900">{{ $unreadNotifications }} new</span>
                     @endif
                 </h3>
-                <a href="{{ route('admin.notifications.index') }}" class="text-xs font-medium text-primary-600 hover:text-primary-700">View all →</a>
+                <a href="{{ route('admin.notifications.index') }}" class="text-xs font-semibold text-primary-600 hover:text-primary-700">View all</a>
             </div>
             @if($unreadNotifications > 0)
                 <form method="POST" action="{{ route('admin.notifications.read-all') }}">
                     @csrf
-                    <button type="submit" class="text-xs font-medium text-primary-600 hover:text-primary-700">Mark all as read</button>
+                    <button type="submit" class="text-xs font-semibold text-gray-500 hover:text-gray-900">Mark all as read</button>
                 </form>
             @endif
         </div>
-        <div class="divide-y divide-gray-100">
-            @forelse($notifications as $notification)
-                <a href="{{ route('admin.notifications.open', $notification) }}" class="px-5 py-3 flex items-start justify-between hover:bg-gray-50 transition-colors">
-                    <div>
-                        <p class="text-sm font-medium {{ $notification->read_at ? 'text-gray-500' : 'text-gray-900' }}">
+        <div class="divide-y divide-surface-200/70">
+            @php$__empty_1 = true; $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; @endphp
+                <a href="{{ route('admin.notifications.open', $notification) }}" class="px-5 py-3.5 flex items-start justify-between gap-4 hover:bg-surface-50 transition-colors">
+                    <div class="min-w-0">
+                        <p class="text-sm font-semibold flex items-center gap-2 {{ $notification->read_at ? 'text-gray-500' : 'text-gray-900' }}">
                             @if(!$notification->read_at)
-                                <span class="inline-block w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                                <span class="w-2 h-2 bg-accent-500 rounded-full shrink-0"></span>
                             @endif
                             {{ $notification->data['title'] ?? 'Notification' }}
+
                         </p>
                         <p class="text-xs text-gray-500 mt-0.5">{{ $notification->data['message'] ?? '' }}</p>
                     </div>
-                    <span class="text-xs text-gray-400 whitespace-nowrap ml-4">{{ $notification->created_at->diffForHumans() }}</span>
+                    <span class="text-xs text-gray-400 whitespace-nowrap shrink-0">{{ $notification->created_at->diffForHumans() }}</span>
                 </a>
             @empty
-                <div class="px-5 py-8 text-center text-gray-400 text-sm">No notifications yet.</div>
-            @endforelse
+                <div class="px-5 py-8 text-center text-sm text-gray-400">No notifications yet.</div>
+            @endif
         </div>
     </div>
 
-    {{-- Recent Activity --}}
+    
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white rounded-xl border border-gray-200">
-            <div class="px-5 py-4 border-b border-gray-100">
-                <h3 class="font-semibold text-gray-900">Recent Quotes</h3>
+        <div class="surface-card overflow-hidden">
+            <div class="px-5 py-4 border-b border-surface-200 flex items-center justify-between">
+                <h3 class="font-bold text-gray-900">Recent Quotes</h3>
+                <a href="{{ route('admin.quotes.index') }}" class="text-xs font-semibold text-primary-600 hover:text-primary-700">All quotes</a>
             </div>
-            <div class="divide-y divide-gray-100">
-                @forelse($recentQuotes as $quote)
-                    <a href="{{ route('admin.quotes.show', $quote) }}" class="px-5 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">{{ $quote->name }}</p>
-                            <p class="text-xs text-gray-500">{{ $quote->email }} · {{ $quote->created_at->diffForHumans() }}</p>
+            <div class="divide-y divide-surface-200/70">
+                @php$__empty_1 = true; $__currentLoopData = $recentQuotes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $quote): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; @endphp
+                    <a href="{{ route('admin.quotes.show', $quote) }}" class="px-5 py-3.5 flex items-center justify-between gap-4 hover:bg-surface-50 transition-colors">
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-gray-900 truncate">{{ $quote->name }}</p>
+                            <p class="text-xs text-gray-500 truncate">{{ $quote->email }} · {{ $quote->created_at->diffForHumans() }}</p>
                         </div>
-                        <span class="px-2 py-0.5 text-xs font-medium rounded-full
-                            {{ $quote->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                            {{ $quote->status === 'quoted' ? 'bg-blue-100 text-blue-700' : '' }}
-                            {{ $quote->status === 'accepted' ? 'bg-green-100 text-green-700' : '' }}
-                            {{ $quote->status === 'converted' ? 'bg-accent-100 text-accent-700' : '' }}">
-                            {{ ucfirst($quote->status) }}
-                        </span>
+                        <x-status-badge :status="{{ \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($quote->status) }}" />
                     </a>
                 @empty
-                    <div class="px-5 py-8 text-center text-gray-400 text-sm">No quotes yet.</div>
-                @endforelse
+                    <div class="px-5 py-8 text-center text-sm text-gray-400">No quotes yet.</div>
+                @endif
             </div>
         </div>
 
-        <div class="bg-white rounded-xl border border-gray-200">
-            <div class="px-5 py-4 border-b border-gray-100">
-                <h3 class="font-semibold text-gray-900">Recent Orders</h3>
+        <div class="surface-card overflow-hidden">
+            <div class="px-5 py-4 border-b border-surface-200 flex items-center justify-between">
+                <h3 class="font-bold text-gray-900">Recent Orders</h3>
+                <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-primary-600 hover:text-primary-700">All orders</a>
             </div>
-            <div class="divide-y divide-gray-100">
-                @forelse($recentOrders as $order)
-                    <a href="{{ route('admin.orders.show', $order) }}" class="px-5 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">{{ $order->order_number }}</p>
-                            <p class="text-xs text-gray-500">{{ $order->user->name ?? 'N/A' }} · {{ $order->created_at->diffForHumans() }}</p>
+            <div class="divide-y divide-surface-200/70">
+                @php$__empty_1 = true; $__currentLoopData = $recentOrders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; @endphp
+                    <a href="{{ route('admin.orders.show', $order) }}" class="px-5 py-3.5 flex items-center justify-between gap-4 hover:bg-surface-50 transition-colors">
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-gray-900 font-mono">{{ $order->order_number }}</p>
+                            <p class="text-xs text-gray-500 truncate">{{ $order->user->name ?? 'N/A' }} · {{ $order->created_at->diffForHumans() }}</p>
                         </div>
-                        <span class="px-2 py-0.5 text-xs font-medium rounded-full
-                            {{ $order->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                            {{ $order->status === 'processing' ? 'bg-blue-100 text-blue-700' : '' }}
-                            {{ $order->status === 'completed' ? 'bg-green-100 text-green-700' : '' }}
-                            {{ $order->status === 'cancelled' ? 'bg-red-100 text-red-700' : '' }}">
-                            {{ ucfirst($order->status) }}
-                        </span>
+                        <x-status-badge :status="{{ \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($order->status) }}" />
                     </a>
                 @empty
-                    <div class="px-5 py-8 text-center text-gray-400 text-sm">No orders yet.</div>
-                @endforelse
+                    <div class="px-5 py-8 text-center text-sm text-gray-400">No orders yet.</div>
+                @endif
             </div>
         </div>
     </div>
 </div>
 @endsection
+

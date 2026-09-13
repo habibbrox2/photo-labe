@@ -5,7 +5,6 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ServiceController;
 use App\Http\Controllers\Frontend\PortfolioController;
 use App\Http\Controllers\Frontend\ProductController;
-use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\QuoteController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\BeforeAfterController;
@@ -32,10 +31,6 @@ Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('por
 // Digital Products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
-
-// Blog
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // Quote
 Route::get('/get-a-quote', [QuoteController::class, 'create'])->name('quote.create');
@@ -154,7 +149,6 @@ use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\BeforeAfterController as AdminBeforeAfterController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\QuoteController as AdminQuoteController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
@@ -165,6 +159,7 @@ use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\HeroSlideController as AdminHeroSlideController;
 
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
@@ -189,9 +184,6 @@ Route::prefix('admin')
         // Products
         Route::resource('products', AdminProductController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
-        // Blog
-        Route::resource('blog', AdminBlogController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
-
         // Quotes
         Route::resource('quotes', AdminQuoteController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::post('quotes/{quote}/convert', [AdminQuoteController::class, 'convertToOrder'])->name('quotes.convert');
@@ -208,6 +200,13 @@ Route::prefix('admin')
         // Testimonials
         Route::resource('testimonials', AdminTestimonialController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
+        // Hero Slides (homepage slider)
+        Route::resource('hero-slides', AdminHeroSlideController::class)
+            ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+            ->parameters(['hero-slides' => 'heroSlide']);
+        Route::post('hero-slides/{heroSlide}/up', [AdminHeroSlideController::class, 'moveUp'])->name('hero-slides.up');
+        Route::post('hero-slides/{heroSlide}/down', [AdminHeroSlideController::class, 'moveDown'])->name('hero-slides.down');
+
         // Pages
         Route::resource('pages', AdminPageController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
@@ -215,6 +214,7 @@ Route::prefix('admin')
         Route::resource('reviews', AdminReviewController::class)->only(['index', 'update', 'destroy']);
 
         // Media
+        Route::delete('media', [AdminMediaController::class, 'bulkDestroy'])->name('media.bulkDestroy');
         Route::resource('media', AdminMediaController::class)->only(['index', 'store', 'destroy']);
 
         // Settings
