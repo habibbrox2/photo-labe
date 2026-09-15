@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PageController extends Controller
 {
@@ -33,8 +34,13 @@ class PageController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['slug' => Str::slug($request->input('slug') ?: $request->input('title'))]);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => ['required', 'string', 'max:255', Rule::unique('pages', 'slug')],
+            'eyebrow' => 'nullable|string|max:255',
+            'subtitle' => 'nullable|string|max:500',
             'content' => 'nullable|string',
             'template' => 'nullable|string|max:100',
             'status' => 'required|in:draft,published',
@@ -42,8 +48,6 @@ class PageController extends Controller
             'seo_description' => 'nullable|string|max:500',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-
-        $validated['slug'] = Str::slug($validated['title']);
 
         if ($request->hasFile('featured_image')) {
             $validated['featured_image'] = $request->file('featured_image')->store('pages', 'public');
@@ -61,8 +65,15 @@ class PageController extends Controller
 
     public function update(Request $request, Page $page)
     {
+        // The slug is edited explicitly, never re-derived from the title: silently
+        // regenerating it would move a published page to a new URL on a typo fix.
+        $request->merge(['slug' => Str::slug($request->input('slug') ?: $page->slug)]);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => ['required', 'string', 'max:255', Rule::unique('pages', 'slug')->ignore($page->id)],
+            'eyebrow' => 'nullable|string|max:255',
+            'subtitle' => 'nullable|string|max:500',
             'content' => 'nullable|string',
             'template' => 'nullable|string|max:100',
             'status' => 'required|in:draft,published',
@@ -70,8 +81,6 @@ class PageController extends Controller
             'seo_description' => 'nullable|string|max:500',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-
-        $validated['slug'] = Str::slug($validated['title']);
 
         if ($request->hasFile('featured_image')) {
             $validated['featured_image'] = $request->file('featured_image')->store('pages', 'public');
@@ -84,6 +93,12 @@ class PageController extends Controller
 
     public function destroy(Page $page)
     {
+        // Deleting a page a hand-written route depends on would silently drop the
+        // site back to its built-in copy, so it is blocked rather than allowed.
+        if ($page->isSystemPage()) {
+            return back()->with('error', 'This page powers '.$page->publicUrl().' and cannot be deleted. Unpublish it instead.');
+        }
+
         $page->delete();
 
         return redirect()->route('admin.pages.index')->with('success', 'Page deleted successfully.');

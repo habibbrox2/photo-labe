@@ -33,7 +33,12 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($pages as $page)
                 <tr class="hover:bg-gray-50">
-                    <td class="px-5 py-3 font-medium text-gray-900">{{ $page->title }}</td>
+                    <td class="px-5 py-3 font-medium text-gray-900">
+                        {{ $page->title }}
+                        @if($page->publicUrl())
+                            <span class="ml-1.5 px-2 py-0.5 text-[11px] font-semibold rounded-full bg-accent-50 text-accent-700" title="This page is served by a fixed route, so it cannot be deleted.">Fixed page</span>
+                        @endif
+                    </td>
                     <td class="px-5 py-3 text-gray-500 font-mono text-xs">/{{ $page->slug }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $page->template ?? 'default' }}</td>
                     <td class="px-5 py-3">
@@ -42,11 +47,16 @@
                     <td class="px-5 py-3 text-gray-500 text-xs">{{ $page->created_at->format('M d, Y') }}</td>
                     <td class="px-5 py-3 text-right">
                         <div class="flex items-center justify-end gap-2">
+                            @if($page->publicUrl())
+                                <a href="{{ $page->publicUrl() }}" target="_blank" rel="noopener" class="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-lg">View</a>
+                            @endif
                             <a href="{{ route('admin.pages.edit', $page) }}" class="px-3 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 rounded-lg">Edit</a>
-                            <form method="POST" action="{{ route('admin.pages.destroy', $page) }}" data-confirm="Delete this page?" data-confirm-label="Delete">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg">Delete</button>
-                            </form>
+                            @unless($page->publicUrl())
+                                <form method="POST" action="{{ route('admin.pages.destroy', $page) }}" data-confirm="Delete this page?" data-confirm-label="Delete">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg">Delete</button>
+                                </form>
+                            @endunless
                         </div>
                     </td>
                 </tr>

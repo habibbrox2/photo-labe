@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    name: Tests & Blade compilation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # Feature tests render full pages, which need the Vite manifest.
+      - name: Build frontend assets
+        run: |
+          npm ci
+          npm run build
+
+      # Compile every Blade template. Fails if any view cannot be compiled.
+      - name: Compile all Blade views
+        run: php artisan view:cache
+
+      # Guard against corrupted sources (e.g. compiled output pasted back
+      # into a template): the compiled PHP must at least be syntactically
+      # valid. view:cache does NOT validate the generated PHP itself.
+      - name: PHP syntax lint over compiled views
+        run: |
+          find storage/framework/views -name '*.php' -print0 \
+            | xargs -0 -n1 -P4 php -l > /dev/null
+          echo "All compiled views pass php -l"
+
+      - name: Run tests
+        run: php artisan test

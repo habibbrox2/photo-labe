@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Purchase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -84,7 +85,7 @@ class PaymentService
             'transaction_id' => 'TXN-' . strtoupper(Str::random(12)),
             'paid_at' => now(),
             'gateway_response' => array_merge($payment->gateway_response ?? [], [
-                'verified_by' => auth()->id() ?? 'system',
+                'verified_by' => Auth::id() ?? 'system',
                 'verified_at' => now()->toDateTimeString(),
             ]),
         ]);

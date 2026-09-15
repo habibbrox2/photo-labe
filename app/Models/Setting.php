@@ -4,12 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
 {
     use HasFactory;
 
     protected $fillable = ['group', 'key', 'value', 'type'];
+
+    protected static function booted(): void
+    {
+        // CacheService caches every setting for an hour, so a saved setting has to
+        // drop that cache or edits would stay invisible until it expired.
+        $flush = fn () => Cache::forget('site_settings');
+
+        static::saved($flush);
+        static::deleted($flush);
+    }
 
     public static function get(string $key, mixed $default = null): mixed
     {

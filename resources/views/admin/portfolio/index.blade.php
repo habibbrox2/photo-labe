@@ -1,7 +1,14 @@
+@use('App\Support\PreviewGallery')
 @extends('admin.layouts.app')
 @section('page-title', 'Portfolio')
 
 @section('content')
+@php
+    // Every image on this page in row order, plus where each project's image sits in it.
+    [$previewImages, $previewIndex] = PreviewGallery::for($projects, fn ($project) => ['image' => $project->featured_image]);
+@endphp
+
+<div x-data="portfolioGallery(@js($previewImages))">
 <div class="flex items-center justify-between mb-6">
     <p class="text-sm text-gray-500">{{ $projects->total() }} total projects</p>
     <a href="{{ route('admin.portfolio.create') }}" class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">+ Add Project</a>
@@ -17,6 +24,7 @@
     <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Image</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Category</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Client</th>
@@ -27,6 +35,15 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($projects as $project)
                 <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-3">
+                        @if($project->featured_image)
+                            <x-image-thumb :src="asset('storage/' . $project->featured_image)"
+                                           :index="$previewIndex[$project->id]['image']"
+                                           :alt="$project->title" />
+                        @else
+                            <span class="text-gray-300">—</span>
+                        @endif
+                    </td>
                     <td class="px-5 py-3 font-medium text-gray-900">{{ $project->title }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $project->category->name ?? '-' }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $project->client ?? '-' }}</td>
@@ -44,11 +61,14 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5"><x-empty-state icon="image" title="No projects found" description="Showcase your best work — add your first portfolio project."><a href="{{ route('admin.portfolio.create') }}" class="btn btn-primary btn-sm">Add a project</a></x-empty-state></td></tr>
+                <tr><td colspan="6"><x-empty-state icon="image" title="No projects found" description="Showcase your best work — add your first portfolio project."><a href="{{ route('admin.portfolio.create') }}" class="btn btn-primary btn-sm">Add a project</a></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
     </div>
 </div>
 <div class="mt-4">{{ $projects->links() }}</div>
+
+    <x-image-lightbox label="Portfolio images" />
+</div>
 @endsection

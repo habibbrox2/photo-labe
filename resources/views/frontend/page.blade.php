@@ -4,7 +4,9 @@
 
 @section('content')
 <x-page-hero
+    :eyebrow="$page->eyebrow"
     title="{{ $page->title }}"
+    :subtitle="$page->subtitle"
     :breadcrumbs="[['label' => 'Home', 'url' => route('home')], ['label' => $page->title]]"
 />
 
@@ -18,7 +20,7 @@
 
         @if($page->content)
         <div class="prose prose-lg max-w-none prose-headings:tracking-tight prose-headings:text-gray-900 prose-headings:font-extrabold prose-p:text-gray-600 prose-a:text-accent-600 prose-strong:text-gray-900 prose-li:text-gray-600 prose-img:rounded-2xl">
-            {!! $page->content !!}
+            {!! render_shortcodes($page->content) !!}
         </div>
         @endif
     </div>

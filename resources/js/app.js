@@ -1,6 +1,7 @@
 import './bootstrap';
 import './before-after';
 import './portfolio-gallery';
+import './media-lightbox';
 
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';

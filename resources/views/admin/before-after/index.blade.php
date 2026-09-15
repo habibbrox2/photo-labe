@@ -1,7 +1,17 @@
+@use('App\Support\PreviewGallery')
 @extends('admin.layouts.app')
 @section('page-title', 'Before / After')
 
 @section('content')
+@php
+    // Every before/after image on this page in row order, plus where each project's pair sits in it.
+    [$previewImages, $previewIndex] = PreviewGallery::for($projects, fn ($project) => [
+        'before' => $project->before_image,
+        'after' => $project->after_image,
+    ]);
+@endphp
+
+<div x-data="portfolioGallery(@js($previewImages))">
 <div class="flex items-center justify-between mb-6">
     <p class="text-sm text-gray-500">{{ $projects->total() }} total items</p>
     <a href="{{ route('admin.before-after.create') }}" class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">+ Add Item</a>
@@ -12,6 +22,8 @@
     <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">ID</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Before / After</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Category</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
@@ -21,6 +33,31 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($projects as $project)
                 <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-3 font-mono text-xs text-gray-400">#{{ $project->id }}</td>
+                    <td class="px-5 py-3">
+                        <div class="flex items-end gap-3">
+                            <div class="shrink-0">
+                                <span class="mb-1 block text-[10px] font-semibold uppercase tracking-wide text-gray-400">Before</span>
+                                @if($project->before_image)
+                                    <x-image-thumb :src="asset('storage/' . $project->before_image)"
+                                                   :index="$previewIndex[$project->id]['before']"
+                                                   :alt="$project->title . ' — before'" />
+                                @else
+                                    <span class="text-gray-300">—</span>
+                                @endif
+                            </div>
+                            <div class="shrink-0">
+                                <span class="mb-1 block text-[10px] font-semibold uppercase tracking-wide text-gray-400">After</span>
+                                @if($project->after_image)
+                                    <x-image-thumb :src="asset('storage/' . $project->after_image)"
+                                                   :index="$previewIndex[$project->id]['after']"
+                                                   :alt="$project->title . ' — after'" />
+                                @else
+                                    <span class="text-gray-300">—</span>
+                                @endif
+                            </div>
+                        </div>
+                    </td>
                     <td class="px-5 py-3 font-medium text-gray-900">{{ $project->title }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $project->category->name ?? '-' }}</td>
                     <td class="px-5 py-3">
@@ -37,11 +74,14 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="4"><x-empty-state icon="camera" title="No before/after projects found" description="Add transformations to showcase your retouching skills."><a href="{{ route('admin.before-after.create') }}" class="btn btn-primary btn-sm">Add a project</a></x-empty-state></td></tr>
+                <tr><td colspan="6"><x-empty-state icon="camera" title="No before/after projects found" description="Add transformations to showcase your retouching skills."><a href="{{ route('admin.before-after.create') }}" class="btn btn-primary btn-sm">Add a project</a></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
     </div>
 </div>
 <div class="mt-4">{{ $projects->links() }}</div>
+
+    <x-image-lightbox label="Before and after images" />
+</div>
 @endsection

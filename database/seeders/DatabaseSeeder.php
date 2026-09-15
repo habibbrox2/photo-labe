@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             HeroSlideSeeder::class,
             TestimonialSeeder::class,
             SettingSeeder::class,
+            PageSeeder::class,
         ]);
     }
 }

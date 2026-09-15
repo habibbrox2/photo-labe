@@ -1,7 +1,14 @@
+@use('App\Support\PreviewGallery')
 @extends('admin.layouts.app')
 @section('page-title', 'Products')
 
 @section('content')
+@php
+    // Every image on this page in row order, plus where each product's image sits in it.
+    [$previewImages, $previewIndex] = PreviewGallery::for($products, fn ($product) => ['image' => $product->featured_image]);
+@endphp
+
+<div x-data="portfolioGallery(@js($previewImages))">
 <div class="flex items-center justify-between mb-6">
     <p class="text-sm text-gray-500">{{ $products->total() }} total products</p>
     <a href="{{ route('admin.products.create') }}" class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">+ Add Product</a>
@@ -22,6 +29,7 @@
     <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Image</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Category</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Price</th>
@@ -32,6 +40,15 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($products as $product)
                 <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-3">
+                        @if($product->featured_image)
+                            <x-image-thumb :src="asset('storage/' . $product->featured_image)"
+                                           :index="$previewIndex[$product->id]['image']"
+                                           :alt="$product->title" />
+                        @else
+                            <span class="text-gray-300">—</span>
+                        @endif
+                    </td>
                     <td class="px-5 py-3 font-medium text-gray-900">{{ $product->title }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $product->category->name ?? '-' }}</td>
                     <td class="px-5 py-3 text-gray-900 font-medium">${{ number_format($product->price, 2) }}</td>
@@ -49,11 +66,14 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5"><x-empty-state icon="package" title="No products found" description="Add your first digital product to start selling instantly."><a href="{{ route('admin.products.create') }}" class="btn btn-primary btn-sm">Add a product</a></x-empty-state></td></tr>
+                <tr><td colspan="6"><x-empty-state icon="package" title="No products found" description="Add your first digital product to start selling instantly."><a href="{{ route('admin.products.create') }}" class="btn btn-primary btn-sm">Add a product</a></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
     </div>
 </div>
 <div class="mt-4">{{ $products->links() }}</div>
+
+    <x-image-lightbox label="Product images" />
+</div>
 @endsection

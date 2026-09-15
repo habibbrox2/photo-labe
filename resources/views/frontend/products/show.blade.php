@@ -124,7 +124,7 @@
                 <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-gray-900">What you get</h2>
             </div>
             <div class="lg:col-span-8 prose prose-lg max-w-none prose-headings:tracking-tight prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-primary-600 prose-strong:text-gray-900 prose-li:text-gray-600">
-                {!! $product->description !!}
+                {!! render_shortcodes($product->description) !!}
             </div>
         </div>
     </div>

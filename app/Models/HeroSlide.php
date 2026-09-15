@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class HeroSlide extends Model
 {
+    /** Headline shown when a slide has none (single source of truth for homepage + admin preview). */
+    public const DEFAULT_HEADLINE = 'Pixel-perfect photo editing for brands that <em class="italic text-accent-400">refuse to look average.</em>';
+
     protected $fillable = [
         'image',
         'headline',

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'About Us')
 @section('content')
+{{--
+    Fallback copy for /about, used only while no About page exists in the CMS
+    (Pages → About in the admin), or before the seeder has run. Once that page is
+    published it takes over, so edits belong there rather than here.
+--}}
 <x-page-hero
     eyebrow="Our Studio"
     title="About PhotoLabe"

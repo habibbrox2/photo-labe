@@ -14,7 +14,7 @@
 {{-- ============ HERO: IMAGE SLIDER ============ --}}
 @php
     $slides = $heroSlides->filter(fn ($s) => ! empty($s->image))->take(6)->values();
-    $defaultHeadline = 'Pixel-perfect photo editing for brands that <em class="italic text-accent-400">refuse to look average.</em>';
+    $defaultHeadline = \App\Models\HeroSlide::DEFAULT_HEADLINE;
 @endphp
 <script>window.__heroHeadlines = @json($slides->pluck('headline'));</script>
 <section x-data="{

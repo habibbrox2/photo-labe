@@ -1,7 +1,14 @@
+@use('App\Support\PreviewGallery')
 @extends('admin.layouts.app')
 @section('page-title', 'Services')
 
 @section('content')
+@php
+    // Every image on this page in row order, plus where each service's image sits in it.
+    [$previewImages, $previewIndex] = PreviewGallery::for($services, fn ($service) => ['image' => $service->featured_image]);
+@endphp
+
+<div x-data="portfolioGallery(@js($previewImages))">
 <div class="flex items-center justify-between mb-6">
     <div>
         <p class="text-sm text-gray-500">{{ $services->total() }} total services</p>
@@ -29,6 +36,7 @@
     <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Image</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Category</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Price</th>
@@ -40,6 +48,15 @@
         <tbody class="divide-y divide-gray-100">
             @forelse($services as $service)
                 <tr class="hover:bg-gray-50">
+                    <td class="px-5 py-3">
+                        @if($service->featured_image)
+                            <x-image-thumb :src="asset('storage/' . $service->featured_image)"
+                                           :index="$previewIndex[$service->id]['image']"
+                                           :alt="$service->title" />
+                        @else
+                            <span class="text-gray-300">—</span>
+                        @endif
+                    </td>
                     <td class="px-5 py-3">
                         <div class="font-medium text-gray-900">
                             @if($service->status === 'published')
@@ -72,7 +89,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6"><x-empty-state icon="sparkles" title="No services found" description="Create your first service so customers can request quotes for it."><a href="{{ route('admin.services.create') }}" class="btn btn-primary btn-sm">Add a service</a></x-empty-state></td></tr>
+                <tr><td colspan="7"><x-empty-state icon="sparkles" title="No services found" description="Create your first service so customers can request quotes for it."><a href="{{ route('admin.services.create') }}" class="btn btn-primary btn-sm">Add a service</a></x-empty-state></td></tr>
             @endforelse
         </tbody>
     </table>
@@ -80,4 +97,7 @@
 </div>
 
 <div class="mt-4">{{ $services->links() }}</div>
+
+    <x-image-lightbox label="Service images" />
+</div>
 @endsection

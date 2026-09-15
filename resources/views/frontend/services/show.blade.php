@@ -73,7 +73,7 @@
                 @if($service->description)
                 <div>
                     <div class="prose prose-lg max-w-none prose-headings:tracking-tight prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-primary-600 prose-strong:text-gray-900 prose-li:text-gray-600 [&_h2]:text-2xl [&_h3]:text-xl">
-                        {!! $service->description !!}
+                        {!! render_shortcodes($service->description) !!}
                     </div>
                 </div>
                 @endif

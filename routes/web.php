@@ -41,7 +41,7 @@ Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
 // Static Pages
-Route::get('/about', fn () => view('frontend.about'))->name('about');
+Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/faq', fn () => view('frontend.faq'))->name('faq');
 Route::get('/pricing', fn () => view('frontend.pricing'))->name('pricing');
 Route::get('/before-after', [BeforeAfterController::class, 'index'])->name('before-after');
@@ -160,6 +160,7 @@ use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\HeroSlideController as AdminHeroSlideController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
@@ -201,11 +202,12 @@ Route::prefix('admin')
         Route::resource('testimonials', AdminTestimonialController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Hero Slides (homepage slider)
+        // Declared before the resource: PATCH hero-slides/{heroSlide} (the resource
+        // `update` route) would otherwise match the reorder endpoint first.
+        Route::patch('hero-slides/reorder', [AdminHeroSlideController::class, 'reorder'])->name('hero-slides.reorder');
         Route::resource('hero-slides', AdminHeroSlideController::class)
             ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
             ->parameters(['hero-slides' => 'heroSlide']);
-        Route::post('hero-slides/{heroSlide}/up', [AdminHeroSlideController::class, 'moveUp'])->name('hero-slides.up');
-        Route::post('hero-slides/{heroSlide}/down', [AdminHeroSlideController::class, 'moveDown'])->name('hero-slides.down');
 
         // Pages
         Route::resource('pages', AdminPageController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
@@ -213,8 +215,18 @@ Route::prefix('admin')
         // Reviews
         Route::resource('reviews', AdminReviewController::class)->only(['index', 'update', 'destroy']);
 
+        // Users
+        Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update', 'destroy']);
+
+        // Admin own profile
+        Route::get('profile', [AdminUserController::class, 'profile'])->name('users.profile');
+        Route::put('profile', [AdminUserController::class, 'updateProfile'])->name('users.profile.update');
+
         // Media
         Route::delete('media', [AdminMediaController::class, 'bulkDestroy'])->name('media.bulkDestroy');
+        Route::patch('media/{media}', [AdminMediaController::class, 'update'])->name('media.update');
+        Route::get('media/{media}/preview', [AdminMediaController::class, 'preview'])->name('media.preview');
+        Route::get('media/{media}/download', [AdminMediaController::class, 'download'])->name('media.download');
         Route::resource('media', AdminMediaController::class)->only(['index', 'store', 'destroy']);
 
         // Settings
