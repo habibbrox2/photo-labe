@@ -10,4 +10,3 @@
 @section('heading', 'Access denied')
 @section('message', "You don't have permission to view this page. If you believe this is a mistake, please contact support.")
 @section('primary_url', url('/'))
-@endsection

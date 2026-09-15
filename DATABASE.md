@@ -454,52 +454,6 @@ PhotoLabe uses MySQL 8+ with 14 migration files creating 30+ tables.
 | timestamps | | |
 | deleted_at | timestamp | Soft delete |
 
-#### blog_categories
-| Column | Type | Notes |
-|--------|------|-------|
-| id | bigint PK | |
-| name | varchar(255) | |
-| slug | varchar(255) | Unique |
-| description | text | Nullable |
-| sort_order | integer | Default: 0 |
-| is_active | boolean | Default: true |
-| timestamps | | |
-| deleted_at | timestamp | Soft delete |
-
-#### blog_posts
-| Column | Type | Notes |
-|--------|------|-------|
-| id | bigint PK | |
-| category_id | bigint FK | Nullable |
-| author_id | bigint FK | Nullable, users |
-| title | varchar(255) | |
-| slug | varchar(255) | Unique |
-| excerpt | text | Nullable |
-| content | longtext | Nullable |
-| featured_image | varchar(255) | Nullable |
-| is_featured | boolean | Default: false |
-| status | varchar(255) | Default: draft |
-| published_at | timestamp | Nullable |
-| seo_title | varchar(255) | Nullable |
-| seo_description | text | Nullable |
-| views_count | integer | Default: 0 |
-| timestamps | | |
-| deleted_at | timestamp | Soft delete |
-
-#### blog_tags
-| Column | Type | Notes |
-|--------|------|-------|
-| id | bigint PK | |
-| name | varchar(255) | |
-| slug | varchar(255) | Unique |
-| timestamps | | |
-
-#### blog_post_tag (pivot)
-| Column | Type | Notes |
-|--------|------|-------|
-| post_id | bigint FK | blog_posts |
-| tag_id | bigint FK | blog_tags |
-
 ---
 
 ### Other Tables

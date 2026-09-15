@@ -20,7 +20,7 @@ PhotoLabe implements industry-standard security practices to protect against com
   - `admin` — Requires admin role
   - `editor` — Requires editor/admin role
   - `verified` — Requires verified email
-- **Authorization Policies:** 7 model policies (Order, Quote, Service, Portfolio, Product, BlogPost, Testimonial)
+- **Authorization Policies:** 6 model policies (Order, Quote, Service, Portfolio, Product, Testimonial)
 - **Gate Definitions:** Policy-based authorization checks
 
 ### Input Validation

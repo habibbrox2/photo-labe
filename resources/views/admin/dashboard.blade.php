@@ -102,7 +102,7 @@
             @endif
         </div>
         <div class="divide-y divide-surface-200/70">
-            @php$__empty_1 = true; $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; @endphp
+            @forelse ($notifications as $notification)
                 <a href="{{ route('admin.notifications.open', $notification) }}" class="px-5 py-3.5 flex items-start justify-between gap-4 hover:bg-surface-50 transition-colors">
                     <div class="min-w-0">
                         <p class="text-sm font-semibold flex items-center gap-2 {{ $notification->read_at ? 'text-gray-500' : 'text-gray-900' }}">
@@ -118,7 +118,7 @@
                 </a>
             @empty
                 <div class="px-5 py-8 text-center text-sm text-gray-400">No notifications yet.</div>
-            @endif
+            @endforelse
         </div>
     </div>
 
@@ -130,17 +130,17 @@
                 <a href="{{ route('admin.quotes.index') }}" class="text-xs font-semibold text-primary-600 hover:text-primary-700">All quotes</a>
             </div>
             <div class="divide-y divide-surface-200/70">
-                @php$__empty_1 = true; $__currentLoopData = $recentQuotes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $quote): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; @endphp
+                @forelse ($recentQuotes as $quote)
                     <a href="{{ route('admin.quotes.show', $quote) }}" class="px-5 py-3.5 flex items-center justify-between gap-4 hover:bg-surface-50 transition-colors">
                         <div class="min-w-0">
                             <p class="text-sm font-semibold text-gray-900 truncate">{{ $quote->name }}</p>
                             <p class="text-xs text-gray-500 truncate">{{ $quote->email }} · {{ $quote->created_at->diffForHumans() }}</p>
                         </div>
-                        <x-status-badge :status="{{ \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($quote->status) }}" />
+                        <x-status-badge :status="$quote->status" />
                     </a>
                 @empty
                     <div class="px-5 py-8 text-center text-sm text-gray-400">No quotes yet.</div>
-                @endif
+                @endforelse
             </div>
         </div>
 
@@ -150,17 +150,17 @@
                 <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-primary-600 hover:text-primary-700">All orders</a>
             </div>
             <div class="divide-y divide-surface-200/70">
-                @php$__empty_1 = true; $__currentLoopData = $recentOrders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; @endphp
+                @forelse ($recentOrders as $order)
                     <a href="{{ route('admin.orders.show', $order) }}" class="px-5 py-3.5 flex items-center justify-between gap-4 hover:bg-surface-50 transition-colors">
                         <div class="min-w-0">
                             <p class="text-sm font-semibold text-gray-900 font-mono">{{ $order->order_number }}</p>
                             <p class="text-xs text-gray-500 truncate">{{ $order->user->name ?? 'N/A' }} · {{ $order->created_at->diffForHumans() }}</p>
                         </div>
-                        <x-status-badge :status="{{ \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($order->status) }}" />
+                        <x-status-badge :status="$order->status" />
                     </a>
                 @empty
                     <div class="px-5 py-8 text-center text-sm text-gray-400">No orders yet.</div>
-                @endif
+                @endforelse
             </div>
         </div>
     </div>

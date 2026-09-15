@@ -50,7 +50,7 @@ A production-ready Laravel platform for professional photo editing services, por
 - Professional photo editing services (clipping path, retouching, restoration, etc.)
 - Portfolio showcasing
 - Digital product sales (presets, LUTs, templates, brushes)
-- Customer engagement through blog and quote requests
+- Customer engagement through quote requests
 
 The application is **shared-hosting friendly** (cPanel-compatible) using database queues and works out of the box on most affordable hosting providers.
 
@@ -67,7 +67,6 @@ The application is **shared-hosting friendly** (cPanel-compatible) using databas
 | **Portfolio** | Category filtering, gallery lightbox, tags |
 | **Before/After** | Interactive slider with mouse, touch, and keyboard support |
 | **Products** | Digital downloads with cart and checkout |
-| **Blog** | Categories and tags support |
 | **Quotes** | Quote request form with file uploads |
 | **Contact** | Contact form |
 | **CMS Pages** | Dynamic pages |
@@ -77,7 +76,7 @@ The application is **shared-hosting friendly** (cPanel-compatible) using databas
 | Module | Description |
 |---|---|
 | **Dashboard** | Revenue, orders, quotes, customers statistics |
-| **CRUD Management** | Services, Portfolio, Products, Blog, Pages, Testimonials, Before/After |
+| **CRUD Management** | Services, Portfolio, Products, Pages, Testimonials, Before/After |
 | **Quote Workflow** | Status management |
 | **Order Management** | Status updates and tracking |
 | **Customers** | Customer management |

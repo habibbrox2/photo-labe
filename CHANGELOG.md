@@ -43,10 +43,6 @@ All notable changes to the PhotoLabe project will be documented in this file.
 - **transactions** - Payment transactions
 - **invoices** - Invoice generation
 - **pages** - CMS pages
-- **blog_categories** - Blog category management
-- **blog_posts** - Blog post listings
-- **blog_tags** - Blog tag system
-- **blog_post_tag** - Many-to-many pivot
 - **reviews** - Polymorphic review system
 - **testimonials** - Client testimonials
 - **media** - Media library
@@ -71,7 +67,7 @@ All notable changes to the PhotoLabe project will be documented in this file.
 - Quote, QuoteItem, QuoteFile
 - Order, OrderItem, OrderFile, OrderRevision, OrderMessage
 - Payment, Transaction, Invoice
-- Page, BlogCategory, BlogPost, BlogTag
+- Page
 - Review, Testimonial
 - Media, MediaFolder
 - SupportTicket, SupportTicketMessage
@@ -91,12 +87,11 @@ All notable changes to the PhotoLabe project will be documented in this file.
 - `components/header.blade.php` - Responsive nav with mobile menu
 - `components/footer.blade.php` - Footer with CTA banner
 
-#### Frontend Pages (13 views)
+#### Frontend Pages (11 views)
 - Homepage with 10 sections (hero, stats, services, before/after, portfolio, products, why us, process, testimonials, FAQ)
 - Services index & detail pages
 - Portfolio index & detail pages
 - Products index & detail pages
-- Blog index & detail pages
 - Quote submission form
 - Contact form
 - About, FAQ, Pricing, Before/After pages
@@ -110,24 +105,23 @@ All notable changes to the PhotoLabe project will be documented in this file.
 #### Admin Dashboard (1 view)
 - Dashboard with stat cards (placeholder for Milestone 3)
 
-#### Controllers (7 frontend controllers)
+#### Controllers (6 frontend controllers)
 - HomeController, ServiceController, PortfolioController
-- ProductController, BlogController, QuoteController
+- ProductController, QuoteController
 - ContactController
 
-#### Routes (26 routes)
+#### Routes (24 routes)
 - All public frontend routes
 - Customer dashboard routes
 - Admin dashboard routes
 - Cart routes
 
-#### Seeders (8 seeders)
+#### Seeders (7 seeders)
 - UserSeeder (admin, editor, designer, 2 customers)
 - ServiceSeeder (4 categories, 6 services with features & pricing)
 - PortfolioSeeder (6 categories, 6 projects, tags)
 - BeforeAfterSeeder (3 categories, 4 projects)
 - ProductSeeder (8 categories, 4 products)
-- BlogSeeder (4 categories, 3 posts, tags)
 - TestimonialSeeder (5 testimonials)
 - SettingSeeder (9 site settings)
 
@@ -159,13 +153,12 @@ All notable changes to the PhotoLabe project will be documented in this file.
 - `EditorMiddleware` - Checks editor/admin role, returns 403 if unauthorized
 - Registered in `bootstrap/app.php`
 
-#### Authorization Policies (7 policies)
+#### Authorization Policies (6 policies)
 - `OrderPolicy` - Admin/editor can view all, user can view own
 - `QuotePolicy` - Admin/editor can view all, user can view own
 - `ServicePolicy` - Admin can CRUD
 - `PortfolioPolicy` - Admin can CRUD
 - `ProductPolicy` - Admin can CRUD
-- `BlogPostPolicy` - Admin/editor can create, author can edit own
 - `TestimonialPolicy` - Admin can CRUD
 
 #### Auth Views (7 views)
@@ -196,13 +189,7 @@ All notable changes to the PhotoLabe project will be documented in this file.
 
 ## [Milestone 12] - 2026-09-02
 
-### ✅ CMS - Blog, Pages, Media, Reviews
-
-#### Blog System (Enhanced)
-- Blog post CRUD with categories and tags
-- Blog post detail with content rendering, author, related posts
-- Blog category and tag management
-- SEO metadata on blog posts
+### ✅ CMS - Pages, Media, Reviews
 
 #### Pages System
 - Page CRUD in admin (list, create, edit, delete)
@@ -259,7 +246,7 @@ All notable changes to the PhotoLabe project will be documented in this file.
 
 #### Sitemap
 - Dynamic sitemap.xml generation (`/sitemap.xml`)
-- Includes: homepage, static pages, services, portfolio, products, blog posts, pages
+- Includes: homepage, static pages, services, portfolio, products, pages
 - Last-modified dates, changefreq, priority
 - 31 URLs in sitemap
 - Cache headers for performance
@@ -274,7 +261,6 @@ All notable changes to the PhotoLabe project will be documented in this file.
 - `<x-seo-meta>` Blade component for reusable SEO
 - Organization schema on homepage
 - Product schema on product detail pages
-- Article schema on blog post detail pages
 - Automatic publisher/brand information
 
 #### Open Graph & Meta
@@ -360,7 +346,7 @@ All notable changes to the PhotoLabe project will be documented in this file.
 
 #### Admin Dashboard
 - Revenue, Orders, Pending Quotes, Customers stat widgets
-- Services, Portfolio, Products, Blog count widgets
+- Services, Portfolio, Products count widgets
 - Recent Quotes list with status badges
 - Recent Orders list with status badges
 
@@ -386,12 +372,6 @@ All notable changes to the PhotoLabe project will be documented in this file.
 - Product list with search, status filter, pagination
 - Create product form (title, category, pricing, features, SEO)
 - Edit product form with features textarea
-- Delete with confirmation
-
-#### Admin CRUD - Blog
-- Blog list with search, status filter, pagination
-- Create post form (title, category, content, tags, SEO)
-- Edit post form with tag management
 - Delete with confirmation
 
 #### Admin CRUD - Testimonials
@@ -423,16 +403,16 @@ All notable changes to the PhotoLabe project will be documented in this file.
 - General settings (name, email, phone, address, currency)
 - SEO defaults (meta title, description)
 
-#### Admin Controllers (11 controllers)
+#### Admin Controllers (10 controllers)
 - ServiceController, PortfolioController, BeforeAfterController
-- ProductController, BlogController, QuoteController
+- ProductController, QuoteController
 - OrderController, CustomerController, TestimonialController
 - MediaController, SettingController
 
 #### Admin Views (25+ views)
-- 12 index views (list/table with search, filter, pagination)
-- 6 create forms
-- 6 edit forms
+- 11 index views (list/table with search, filter, pagination)
+- 5 create forms
+- 5 edit forms
 - 3 detail/show views (quotes, orders, customers)
 - 1 media library (grid layout)
 - 1 settings page
@@ -468,7 +448,7 @@ All notable changes to the PhotoLabe project will be documented in this file.
 #### Performance
 - CacheService for all high-traffic queries
 - Tag-based cache invalidation
-- Homepage query caching (services, portfolio, products, blog, testimonials)
+- Homepage query caching (services, portfolio, products, testimonials)
 - `cache:warm` artisan command
 - Database query optimization (eager loading)
 
