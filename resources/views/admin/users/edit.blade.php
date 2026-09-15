@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="max-w-2xl">
-    <x-breadcrumbs :items="[['label' => 'Users', 'url' => route('admin.users.index')], ['label' => 'Edit']]'" />
+    <x-breadcrumbs :items="[['label' => 'Users', 'url' => route('admin.users.index')], ['label' => 'Edit']]" />
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
         <form method="POST" action="{{ route('admin.users.update', $user) }}">
@@ -72,4 +72,4 @@
         </form>
     </div>
 </div>
-@section
+@endsection
