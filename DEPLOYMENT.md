@@ -175,6 +175,53 @@ Private files are stored in `storage/app/private/` and are NOT publicly accessib
 
 Public files are stored in `storage/app/public/` and accessed via `storage/` symlink.
 
+### Brand Assets (Logo + Hero Banners)
+
+The site logo and homepage hero banners live in `storage/app/public/` and are
+referenced by Blade templates as `asset('storage/...')`. Because user-uploaded
+storage is not in git, these files must be copied to the server manually
+**once** after the first deploy (and whenever they change):
+
+| Local file (source) | Server path (destination) | Used by |
+|---|---|---|
+| `storage/app/public/brand/logo.png` | same | header, footer, admin sidebar, JSON-LD |
+| `storage/app/public/brand/logo-mark.png` | same | square fallback icon |
+| `storage/app/public/demo/hero/hero-jewelry.jpg` | same | hero slide 1 |
+| `storage/app/public/demo/hero/hero-headphone.jpg` | same | hero slide 2 |
+| `storage/app/public/demo/hero/hero-shoes.jpg` | same | hero slide 3 |
+| `storage/app/public/demo/hero/hero-sunglass.jpg` | same | hero slide 4 |
+| `storage/app/public/demo/hero/hero-model.jpg` | same | hero slide 5 |
+| `storage/app/public/demo/hero/hero-extra-1.jpg` | same | hero slide 6 |
+| `storage/app/public/demo/hero/hero-extra-2.jpg` | same | hero slide 7 + login panel background |
+| `storage/app/public/demo/hero/hero-extra-3.jpg` | same | hero slide 8 |
+
+Source of truth for originals: `G:\Web\photolab\storage\Web Banner\`
+(`Logo/` → brand, `Banner/` → hero; copied via the mapping in the run doc
+`.freebuff/run.md`). This folder is **not** committed to git.
+
+Upload with cPanel File Manager, or from a machine with SSH access:
+
+```bash
+scp -r storage/app/public/brand storage/app/public/demo/hero \
+    user@server:/home/username/laravel-app/storage/app/public/
+```
+
+Then on the server:
+
+```bash
+php artisan storage:link          # ensure public/storage symlink exists
+php artisan db:seed --class=HeroSlideSeeder --force   # hero slide rows in DB
+php artisan cache:clear           # hero slides are cached for 1 hour
+```
+
+> Hero slide rows live in the database (`hero_slides` table). If the seeder
+> cannot run (shared hosting without CLI), create the rows via the admin panel
+> at **Admin → Hero Slides** using the image paths above — the paths are
+> relative to `storage/app/public/` (e.g. `demo/hero/hero-jewelry.jpg`).
+
+To verify after deploy: the homepage header shows the real logo, and the hero
+slider rotates through 8 slides (dots at bottom-right of the hero).
+
 ## SSL/HTTPS
 
 1. Install SSL certificate via cPanel (Let's Encrypt recommended)
