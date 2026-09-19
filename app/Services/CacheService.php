@@ -9,7 +9,7 @@ use App\Models\Service;
 use App\Models\PortfolioProject;
 use App\Models\Product;
 use App\Models\Testimonial;
-use App\Models\BeforeAfter;
+use App\Models\BeforeAfterProject;
 
 class CacheService
 {
@@ -104,8 +104,9 @@ class CacheService
     public static function beforeAfterItems()
     {
         return Cache::remember('before_after_active', self::$defaultTTL, function () {
-            return BeforeAfter::where('is_active', true)
-                ->orderBy('sort_order')
+            return BeforeAfterProject::query()
+                ->active()
+                ->ordered()
                 ->get();
         });
     }

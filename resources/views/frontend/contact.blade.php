@@ -101,6 +101,14 @@
                         <textarea id="message" name="message" rows="6" required class="form-control-modern resize-none">{{ old('message') }}</textarea>
                         @error('message') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
+                    {{-- Time-trap: encrypted form-opened timestamp --}}
+                    <input type="hidden" name="{{ \App\Support\FormTimeTrap::FIELD }}" value="{{ \App\Support\FormTimeTrap::token() }}">
+
+                    {{-- Honeypot: hidden from humans, bots autofill it --}}
+                    <div class="absolute -left-[9999px] top-auto" aria-hidden="true">
+                        <label for="website">Website</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
                     <div class="mt-8 pt-8 border-t border-surface-200 flex flex-col sm:flex-row items-center gap-4">
                         <button type="submit" class="btn btn-lg btn-gradient w-full sm:w-auto">
                             Send Message

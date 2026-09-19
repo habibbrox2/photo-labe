@@ -13,7 +13,7 @@
 @section('content')
 {{-- ============ HERO: IMAGE SLIDER ============ --}}
 @php
-    $slides = $heroSlides->filter(fn ($s) => ! empty($s->image))->take(6)->values();
+    $slides = $heroSlides->filter(fn ($s) => ! empty($s->image))->take(8)->values();
     $defaultHeadline = \App\Models\HeroSlide::DEFAULT_HEADLINE;
 @endphp
 <script>window.__heroHeadlines = @json($slides->pluck('headline'));</script>

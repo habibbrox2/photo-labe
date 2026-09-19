@@ -13,14 +13,9 @@
         <div class="flex items-center justify-between h-20 lg:h-[4.75rem]">
 
             {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5 group relative z-10" aria-label="PhotoLabe home">
-                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary-800 via-primary-700 to-accent-500 flex items-center justify-center shadow-sm shadow-primary-800/20 transition-transform duration-300 group-hover:scale-105">
-                    <span class="text-white font-black text-lg tracking-tight">P</span>
-                </div>
-                <span class="flex flex-col leading-none">
-                    <span class="text-xl font-black tracking-tight text-gray-900">PhotoLabe</span>
-                    <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-400 mt-0.5">Creative Studio</span>
-                </span>
+            <a href="{{ route('home') }}" class="flex items-center group relative z-10" aria-label="PhotoLabe home">
+                <img src="{{ asset('storage/brand/logo.png') }}" alt="PhotoLabe"
+                     class="h-11 lg:h-12 w-auto transition-transform duration-300 group-hover:scale-105">
             </a>
 
             {{-- Desktop Nav --}}

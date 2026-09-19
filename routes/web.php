@@ -161,6 +161,7 @@ use App\Http\Controllers\Admin\NotificationController as AdminNotificationContro
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\HeroSlideController as AdminHeroSlideController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
 
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
@@ -228,6 +229,12 @@ Route::prefix('admin')
         Route::get('media/{media}/preview', [AdminMediaController::class, 'preview'])->name('media.preview');
         Route::get('media/{media}/download', [AdminMediaController::class, 'download'])->name('media.download');
         Route::resource('media', AdminMediaController::class)->only(['index', 'store', 'destroy']);
+
+        // Contact Inbox
+        Route::get('contact-messages', [AdminContactMessageController::class, 'index'])->name('contact-messages.index');
+        Route::get('contact-messages/{contactMessage}', [AdminContactMessageController::class, 'show'])->name('contact-messages.show');
+        Route::post('contact-messages/{contactMessage}/archive', [AdminContactMessageController::class, 'archive'])->name('contact-messages.archive');
+        Route::post('contact-messages/{contactMessage}/reply', [AdminContactMessageController::class, 'reply'])->name('contact-messages.reply');
 
         // Settings
         Route::get('settings', [AdminSettingController::class, 'index'])->name('settings.index');

@@ -38,6 +38,7 @@ class QuoteFlowTest extends TestCase
             'quantity' => 3,
             'deadline' => now()->addDays(7)->toDateString(),
             'requirements' => 'Retouch 3 product photos with background removal.',
+            \App\Support\FormTimeTrap::FIELD => \App\Support\FormTimeTrap::mintValidTokenForTesting(),
         ]);
 
         $response->assertRedirect(route('home'));
@@ -50,6 +51,27 @@ class QuoteFlowTest extends TestCase
         ]);
     }
 
+    public function test_quote_honeypot_silently_rejects_bots()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create(['role' => 'customer']);
+
+        $response = $this->actingAs($user)->post(route('quote.store'), [
+            'name' => 'Bot Botson',
+            'email' => 'bot@spam.com',
+            'quantity' => 10,
+            'requirements' => 'Cheap work please',
+            'website' => 'https://spam.example', // honeypot filled = bot
+        ]);
+
+        // Looks like success to the bot, but nothing is stored or sent.
+        $response->assertRedirect(route('home'));
+        $response->assertSessionHas('success');
+        $this->assertDatabaseCount('quotes', 0);
+        Notification::assertNothingSent();
+    }
+
     public function test_quote_submission_validates_requirements(): void
     {
         $customer = $this->makeCustomer();
@@ -60,6 +82,7 @@ class QuoteFlowTest extends TestCase
                 'email' => $customer->email,
                 'quantity' => 1,
                 'requirements' => '',
+                \App\Support\FormTimeTrap::FIELD => \App\Support\FormTimeTrap::mintValidTokenForTesting(),
             ])
             ->assertSessionHasErrors('requirements');
 
@@ -79,6 +102,7 @@ class QuoteFlowTest extends TestCase
             'email' => $customer->email,
             'quantity' => 1,
             'requirements' => 'Please retouch a photo.',
+            \App\Support\FormTimeTrap::FIELD => \App\Support\FormTimeTrap::mintValidTokenForTesting(),
         ]);
 
         Notification::assertSentTo(

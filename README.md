@@ -132,15 +132,22 @@ The application is **shared-hosting friendly** (cPanel-compatible) using databas
 
 Make sure your environment has:
 
-- **PHP 8.2+** with extensions:
+- **XAMPP 8.2+** (recommended for local development — bundles Apache, PHP and MySQL/MariaDB)
+- **PHP 8.2+** with extensions (bundled with XAMPP; all enabled in `php.ini` by this setup):
   - `pdo_mysql`
+  - `mysqli`
   - `mbstring`
   - `openssl`
   - `tokenizer`
   - `xml`
   - `curl`
   - `gd`
-- **MySQL 8.0+**
+  - `sqlite3` + `pdo_sqlite` (used by the test suite)
+  - `zip`, `fileinfo`, `exif` (media uploads)
+  - `intl`, `sodium`, `ffi`
+  - `sockets`, `soap`
+  - **OPcache** (`zend_extension=opcache`) — enabled for performance
+- **MySQL 8.0+** (MariaDB, bundled with XAMPP, works as well)
 - **Composer 2.x**
 - **Node.js 18+** (for frontend build)
 
@@ -206,13 +213,83 @@ php artisan storage:link
 npm run build
 ```
 
-### 6. Start the Development Server
+### 6. Serve the Project with XAMPP Apache
 
-```bash
-php artisan serve
-```
+The project runs under XAMPP Apache as a virtual host at
+**https://photolabe.local** (HTTPS with a self-signed certificate; plain HTTP
+requests are redirected to HTTPS automatically).
 
-Visit **[http://localhost:8000](http://localhost:8000)** in your browser.
+1. Point the hostname to your machine in `C:\Windows\System32\drivers\etc\hosts`
+   (requires admin rights):
+
+   ```text
+   127.0.0.1    photolabe.local
+   ```
+
+2. Register the vhost in `C:\xampp\apache\conf\extra\httpd-vhosts.conf`
+   (adjust the path to your project location; keep a `localhost` vhost first
+   so the XAMPP dashboard still works):
+
+   ```apache
+   <VirtualHost *:80>
+       DocumentRoot "G:/Web/photolab/public"
+       ServerName photolabe.local
+       <Directory "G:/Web/photolab/public">
+           Options FollowSymLinks
+           AllowOverride All
+           Require all granted
+       </Directory>
+       ErrorLog "G:/Web/photolab/storage/logs/apache-error.log"
+   </VirtualHost>
+   ```
+
+3. Point the app at the vhost in `.env`:
+
+   ```env
+   APP_URL=https://photolabe.local
+   ```
+
+4. **HTTPS (self-signed certificate).** The vhost for
+   `https://photolabe.local` lives in
+   `C:\xampp\apache\conf\extra\httpd-ssl.conf` and uses a dedicated cert:
+
+   ```apache
+   <VirtualHost *:443>
+       DocumentRoot "G:/Web/photolab/public"
+       ServerName photolabe.local:443
+       SSLEngine on
+       SSLCertificateFile "conf/ssl.crt/photolabe.local.crt"
+       SSLCertificateKeyFile "conf/ssl.key/photolabe.local.key"
+       ...
+   </VirtualHost>
+   ```
+
+   Generate a fresh certificate (SAN covers `photolabe.local`,
+   `*.photolabe.local`, `localhost`, `127.0.0.1`) with:
+
+   ```bash
+   cd C:\xampp\apache\bin
+   set OPENSSL_CONF=C:/xampp/apache/conf/openssl.cnf
+   openssl req -x509 -nodes -days 3650 -newkey rsa:2048 ^
+     -keyout C:/xampp/apache/conf/ssl.key/photolabe.local.key ^
+     -out C:/xampp/apache/conf/ssl.crt/photolabe.local.crt ^
+     -subj "/CN=photolabe.local" ^
+     -addext "subjectAltName=DNS:photolabe.local,DNS:*.photolabe.local,DNS:localhost,IP:127.0.0.1"
+   ```
+
+   To silence the browser's "not secure" warning, trust the cert once:
+   double-click `conf/ssl.crt/photolabe.local.crt` → **Install Certificate** →
+   **Local Machine** → place it in the **Trusted Root Certification
+   Authorities** store.
+
+5. Start **Apache** and **MySQL** in the XAMPP Control Panel — or simply run
+   `start-dev.bat` from the project root, which starts the whole stack
+   (MariaDB, Apache, Vite, queue listener).
+
+Visit **[https://photolabe.local](https://photolabe.local)** in your browser.
+
+> Prefer a quick throwaway server? `php artisan serve` still works at
+> http://localhost:8000 without Apache.
 
 ---
 
@@ -285,6 +362,14 @@ photolabe/
 
 ### Start all development services at once
 
+Run **`start-dev.bat`** (project root). It starts MariaDB, the XAMPP Apache
+vhost, the Vite dev server and the queue listener — each one only if it is
+not already running — then health-checks https://photolabe.local. Stop
+everything again with **`stop-dev.bat`**.
+
+`composer dev` remains available as an alternative (queue, logs and Vite
+only — the web server itself is Apache):
+
 ```bash
 composer dev
 ```
@@ -292,9 +377,11 @@ composer dev
 ### Or run them individually
 
 ```bash
-php artisan serve          # HTTP server
+# HTTP server: XAMPP Apache HTTPS vhost -> https://photolabe.local
+npm run dev                # Vite dev server with HMR (optional;
+                           # set VITE_DEV_HTTPS=1 to serve it over HTTPS,
+                           # which start-dev.bat does automatically)
 php artisan queue:listen   # Queue worker
-npm run dev                # Vite dev server with HMR
 ```
 
 ---

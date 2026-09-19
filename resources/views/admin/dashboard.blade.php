@@ -163,6 +163,41 @@
                 @endforelse
             </div>
         </div>
+
+        {{-- Contact Inbox --}}
+        <div class="surface-card overflow-hidden">
+            <div class="px-5 py-4 border-b border-surface-200 flex items-center justify-between">
+                <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                    Contact Inbox
+                    @if($newMessagesCount)
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-700">{{ $newMessagesCount }} new</span>
+                    @endif
+                </h3>
+                <a href="{{ route('admin.contact-messages.index') }}" class="text-xs font-semibold text-primary-600 hover:text-primary-700">All messages</a>
+            </div>
+            <div class="divide-y divide-surface-200/70">
+                @forelse ($recentMessages as $msg)
+                    <a href="{{ route('admin.contact-messages.show', $msg) }}" class="px-5 py-3.5 flex items-center justify-between gap-4 hover:bg-surface-50 transition-colors">
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold truncate flex items-center gap-2 {{ $msg->status === 'new' ? 'text-gray-900' : 'text-gray-500' }}">
+                                @if($msg->status === 'new')
+                                    <span class="w-2 h-2 bg-accent-500 rounded-full shrink-0"></span>
+                                @endif
+                                {{ $msg->subject }}
+                            </p>
+                            <p class="text-xs text-gray-500 truncate">{{ $msg->name }} · {{ $msg->created_at->diffForHumans() }}</p>
+                        </div>
+                        @if($msg->isReplied())
+                            <span class="text-[11px] font-medium text-green-600 whitespace-nowrap shrink-0">Replied</span>
+                        @elseif($msg->status === 'new')
+                            <span class="text-[11px] font-medium text-amber-600 whitespace-nowrap shrink-0">New</span>
+                        @endif
+                    </a>
+                @empty
+                    <div class="px-5 py-8 text-center text-sm text-gray-400">No contact messages yet.</div>
+                @endforelse
+            </div>
+        </div>
     </div>
 </div>
 @endsection

@@ -20,6 +20,17 @@ class QuoteController extends Controller
 
     public function store(Request $request)
     {
+        // Honeypot: real users never see or fill the "website" field.
+        // Silently accept the submission so bots think they succeeded.
+        if (filled($request->input('website'))) {
+            return redirect()->route('home')->with('success', 'Your quote request has been submitted successfully! We will get back to you within 24 hours.');
+        }
+
+        // Time-trap: reject submissions faster than a human could fill the form.
+        if (! \App\Support\FormTimeTrap::passes($request->input(\App\Support\FormTimeTrap::FIELD))) {
+            return redirect()->route('home')->with('success', 'Your quote request has been submitted successfully! We will get back to you within 24 hours.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',

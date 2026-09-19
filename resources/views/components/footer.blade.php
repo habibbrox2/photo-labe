@@ -32,11 +32,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
             {{-- Brand --}}
             <div class="lg:col-span-2">
-                <a href="{{ route('home') }}" class="flex items-center gap-3 mb-6">
-                    <div class="w-11 h-11 bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">P</span>
-                    </div>
-                    <span class="text-2xl font-bold">PhotoLabe</span>
+                <a href="{{ route('home') }}" class="inline-block mb-6">
+                    <img src="{{ asset('storage/brand/logo.png') }}" alt="PhotoLabe" class="h-14 w-auto">
                 </a>
                 <p class="text-gray-400 leading-relaxed mb-6 max-w-sm">Professional photo editing and creative design services. Transform your images into stunning visuals that captivate and convert.</p>
                 

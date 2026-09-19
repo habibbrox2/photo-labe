@@ -5,6 +5,9 @@
 
     {{-- Brand panel (desktop) --}}
     <div class="relative hidden lg:flex flex-col justify-between overflow-hidden bg-surface-950 p-12 text-white">
+        <img src="{{ asset('storage/demo/hero/hero-extra-2.jpg') }}" alt=""
+             class="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
+        <div class="absolute inset-0 bg-surface-950/75" aria-hidden="true"></div>
         <div class="absolute inset-0 gradient-mesh opacity-40" aria-hidden="true"></div>
 
         <div class="relative">

@@ -181,6 +181,16 @@
                 Orders
             </a>
 
+            <a href="{{ route('admin.contact-messages.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.contact-messages.*') ? 'bg-primary-600 text-white' : 'hover:bg-gray-800 hover:text-white' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Contact Inbox
+                @if(\App\Models\ContactMessage::new()->count())
+                    <span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-400 text-gray-900">{{ \App\Models\ContactMessage::new()->count() }}</span>
+                @endif
+            </a>
+
             <div class="pt-4 pb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">People</div>
 
             <a href="{{ route('admin.customers.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.customers.*') ? 'bg-primary-600 text-white' : 'hover:bg-gray-800 hover:text-white' }}">

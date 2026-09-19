@@ -113,7 +113,8 @@ class CheckoutController extends Controller
 
     public function success(Order $order)
     {
-        if (auth()->check() && $order->user_id !== auth()->id()) {
+        // Guests must not be able to view orders by ID guessing.
+        if (! auth()->check() || $order->user_id !== auth()->id()) {
             abort(403);
         }
 
