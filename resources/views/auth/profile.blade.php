@@ -8,7 +8,6 @@
 
         <x-flash class="mt-6" />
 
-        {{-- Profile Info --}}
         <div class="surface-card p-8 mt-6">
             <h2 class="text-lg font-bold text-gray-900 mb-6">Profile Information</h2>
             <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
@@ -21,10 +20,15 @@
                             {{ substr($user->name, 0, 1) }}
                         @endif
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Avatar</label>
                         <input type="file" name="avatar" accept="image/*"
                             class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-surface-100 file:text-gray-700 hover:file:bg-surface-200 file:cursor-pointer file:transition-colors cursor-pointer">
+                        <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP — max 2 MB</p>
+                        @if($user->avatar)
+                            <input type="checkbox" name="remove_avatar" id="remove_avatar" value="1" class="mt-2 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500">
+                            <label for="remove_avatar" class="ml-2 text-xs text-red-600 hover:text-red-700 cursor-pointer">Remove current avatar</label>
+                        @endif
                     </div>
                 </div>
 
@@ -58,7 +62,6 @@
             </form>
         </div>
 
-        {{-- Email Verification --}}
         @if(!$user->hasVerifiedEmail())
             <div class="mt-6 p-6 rounded-2xl bg-amber-50 border border-amber-200">
                 <div class="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -77,7 +80,6 @@
             </div>
         @endif
 
-        {{-- Change Password --}}
         <div class="surface-card p-8 mt-6">
             <h2 class="text-lg font-bold text-gray-900 mb-6">Change Password</h2>
             <form method="POST" action="{{ route('password.change.update') }}">
@@ -108,4 +110,3 @@
         </div>
     </div>
 </section>
-@endsection

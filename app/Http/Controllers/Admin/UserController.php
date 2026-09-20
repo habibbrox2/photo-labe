@@ -90,8 +90,18 @@ class UserController extends Controller
             'password' => 'nullable|confirmed|min:8',
         ]);
 
-        if ($request->hasFile('avatar')) {
+        if ($request->boolean('remove_avatar')) {
+            if ($user->avatar) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
+            $validated['avatar'] = null;
+        } elseif ($request->hasFile('avatar')) {
+            if ($user->avatar) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
             $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        } else {
+            unset($validated['avatar']);
         }
 
         if (!empty($validated['password'])) {

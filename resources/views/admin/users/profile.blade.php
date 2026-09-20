@@ -12,6 +12,25 @@ use Illuminate\Support\Facades\Storage;
         <form method="POST" action="{{ route('admin.users.profile.update') }}" enctype="multipart/form-data">
             @csrf @method('PUT')
 
+            <div class="flex items-center gap-6 mb-6">
+                <div class="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-2 ring-gray-100 bg-gray-100 flex items-center justify-center text-gray-500 text-2xl font-bold">
+                    @if($user->avatar)
+                        <img loading="lazy" decoding="async" src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                    @else
+                        {{ substr($user->name, 0, 1) }}
+                    @endif
+                </div>
+                <div class="flex-1">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Avatar</label>
+                    <input type="file" name="avatar" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                    <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP — max 2 MB</p>
+                    @if($user->avatar)
+                        <button type="button" onclick="document.getElementById('remove_avatar').checked=true;this.closest('form').submit();" class="mt-2 text-xs text-red-600 hover:text-red-700">Remove avatar</button>
+                    @endif
+                </div>
+                <input type="checkbox" name="remove_avatar" id="remove_avatar" value="1" class="hidden">
+            </div>
+
             <div class="space-y-5">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
