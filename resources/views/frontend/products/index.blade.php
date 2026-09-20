@@ -32,9 +32,47 @@
     </div>
 </section>
 
+{{-- Filter bar --}}
+<section class="pb-4 bg-white border-b border-surface-200/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <form method="GET" action="{{ route('products.index') }}" class="flex flex-col md:flex-row md:items-center gap-3 py-4">
+            <div class="relative flex-1">
+                <input type="search" name="q" value="{{ request('q') }}" placeholder="Search presets, actions, LUTs…" aria-label="Search products"
+                    class="w-full rounded-xl border border-surface-200 bg-surface-50 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:outline-none transition">
+            </div>
+            <select name="category" aria-label="Filter by category"
+                class="rounded-xl border border-surface-200 bg-surface-50 px-4 py-2.5 text-sm text-gray-900 focus:border-accent-500 focus:outline-none transition">
+                <option value="">All categories</option>
+                @foreach($categories as $category)
+                <option value="{{ $category->slug }}" @selected(request('category') === $category->slug)>{{ $category->name }} ({{ $category->products_count }})</option>
+                @endforeach
+            </select>
+            <select name="sort" aria-label="Sort products"
+                class="rounded-xl border border-surface-200 bg-surface-50 px-4 py-2.5 text-sm text-gray-900 focus:border-accent-500 focus:outline-none transition">
+                <option value="" @selected(!request('sort'))>Newest</option>
+                <option value="popular" @selected(request('sort') === 'popular')>Most popular</option>
+                <option value="price_low" @selected(request('sort') === 'price_low')>Price: Low to High</option>
+                <option value="price_high" @selected(request('sort') === 'price_high')>Price: High to Low</option>
+            </select>
+            <button type="submit" class="rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-800 transition">Filter</button>
+            @if(request('q') || request('category') || request('sort'))
+            <a href="{{ route('products.index') }}" class="text-sm text-gray-500 hover:text-gray-700 underline underline-offset-4">Reset</a>
+            @endif
+        </form>
+    </div>
+</section>
+
 {{-- Product grid --}}
 <section class="py-16 lg:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        @if($products->isEmpty())
+        <div class="text-center py-20">
+            <x-icon name="package" class="w-12 h-12 text-gray-300 mx-auto" />
+            <h3 class="mt-4 text-lg font-bold text-gray-900">No products found</h3>
+            <p class="mt-1 text-sm text-gray-500">Try a different search term or category.</p>
+            <a href="{{ route('products.index') }}" class="mt-4 inline-block text-sm font-semibold text-accent-600 hover:text-accent-700">Clear filters</a>
+        </div>
+        @else
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
             @forelse($products as $product)
             <a href="{{ route('products.show', $product->slug) }}" class="group block">
@@ -69,6 +107,7 @@
             </div>
             @endforelse
         </div>
+        @endif
 
         <div class="mt-16">{{ $products->links() }}</div>
     </div>

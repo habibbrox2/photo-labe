@@ -79,7 +79,29 @@
 
             {{-- Contact --}}
             <div>
-                <h3 class="text-white font-bold mb-6 text-sm uppercase tracking-wider">Contact</h3>
+                <h3 class="text-white font-bold mb-6 text-sm uppercase tracking-wider">Newsletter</h3>
+                <p class="text-sm text-gray-400 mb-4">Editing tips, presets & studio updates. No spam.</p>
+                <form method="POST" action="{{ route('newsletter.subscribe') }}" class="flex gap-2">
+                    @csrf
+                    <input type="hidden" name="{{ \App\Support\FormTimeTrap::FIELD }}" value="{{ \App\Support\FormTimeTrap::token() }}">
+                    <div class="absolute -left-[9999px]" aria-hidden="true">
+                        <label for="newsletter_website">Website</label>
+                        <input id="newsletter_website" type="text" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    <input type="email" name="email" required placeholder="you@email.com" aria-label="Email address"
+                        value="{{ old('email') }}"
+                        class="min-w-0 flex-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-accent-400 focus:ring-2 focus:ring-accent-500/20 focus:outline-none transition">
+                    <button type="submit" class="shrink-0 rounded-xl bg-accent-500 px-4 py-2.5 text-sm font-bold text-primary-950 hover:bg-accent-400 transition">
+                        Join
+                    </button>
+                </form>
+                @if(session('success') || session('info') || $errors->any())
+                <p class="mt-3 text-xs {{ $errors->any() ? 'text-red-400' : 'text-accent-300' }}">
+                    {{ $errors->first('email') ?? session('success') ?? session('info') }}
+                </p>
+                @endif
+
+                <h3 class="text-white font-bold mb-6 mt-10 text-sm uppercase tracking-wider">Contact</h3>
                 <ul class="space-y-4 text-sm">
                     <li class="flex items-start gap-3">
                         <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center shrink-0">

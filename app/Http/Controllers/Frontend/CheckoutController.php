@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Services\Payment\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
@@ -106,6 +107,13 @@ class CheckoutController extends Controller
         $payment = $order->payments()->latest()->first();
         $gateway = $this->payments->gateway($payment->gateway);
         $result = $gateway->createPayment($payment, $order);
+
+        // Customer-facing order confirmation email (queued)
+        $order->load('items', 'user');
+        Notification::send(
+            [Notification::route('mail', $validated['email'])],
+            new \App\Notifications\OrderPlacedNotification($order)
+        );
 
         return redirect()->route('checkout.success', $order)
             ->with('payment', $result);

@@ -191,6 +191,13 @@
                 @endif
             </a>
 
+            <a href="{{ route('admin.newsletter-subscribers.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.newsletter-subscribers.*') ? 'bg-primary-600 text-white' : 'hover:bg-gray-800 hover:text-white' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm2 2l10 7 10-7" />
+                </svg>
+                Newsletter
+            </a>
+
             <div class="pt-4 pb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">People</div>
 
             <a href="{{ route('admin.customers.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.customers.*') ? 'bg-primary-600 text-white' : 'hover:bg-gray-800 hover:text-white' }}">

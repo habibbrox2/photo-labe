@@ -22,7 +22,7 @@ class SitemapController extends Controller
             'loc' => $baseUrl,
             'priority' => '1.0',
             'changefreq' => 'daily',
-            'images' => [asset('storage/demo/hero/main.jpg')],
+            'images' => [asset('storage/demo/hero/hero-jewelry.jpg')],
         ]);
 
         // Static pages

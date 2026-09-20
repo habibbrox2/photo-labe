@@ -236,6 +236,10 @@ Route::prefix('admin')
         Route::post('contact-messages/{contactMessage}/archive', [AdminContactMessageController::class, 'archive'])->name('contact-messages.archive');
         Route::post('contact-messages/{contactMessage}/reply', [AdminContactMessageController::class, 'reply'])->name('contact-messages.reply');
 
+        // Newsletter
+        Route::get('newsletter-subscribers', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'index'])->name('newsletter-subscribers.index');
+        Route::get('newsletter-subscribers/export', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'export'])->name('newsletter-subscribers.export');
+
         // Settings
         Route::get('settings', [AdminSettingController::class, 'index'])->name('settings.index');
         Route::put('settings', [AdminSettingController::class, 'update'])->name('settings.update');
@@ -251,6 +255,11 @@ Route::prefix('admin')
 */
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
+
+Route::post('/newsletter/subscribe', [\App\Http\Controllers\Frontend\NewsletterController::class, 'subscribe'])
+    ->middleware('throttle:5,1')->name('newsletter.subscribe');
+Route::get('/newsletter/unsubscribe/{email}', [\App\Http\Controllers\Frontend\NewsletterController::class, 'unsubscribe'])
+    ->name('newsletter.unsubscribe');
 
 Route::prefix('cart')->name('cart.')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index');

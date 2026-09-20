@@ -6,13 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\SeoService;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(SeoService $seo)
+    public function index(Request $request, SeoService $seo)
     {
         $categories = ProductCategory::active()->ordered()->withCount('products')->get();
-        $products = Product::active()->ordered()->with('category', 'images')->paginate(12);
+
+        $products = Product::active()->ordered()->with('category', 'images');
+
+        if ($search = trim((string) $request->query('q'))) {
+            $products->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('short_description', 'like', "%{$search}%")
+                    ->orWhereHas('category', fn ($c) => $c->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        if ($category = $request->query('category')) {
+            $products->whereHas('category', fn ($c) => $c->where('slug', $category));
+        }
+
+        match ($request->query('sort')) {
+            'price_low' => $products->orderBy('price'),
+            'price_high' => $products->orderByDesc('price'),
+            'popular' => $products->orderByDesc('download_count'),
+            default => null,
+        };
+
+        $products = $products->paginate(12)->withQueryString();
 
         $seoData = $seo->getMeta([
             'title' => 'Digital Products - Presets, Actions & Templates',
