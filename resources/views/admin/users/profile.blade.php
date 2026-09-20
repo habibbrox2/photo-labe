@@ -44,19 +44,36 @@ use Illuminate\Support\Facades\Storage;
                     @error('email')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
                 </div>
 
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
-                    <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
-                    @error('phone')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
+                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                        @error('phone')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">City</label>
+                        <input type="text" name="city" value="{{ old('city', $user->city) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                        @error('city')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Country</label>
+                        <input type="text" name="country" value="{{ old('country', $user->country) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                        @error('country')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Timezone</label>
+                        <input type="text" name="timezone" value="{{ old('timezone', $user->timezone) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none" placeholder="e.g. Asia/Dhaka">
+                        @error('timezone')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Avatar</label>
-                    <input type="file" name="avatar" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
-                    @if($user->avatar)
-                        <img src="{{ Storage::url($user->avatar) }}" alt="Avatar" class="mt-2 w-12 h-12 rounded-full">
-                    @endif
-                    @error('avatar')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Address</label>
+                    <textarea name="address" rows="2" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">{{ old('address', $user->address) }}</textarea>
+                    @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
                 </div>
 
                 <div class="pt-4 border-t border-gray-200">
@@ -80,4 +97,3 @@ use Illuminate\Support\Facades\Storage;
         </form>
     </div>
 </div>
-@endsection

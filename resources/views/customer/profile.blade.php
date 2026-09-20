@@ -52,6 +52,33 @@
                     </div>
                 </div>
 
+                <div class="grid md:grid-cols-2 gap-5 mt-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">City</label>
+                        <input type="text" name="city" value="{{ old('city', $user->city) }}"
+                            class="form-control-modern {{ $errors->has('city') ? '!border-red-300' : '' }}">
+                        @error('city') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Country</label>
+                        <input type="text" name="country" value="{{ old('country', $user->country) }}"
+                            class="form-control-modern {{ $errors->has('country') ? '!border-red-300' : '' }}">
+                        @error('country') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Timezone</label>
+                        <input type="text" name="timezone" value="{{ old('timezone', $user->timezone) }}"
+                            class="form-control-modern {{ $errors->has('timezone') ? '!border-red-300' : '' }}" placeholder="e.g. Asia/Dhaka">
+                        @error('timezone') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Address</label>
+                    <textarea name="address" rows="2" class="form-control-modern {{ $errors->has('address') ? '!border-red-300' : '' }}">{{ old('address', $user->address) }}</textarea>
+                    @error('address') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                </div>
+
                 <div class="mt-7 pt-6 border-t border-surface-200">
                     <button type="submit" class="btn btn-primary">Update Profile</button>
                 </div>

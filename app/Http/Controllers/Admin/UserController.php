@@ -42,6 +42,10 @@ class UserController extends Controller
             'role' => 'required|in:super_admin,admin,editor,designer,customer',
             'status' => 'required|in:active,inactive,banned',
             'phone' => 'nullable|string|max:30',
+            'city' => 'nullable|string|max:100',
+            'country' => 'nullable|string|max:100',
+            'timezone' => 'nullable|string|max:64',
+            'address' => 'nullable|string|max:500',
             'password' => 'nullable|confirmed|min:8',
         ]);
 
