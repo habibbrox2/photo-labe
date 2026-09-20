@@ -184,8 +184,9 @@ storage is not in git, these files must be copied to the server manually
 
 | Local file (source) | Server path (destination) | Used by |
 |---|---|---|
-| `storage/app/public/brand/logo.png` | same | header, footer, admin sidebar, JSON-LD |
+| `storage/app/public/brand/logo.png` | same | header, admin sidebar, JSON-LD |
 | `storage/app/public/brand/logo-mark.png` | same | square fallback icon |
+| `storage/app/public/brand/footer-logo.png` | `storage\Web Banner\Logo\Web-Logo-2.png` | footer brand panel (square 2000×2000 logo) |
 | `storage/app/public/demo/hero/hero-jewelry.jpg` | same | hero slide 1 |
 | `storage/app/public/demo/hero/hero-headphone.jpg` | same | hero slide 2 |
 | `storage/app/public/demo/hero/hero-shoes.jpg` | same | hero slide 3 |

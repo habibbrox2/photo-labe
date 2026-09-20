@@ -195,8 +195,9 @@ php artisan view:cache
 
 | ফাইল | সার্ভারে পাথ | কোথায় ব্যবহৃত |
 |---|---|---|
-| `logo.png` | `storage/app/public/brand/` | হেডার, ফুটার, অ্যাডমিন সাইডবার |
+| `logo.png` | `storage/app/public/brand/` | হেডার, অ্যাডমিন সাইডবার, JSON-LD |
 | `logo-mark.png` | `storage/app/public/brand/` | স্কয়ার আইকন |
+| `footer-logo.png` | `storage\Web Banner\Logo\Web-Logo-2.png` | ফুটার ব্র্যান্ড প্যানেল (২০০০×২০০০ স্কয়ার লোগো) |
 | `hero-jewelry.jpg` | `storage/app/public/demo/hero/` | হিরো স্লাইড ১ |
 | `hero-headphone.jpg` | `storage/app/public/demo/hero/` | হিরো স্লাইড ২ |
 | `hero-shoes.jpg` | `storage/app/public/demo/hero/` | হিরো স্লাইড ৩ |

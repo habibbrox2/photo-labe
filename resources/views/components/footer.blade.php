@@ -33,7 +33,7 @@
             {{-- Brand --}}
             <div class="lg:col-span-2">
                 <a href="{{ route('home') }}" class="inline-block mb-6">
-                    <img src="{{ asset('storage/brand/logo.png') }}" alt="PhotoLabe" class="h-14 w-auto">
+                    <img src="{{ asset('storage/brand/footer-logo.png') }}" alt="PhotoLabe" class="h-14 w-auto">
                 </a>
                 <p class="text-gray-400 leading-relaxed mb-6 max-w-sm">Professional photo editing and creative design services. Transform your images into stunning visuals that captivate and convert.</p>
                 
