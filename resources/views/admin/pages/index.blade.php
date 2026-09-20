@@ -9,38 +9,38 @@
 
 <form method="GET" class="flex gap-3 mb-6">
     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search pages..." class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
-    <select name="status" class="px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+    <select name="status" class="admin-filter-select">
         <option value="">All Status</option>
         <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
         <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
     </select>
-    <button type="submit" class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200">Filter</button>
+    <button type="submit" class="admin-filter-btn">Filter</button>
 </form>
 
 <div class="bg-white rounded-xl border border-gray-200">
     <div class="overflow-x-auto">
-    <table class="w-full text-sm min-w-[640px]">
-        <thead class="bg-gray-50 border-b border-gray-200">
+    <table class="admin-table min-w-[640px]">
+        <thead class="admin-table-head">
             <tr>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Slug</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Template</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Date</th>
-                <th class="px-5 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                <th class="admin-th">Title</th>
+                <th class="admin-th">Slug</th>
+                <th class="admin-th">Template</th>
+                <th class="admin-th">Status</th>
+                <th class="admin-th">Date</th>
+                <th class="admin-th text-right">Actions</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
             @forelse($pages as $page)
                 <tr class="hover:bg-gray-50">
-                    <td class="px-5 py-3 font-medium text-gray-900">
+                    <td class="admin-td font-medium text-gray-900">
                         {{ $page->title }}
                         @if($page->publicUrl())
                             <span class="ml-1.5 px-2 py-0.5 text-[11px] font-semibold rounded-full bg-accent-50 text-accent-700" title="This page is served by a fixed route, so it cannot be deleted.">Fixed page</span>
                         @endif
                     </td>
                     <td class="px-5 py-3 text-gray-500 font-mono text-xs">/{{ $page->slug }}</td>
-                    <td class="px-5 py-3 text-gray-500">{{ $page->template ?? 'default' }}</td>
+                    <td class="admin-td text-gray-500">{{ $page->template ?? 'default' }}</td>
                     <td class="px-5 py-3">
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $page->status === 'published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">{{ ucfirst($page->status) }}</span>
                     </td>

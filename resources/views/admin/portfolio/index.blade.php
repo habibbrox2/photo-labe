@@ -16,20 +16,20 @@
 
 <form method="GET" class="flex gap-3 mb-6">
     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search projects..." class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
-    <button type="submit" class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200">Search</button>
+    <button type="submit" class="admin-filter-btn">Search</button>
 </form>
 
 <div class="bg-white rounded-xl border border-gray-200">
     <div class="overflow-x-auto">
-    <table class="w-full text-sm min-w-[640px]">
-        <thead class="bg-gray-50 border-b border-gray-200">
+    <table class="admin-table min-w-[640px]">
+        <thead class="admin-table-head">
             <tr>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Image</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Category</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Client</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                <th class="px-5 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                <th class="admin-th">Image</th>
+                <th class="admin-th">Title</th>
+                <th class="admin-th">Category</th>
+                <th class="admin-th">Client</th>
+                <th class="admin-th">Status</th>
+                <th class="admin-th text-right">Actions</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
@@ -44,9 +44,9 @@
                             <span class="text-gray-300">—</span>
                         @endif
                     </td>
-                    <td class="px-5 py-3 font-medium text-gray-900">{{ $project->title }}</td>
-                    <td class="px-5 py-3 text-gray-500">{{ $project->category->name ?? '-' }}</td>
-                    <td class="px-5 py-3 text-gray-500">{{ $project->client ?? '-' }}</td>
+                    <td class="admin-td font-medium text-gray-900">{{ $project->title }}</td>
+                    <td class="admin-td text-gray-500">{{ $project->category->name ?? '-' }}</td>
+                    <td class="admin-td text-gray-500">{{ $project->client ?? '-' }}</td>
                     <td class="px-5 py-3">
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $project->status === 'published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">{{ ucfirst($project->status) }}</span>
                     </td>

@@ -33,20 +33,20 @@
     </div>
 
     <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+        <table class="admin-table min-w-full">
+            <thead class="admin-table-head">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">IP</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Subscribed At</th>
+                    <th class="admin-th px-6">Email</th>
+                    <th class="admin-th px-6">Status</th>
+                    <th class="admin-th px-6">IP</th>
+                    <th class="admin-th px-6">Subscribed At</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
                 @forelse($subscribers as $subscriber)
                 <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $subscriber->email }}</td>
-                    <td class="px-6 py-4">
+                    <td class="admin-td px-6 font-medium text-gray-900">{{ $subscriber->email }}</td>
+                    <td class="admin-td px-6">
                         <span class="px-2.5 py-1 rounded-full text-xs font-semibold {{ $subscriber->status === 'subscribed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
                             {{ ucfirst($subscriber->status) }}
                         </span>
@@ -56,7 +56,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="px-6 py-12 text-center text-gray-400">
+                    <td colspan="4" class="admin-empty-cell">
                         No subscribers yet.
                     </td>
                 </tr>

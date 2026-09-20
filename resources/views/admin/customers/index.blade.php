@@ -8,19 +8,19 @@
 
 <form method="GET" class="flex gap-3 mb-6">
     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search customers..." class="flex-1 px-4 py-2 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
-    <button type="submit" class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200">Search</button>
+    <button type="submit" class="admin-filter-btn">Search</button>
 </form>
 
 <div class="bg-white rounded-xl border border-gray-200">
     <div class="overflow-x-auto">
-    <table class="w-full text-sm min-w-[640px]">
-        <thead class="bg-gray-50 border-b border-gray-200">
+    <table class="admin-table min-w-[640px]">
+        <thead class="admin-table-head">
             <tr>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Name</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Phone</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Joined</th>
-                <th class="px-5 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                <th class="admin-th">Name</th>
+                <th class="admin-th">Email</th>
+                <th class="admin-th">Phone</th>
+                <th class="admin-th">Joined</th>
+                <th class="admin-th text-right">Actions</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
@@ -32,15 +32,15 @@
                             <span class="font-medium text-gray-900">{{ $customer->name }}</span>
                         </div>
                     </td>
-                    <td class="px-5 py-3 text-gray-500">{{ $customer->email }}</td>
-                    <td class="px-5 py-3 text-gray-500">{{ $customer->phone ?? '-' }}</td>
+                    <td class="admin-td text-gray-500">{{ $customer->email }}</td>
+                    <td class="admin-td text-gray-500">{{ $customer->phone ?? '-' }}</td>
                     <td class="px-5 py-3 text-gray-500 text-xs">{{ $customer->created_at->format('M d, Y') }}</td>
                     <td class="px-5 py-3 text-right">
                         <a href="{{ route('admin.customers.show', $customer) }}" class="px-3 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 rounded-lg">View</a>
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="px-5 py-12 text-center text-gray-400">No customers found.</td></tr>
+                <tr><td colspan="5" class="admin-empty-cell">No customers found.</td></tr>
             @endforelse
         </tbody>
     </table>

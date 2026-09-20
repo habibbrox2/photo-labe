@@ -26,14 +26,14 @@
 
 <div class="bg-white rounded-xl border border-gray-200">
     <div class="overflow-x-auto">
-    <table class="w-full text-sm min-w-[640px]">
-        <thead class="bg-gray-50 border-b border-gray-200">
+    <table class="admin-table min-w-[640px]">
+        <thead class="admin-table-head">
             <tr>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">From</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Subject</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Received</th>
-                <th class="px-5 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                <th class="admin-th">From</th>
+                <th class="admin-th">Subject</th>
+                <th class="admin-th">Status</th>
+                <th class="admin-th">Received</th>
+                <th class="admin-th text-right">Actions</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
