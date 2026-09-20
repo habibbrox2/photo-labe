@@ -6,6 +6,10 @@
     <form method="POST" action="{{ route('admin.pages.update', $page) }}" enctype="multipart/form-data">
         @csrf @method('PUT')
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100">
+                <span class="font-semibold text-primary-700">How to use this form</span>
+                — Update this page. Upload a new featured image to replace the existing one.
+            </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Title *</label>
                 <input type="text" name="title" value="{{ old('title', $page->title) }}" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
@@ -60,7 +64,7 @@
                 @if($page->featured_image)
                     <div class="mb-2"><img loading="lazy" decoding="async" src="{{ asset('storage/' . $page->featured_image) }}" class="h-20 rounded-lg object-cover"></div>
                 @endif
-                <input type="file" name="featured_image" accept="image/*" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                <input type="file" name="featured_image" accept="image/*" placeholder="JPG, PNG or WebP — max 2 MB" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
             </div>
         </div>
         <div class="bg-white rounded-xl border border-gray-200 p-6 mt-4 space-y-5">
@@ -74,6 +78,7 @@
                 <textarea name="seo_description" rows="2" maxlength="500" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">{{ old('seo_description', $page->seo_description) }}</textarea>
             </div>
         </div>
+        <div class="mt-4">@include('admin.pages.partials.block-editor', ['page' => $page])</div>
         <div class="flex items-center gap-3 mt-6">
             <button type="submit" class="px-6 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700">Update Page</button>
             <a href="{{ route('admin.pages.index') }}" class="px-6 py-2.5 text-gray-600 text-sm font-medium hover:bg-gray-100 rounded-lg">Cancel</a>

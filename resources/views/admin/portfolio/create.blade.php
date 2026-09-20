@@ -7,6 +7,10 @@
     <form method="POST" action="{{ route('admin.portfolio.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100">
+                <span class="font-semibold text-primary-700">How to use this form</span>
+                — Add a completed client project. Upload one <strong>featured image</strong> (shown on the portfolio grid) and up to <strong>20 gallery images</strong>. Leave the gallery empty for a single-image project. All images are stored privately and served via the storage symlink.
+            </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Title *</label>
                 <input type="text" name="title" value="{{ old('title') }}" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
@@ -46,12 +50,13 @@
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Featured Image</label>
-                <input type="file" name="featured_image" accept="image/*" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                <input type="file" name="featured_image" accept="image/*" placeholder="JPG, PNG or WebP — max 2 MB" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP — max 2 MB. Shown on the portfolio grid as the project thumbnail.</p>
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Gallery Images (multiple)</label>
-                <input type="file" name="gallery_images[]" multiple accept="image/*" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
-                <p class="text-xs text-gray-400 mt-1">Upload multiple images for the project gallery</p>
+                <input type="file" name="gallery_images[]" multiple accept="image/*" placeholder="JPG, PNG or WebP — up to 20 images, 5 MB each" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                <p class="text-xs text-gray-400 mt-1">Up to 20 images, 5 MB each. JPG, PNG or WebP. Hold Ctrl/Cmd to select multiple files.
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Tags</label>

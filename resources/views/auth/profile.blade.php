@@ -10,6 +10,10 @@
 
         <div class="surface-card p-8 mt-6">
             <h2 class="text-lg font-bold text-gray-900 mb-6">Profile Information</h2>
+            <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100 mb-6">
+                <span class="font-semibold text-primary-700">How to use this form</span>
+                — Update your profile. Upload an <strong>avatar</strong> (JPG, PNG or WebP, max 2 MB) — shown in the site header and your profile card. Leave the fields you do not want to change untouched; only the password form below is required to change your password.
+            </div>
             <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf @method('PUT')
                 <div class="flex items-center gap-6 mb-6">

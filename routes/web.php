@@ -18,7 +18,14 @@ use App\Http\Controllers\Frontend\SitemapController;
 */
 
 // Homepage
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function (HomeController $home) {
+    $page = \App\Models\Page::systemKey(\App\Models\Page::SYSTEM_HOME)->first();
+    if (! $page) return $home->index(app(\App\Services\SeoService::class));
+    abort_unless($page->status === 'published', 404);
+    // Keep the existing data-rich homepage intact until the CMS page has content.
+    if (empty($page->blocks)) return $home->index(app(\App\Services\SeoService::class));
+    return view('frontend.cms-page', compact('page'));
+})->name('home');
 
 // Services
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
@@ -42,8 +49,8 @@ Route::post('/contact', [ContactController::class, 'store'])->middleware('thrott
 
 // Static Pages
 Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/faq', fn () => view('frontend.faq'))->name('faq');
-Route::get('/pricing', fn () => view('frontend.pricing'))->name('pricing');
+Route::get('/faq', fn (PageController $pages) => $pages->system(\App\Models\Page::SYSTEM_FAQ, 'frontend.faq'))->name('faq');
+Route::get('/pricing', fn (PageController $pages) => $pages->system(\App\Models\Page::SYSTEM_PRICING, 'frontend.pricing'))->name('pricing');
 Route::get('/before-after', [BeforeAfterController::class, 'index'])->name('before-after');
 Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
 
@@ -162,12 +169,15 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\HeroSlideController as AdminHeroSlideController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
+use App\Http\Controllers\Admin\PublicSiteController as AdminPublicSiteController;
 
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('public-site', [AdminPublicSiteController::class, 'index'])->name('public-site.index');
+        Route::get('public-site/pages/{page}/preview', [AdminPublicSiteController::class, 'preview'])->name('public-site.preview');
 
         // Notifications
         Route::get('notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');

@@ -1,6 +1,15 @@
 @extends('layouts.app')
 @section('title', 'Contact Us')
 @section('content')
+@php
+    $siteEmail = \App\Models\Setting::get('site_email', 'hello@photolabe.com');
+    $sitePhone = \App\Models\Setting::get('phone', '+1 (555) 123-4567');
+    $siteAddress = \App\Models\Setting::get('address', "123 Creative Street\nDesign City, DC 10001");
+@endphp
+
+@if($page?->blocks)
+    <x-page-blocks :page="$page" />
+@else
 
 <section class="page-hero-light">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
@@ -21,29 +30,31 @@
     </div>
 </section>
 
+@endif
+
 <section class="py-14 lg:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-12 gap-14">
             {{-- Contact info --}}
             <aside class="lg:col-span-4">
                 <div class="lg:sticky lg:top-24 space-y-4">
-                    <a href="mailto:hello@photolabe.com" class="group flex items-start gap-4 p-5 rounded-2xl border border-surface-200 bg-white hover:border-accent-300 hover:shadow-md hover:shadow-accent-500/5 transition-all">
+                    <a href="mailto:{{ $siteEmail }}" class="group flex items-start gap-4 p-5 rounded-2xl border border-surface-200 bg-white hover:border-accent-300 hover:shadow-md hover:shadow-accent-500/5 transition-all">
                         <span class="w-11 h-11 shrink-0 rounded-xl bg-accent-500/15 flex items-center justify-center text-accent-700 group-hover:bg-accent-500 group-hover:text-gray-900 transition-colors">
                             <x-icon name="mail" class="w-5 h-5" />
                         </span>
                         <span>
                             <span class="block text-xs font-bold uppercase tracking-wider text-gray-400">Email us</span>
-                            <span class="block text-sm font-bold text-gray-900 mt-1">hello@photolabe.com</span>
+                            <span class="block text-sm font-bold text-gray-900 mt-1">{{ $siteEmail }}</span>
                             <span class="block text-xs text-gray-500 mt-0.5">Replies within a few hours</span>
                         </span>
                     </a>
-                    <a href="tel:+15551234567" class="group flex items-start gap-4 p-5 rounded-2xl border border-surface-200 bg-white hover:border-accent-300 hover:shadow-md hover:shadow-accent-500/5 transition-all">
+                    <a href="tel:{{ preg_replace('/[^+0-9]/', '', $sitePhone) }}" class="group flex items-start gap-4 p-5 rounded-2xl border border-surface-200 bg-white hover:border-accent-300 hover:shadow-md hover:shadow-accent-500/5 transition-all">
                         <span class="w-11 h-11 shrink-0 rounded-xl bg-accent-500/15 flex items-center justify-center text-accent-700 group-hover:bg-accent-500 group-hover:text-gray-900 transition-colors">
                             <x-icon name="phone" class="w-5 h-5" />
                         </span>
                         <span>
                             <span class="block text-xs font-bold uppercase tracking-wider text-gray-400">Call us</span>
-                            <span class="block text-sm font-bold text-gray-900 mt-1">+1 (555) 123-4567</span>
+                            <span class="block text-sm font-bold text-gray-900 mt-1">{{ $sitePhone }}</span>
                             <span class="block text-xs text-gray-500 mt-0.5">Mon–Fri, 9am–6pm ET</span>
                         </span>
                     </a>
@@ -53,8 +64,7 @@
                         </span>
                         <span>
                             <span class="block text-xs font-bold uppercase tracking-wider text-gray-400">Studio</span>
-                            <span class="block text-sm font-bold text-gray-900 mt-1">123 Creative Street</span>
-                            <span class="block text-sm text-gray-500">Design City, DC 10001</span>
+                            <span class="block text-sm text-gray-500 mt-1 whitespace-pre-line">{{ $siteAddress }}</span>
                         </span>
                     </div>
 
@@ -114,7 +124,7 @@
                             Send Message
                             <x-icon name="send" class="w-4 h-4" />
                         </button>
-                        <p class="text-xs text-gray-400">Prefer email? Write to hello@photolabe.com directly.</p>
+                        <p class="text-xs text-gray-400">Prefer email? Write to {{ $siteEmail }} directly.</p>
                     </div>
                 </form>
             </div>

@@ -2,10 +2,15 @@
 @section('page-title', 'Create Page')
 
 @section('content')
+@php($page = new \App\Models\Page())
 <div class="max-w-3xl">
     <form method="POST" action="{{ route('admin.pages.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100">
+                <span class="font-semibold text-primary-700">How to use this form</span>
+                — Create a standalone site page. Upload one <strong>featured image</strong> — used as the page hero image. The block editor below lets you add rich content sections.
+            </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Title *</label>
                 <input type="text" name="title" value="{{ old('title') }}" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
@@ -53,9 +58,10 @@
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Featured Image</label>
-                <input type="file" name="featured_image" accept="image/*" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                <input type="file" name="featured_image" accept="image/*" placeholder="JPG, PNG or WebP — max 2 MB" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
             </div>
         </div>
+        <div class="mt-4">@include('admin.pages.partials.block-editor', ['page' => $page])</div>
         <div class="bg-white rounded-xl border border-gray-200 p-6 mt-4 space-y-5">
             <h3 class="font-semibold text-gray-900">SEO</h3>
             <div>

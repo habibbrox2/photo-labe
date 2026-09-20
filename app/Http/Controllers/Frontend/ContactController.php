@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use App\Models\Page;
 use App\Models\User;
 use App\Notifications\ContactMessageNotification;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class ContactController extends Controller
 {
     public function show()
     {
-        return view('frontend.contact');
+        $page = Page::systemKey(Page::SYSTEM_CONTACT)->where('status', 'published')->first();
+        return view('frontend.contact', compact('page'));
     }
 
     public function store(Request $request)

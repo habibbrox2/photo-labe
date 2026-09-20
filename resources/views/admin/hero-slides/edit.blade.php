@@ -12,12 +12,16 @@
     <form method="POST" action="{{ route('admin.hero-slides.update', $slide) }}" enctype="multipart/form-data">
         @csrf @method('PUT')
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100">
+                <span class="font-semibold text-primary-700">How to use this form</span>
+                — Update this homepage hero slide. Upload a new image to replace the current one.
+            </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Image</label>
                 @if($slide->image)
                     <div class="mb-2"><img loading="lazy" decoding="async" src="{{ asset('storage/' . $slide->image) }}" alt="{{ $slide->headline ?? 'Slide' }}" class="h-32 rounded-lg object-cover border border-gray-200"></div>
                 @endif
-                <input type="file" name="image" accept="image/*" x-on:change="previewUrl = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : ''" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                <input type="file" name="image" accept="image/*" placeholder="JPG, PNG or WebP — max 4 MB" x-on:change="previewUrl = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : ''" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
                 <p class="text-xs text-gray-400 mt-1">Leave empty to keep the current image (JPG, PNG, or WebP, max 4 MB).</p>
             </div>
             <div>

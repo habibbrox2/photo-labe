@@ -6,6 +6,10 @@
     <form method="POST" action="{{ route('admin.hero-slides.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100">
+                <span class="font-semibold text-primary-700">How to use this form</span>
+                — Add a homepage hero slide. Upload one <strong>wide landscape image</strong> — 1920×1080 recommended. Only slides marked active are shown on the homepage.
+            </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Image *</label>
                 <input type="file" name="image" accept="image/*" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">

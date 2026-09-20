@@ -7,6 +7,10 @@
     <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100">
+                <span class="font-semibold text-primary-700">How to use this form</span>
+                — Add a digital product (presets, actions, LUTs, etc.). Upload one <strong>featured image</strong> — shown on the products grid and checkout page.
+            </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Title *</label>
                 <input type="text" name="title" value="{{ old('title') }}" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
@@ -58,7 +62,7 @@
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Featured Image</label>
-                <input type="file" name="featured_image" accept="image/*" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
+                <input type="file" name="featured_image" accept="image/*" placeholder="JPG, PNG or WebP — max 2 MB" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-600">
             </div>
             <div class="flex items-center gap-2">
                 <input type="checkbox" name="is_featured" value="1" class="rounded border-gray-300 text-primary-600">

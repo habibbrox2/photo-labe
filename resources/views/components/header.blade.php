@@ -181,8 +181,14 @@
                 @auth
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" @click.outside="open = false" class="flex items-center space-x-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-semibold">
-                            {{ substr(auth()->user()->name, 0, 1) }}
+                        <div class="w-8 h-8 rounded-full overflow-hidden shrink-0 ring-2 ring-white/60">
+                            @if(auth()->user()->avatar)
+                                <img loading="lazy" decoding="async" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-semibold">
+                                    {{ substr(auth()->user()->name, 0, 1) }}
+                                </div>
+                            @endif
                         </div>
                         <svg class="w-4 h-4 text-gray-600 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -312,8 +318,14 @@
                     <div class="border-t border-gray-100 mt-2 pt-2">
                         @auth
                         <div class="flex items-center gap-3 px-4 py-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-semibold">
-                                {{ substr(auth()->user()->name, 0, 1) }}
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-2 ring-white/60">
+                                @if(auth()->user()->avatar)
+                                    <img loading="lazy" decoding="async" src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-semibold">
+                                        {{ substr(auth()->user()->name, 0, 1) }}
+                                    </div>
+                                @endif
                             </div>
                             <div>
                                 <p class="text-sm font-semibold text-gray-900">{{ auth()->user()->name }}</p>

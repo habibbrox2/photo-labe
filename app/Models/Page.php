@@ -13,11 +13,17 @@ class Page extends Model
 
     /** Key of the page that backs the hand-written /about route. */
     public const SYSTEM_ABOUT = 'about';
+    public const SYSTEM_HOME = 'home';
+    public const SYSTEM_FAQ = 'faq';
+    public const SYSTEM_PRICING = 'pricing';
+    public const SYSTEM_CONTACT = 'contact';
 
     protected $fillable = [
         'title', 'slug', 'system_key', 'eyebrow', 'subtitle', 'content', 'template',
-        'featured_image', 'status', 'seo_title', 'seo_description',
+        'featured_image', 'status', 'seo_title', 'seo_description', 'blocks',
     ];
+
+    protected $casts = ['blocks' => 'array'];
 
     protected static function booted(): void
     {
@@ -45,7 +51,11 @@ class Page extends Model
     public function publicUrl(): ?string
     {
         return match ($this->system_key) {
+            self::SYSTEM_HOME => route('home'),
             self::SYSTEM_ABOUT => route('about'),
+            self::SYSTEM_FAQ => route('faq'),
+            self::SYSTEM_PRICING => route('pricing'),
+            self::SYSTEM_CONTACT => route('contact'),
             default => null,
         };
     }

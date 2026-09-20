@@ -7,6 +7,7 @@ use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Services\PageBlockService;
 
 class PageController extends Controller
 {
@@ -32,7 +33,7 @@ class PageController extends Controller
         return view('admin.pages.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, PageBlockService $blocks)
     {
         $request->merge(['slug' => Str::slug($request->input('slug') ?: $request->input('title'))]);
 
@@ -53,6 +54,7 @@ class PageController extends Controller
             $validated['featured_image'] = $request->file('featured_image')->store('pages', 'public');
         }
 
+        $validated['blocks'] = $blocks->normalise($request->input('blocks'));
         Page::create($validated);
 
         return redirect()->route('admin.pages.index')->with('success', 'Page created successfully.');
@@ -63,7 +65,7 @@ class PageController extends Controller
         return view('admin.pages.edit', compact('page'));
     }
 
-    public function update(Request $request, Page $page)
+    public function update(Request $request, Page $page, PageBlockService $blocks)
     {
         // The slug is edited explicitly, never re-derived from the title: silently
         // regenerating it would move a published page to a new URL on a typo fix.
@@ -86,6 +88,7 @@ class PageController extends Controller
             $validated['featured_image'] = $request->file('featured_image')->store('pages', 'public');
         }
 
+        $validated['blocks'] = $blocks->normalise($request->input('blocks'));
         $page->update($validated);
 
         return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');

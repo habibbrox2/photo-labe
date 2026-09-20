@@ -80,6 +80,10 @@
             <span class="font-extrabold text-gray-900 group-hover:text-primary-600 transition-colors">{{ $stats['products'] }}</span>
             <span class="text-gray-500">products</span>
         </a>
+        <a href="{{ route('admin.public-site.index') }}" class="flex items-center gap-2 text-sm group">
+            <x-icon name="document" class="w-4 h-4 text-gray-400" />
+            <span class="font-semibold text-primary-600 group-hover:text-primary-700">Manage public pages</span>
+        </a>
     </div>
 
     
@@ -201,4 +205,3 @@
     </div>
 </div>
 @endsection
-

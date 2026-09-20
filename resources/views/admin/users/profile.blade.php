@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Storage;
     <x-breadcrumbs :items="[['label' => 'Users', 'url' => route('admin.users.index')], ['label' => 'My Profile']]" />
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="bg-primary-50/60 rounded-lg px-4 py-3 text-sm text-gray-700 border border-primary-100 mb-6">
+            <span class="font-semibold text-primary-700">How to use this form</span>
+            — Update your admin profile. Upload an <strong>avatar</strong> — shown in the admin sidebar and site header. Leave the fields you do not want to change untouched.
+        </div>
         <form method="POST" action="{{ route('admin.users.profile.update') }}" enctype="multipart/form-data">
             @csrf @method('PUT')
 
@@ -22,7 +26,7 @@ use Illuminate\Support\Facades\Storage;
                 </div>
                 <div class="flex-1">
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Avatar</label>
-                    <input type="file" name="avatar" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                    <input type="file" name="avatar" accept="image/*" placeholder="JPG, PNG or WebP — max 2 MB" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
                     <p class="text-xs text-gray-400 mt-1">JPG, PNG or WebP — max 2 MB</p>
                     @if($user->avatar)
                         <button type="button" onclick="document.getElementById('remove_avatar').checked=true;this.closest('form').submit();" class="mt-2 text-xs text-red-600 hover:text-red-700">Remove avatar</button>

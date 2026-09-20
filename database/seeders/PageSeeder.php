@@ -9,6 +9,18 @@ class PageSeeder extends Seeder
 {
     public function run(): void
     {
+        foreach ([
+            [Page::SYSTEM_HOME, 'Home', 'home'],
+            [Page::SYSTEM_FAQ, 'FAQ', 'faq'],
+            [Page::SYSTEM_PRICING, 'Pricing', 'pricing'],
+            [Page::SYSTEM_CONTACT, 'Contact', 'contact'],
+        ] as [$key, $title, $slug]) {
+            Page::firstOrCreate(['system_key' => $key], [
+                'title' => $title, 'slug' => $slug, 'status' => 'published',
+                'template' => 'default', 'blocks' => [],
+            ]);
+        }
+
         // firstOrCreate, never updateOrCreate: re-running the seeder must not wipe
         // copy an editor has since changed in the admin.
         Page::firstOrCreate(

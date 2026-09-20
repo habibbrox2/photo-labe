@@ -13,7 +13,7 @@ class PageController extends Controller
             ->where('status', 'published')
             ->firstOrFail();
 
-        return view('frontend.page', compact('page'));
+        return view('frontend.cms-page', compact('page'));
     }
 
     /**
@@ -32,6 +32,17 @@ class PageController extends Controller
 
         abort_unless($page->status === 'published', 404);
 
-        return view('frontend.page', compact('page'));
+        return view('frontend.cms-page', compact('page'));
+    }
+
+    public function system(string $key, string $fallback)
+    {
+        $page = Page::systemKey($key)->first();
+        if (! $page) return view($fallback);
+        abort_unless($page->status === 'published', 404);
+        // Empty system records are intentional migration placeholders: preserve the
+        // hand-built page until an editor adds its first structured block.
+        if (empty($page->blocks) && in_array($key, [Page::SYSTEM_HOME, Page::SYSTEM_FAQ, Page::SYSTEM_PRICING], true)) return view($fallback);
+        return view('frontend.cms-page', compact('page'));
     }
 }
