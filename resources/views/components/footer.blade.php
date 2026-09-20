@@ -1,7 +1,7 @@
-<footer class="relative bg-surface-900 text-white overflow-hidden">
-    {{-- Gradient Mesh Background --}}
-    <div class="absolute inset-0 gradient-mesh opacity-30"></div>
-    <div class="absolute inset-0 noise-overlay"></div>
+<footer class="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden">
+    {{-- Subtle accent glow --}}
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute inset-0 noise-overlay opacity-50"></div>
 
     {{-- CTA Banner --}}
     <div class="relative border-b border-white/10">
