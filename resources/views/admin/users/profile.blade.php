@@ -64,7 +64,27 @@ use Illuminate\Support\Facades\Storage;
                         @error('country')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Timezone</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Postal Code</label>
+                        <input type="text" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                        @error('postal_code')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Company</label>
+                        <input type="text" name="company" value="{{ old('company', $user->company) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                        @error('company')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Website</label>
+                        <input type="url" name="website" value="{{ old('website', $user->website) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none" placeholder="https://example.com">
+                        @error('website')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Timezone</label>
                         <input type="text" name="timezone" value="{{ old('timezone', $user->timezone) }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none" placeholder="e.g. Asia/Dhaka">
                         @error('timezone')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@endif
                     </div>

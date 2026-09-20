@@ -66,6 +66,12 @@
                         @error('country') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
                     </div>
                     <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Postal Code</label>
+                        <input type="text" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}"
+                            class="form-control-modern {{ $errors->has('postal_code') ? '!border-red-300' : '' }}">
+                        @error('postal_code') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                    </div>
+                    <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Timezone</label>
                         <input type="text" name="timezone" value="{{ old('timezone', $user->timezone) }}"
                             class="form-control-modern {{ $errors->has('timezone') ? '!border-red-300' : '' }}" placeholder="e.g. Asia/Dhaka">
@@ -77,6 +83,21 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">Address</label>
                     <textarea name="address" rows="2" class="form-control-modern {{ $errors->has('address') ? '!border-red-300' : '' }}">{{ old('address', $user->address) }}</textarea>
                     @error('address') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-5 mt-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Company</label>
+                        <input type="text" name="company" value="{{ old('company', $user->company) }}"
+                            class="form-control-modern {{ $errors->has('company') ? '!border-red-300' : '' }}">
+                        @error('company') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Website</label>
+                        <input type="url" name="website" value="{{ old('website', $user->website) }}"
+                            class="form-control-modern {{ $errors->has('website') ? '!border-red-300' : '' }}" placeholder="https://example.com">
+                        @error('website') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
+                    </div>
                 </div>
 
                 <div class="mt-7 pt-6 border-t border-surface-200">

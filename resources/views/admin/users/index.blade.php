@@ -1,4 +1,7 @@
 @extends('admin.layouts.app')
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @section('page-title', 'Users')
 
 @section('content')
@@ -27,6 +30,8 @@
             <tr>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Name</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Phone</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">City</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Role</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Joined</th>
@@ -38,11 +43,19 @@
                 <tr class="hover:bg-gray-50">
                     <td class="px-5 py-3">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 text-sm font-semibold">{{ substr($user->name, 0, 1) }}</div>
+                            <div class="w-8 h-8 rounded-full overflow-hidden shrink-0 {{ $user->avatar ? 'ring-2 ring-primary-100' : 'bg-primary-100' }} flex items-center justify-center text-primary-600 text-sm font-semibold">
+                                @if($user->avatar)
+                                    <img loading="lazy" decoding="async" src="{{ Storage::url($user->avatar) }}" alt="" class="w-full h-full object-cover">
+                                @else
+                                    {{ substr($user->name, 0, 1) }}
+                                @endif
+                            </div>
                             <span class="font-medium text-gray-900">{{ $user->name }}</span>
                         </div>
                     </td>
                     <td class="px-5 py-3 text-gray-500">{{ $user->email }}</td>
+                    <td class="px-5 py-3 text-gray-500">{{ $user->phone ?? '—' }}</td>
+                    <td class="px-5 py-3 text-gray-500">{{ $user->city ?? '—' }}</td>
                     <td class="px-5 py-3">
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $user->role === 'super_admin' ? 'bg-purple-100 text-purple-700' : ($user->role === 'admin' ? 'bg-blue-100 text-blue-700' : ($user->role === 'editor' ? 'bg-emerald-100 text-emerald-700' : ($user->role === 'designer' ? 'bg-pink-100 text-pink-700' : 'bg-gray-100 text-gray-600'))) }}">{{ ucfirst(str_replace('_', ' ', $user->role)) }}</span>
                     </td>
@@ -61,7 +74,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6" class="px-5 py-12 text-center text-gray-400">No users found.</td></tr>
+                <tr><td colspan="8" class="px-5 py-12 text-center text-gray-400">No users found.</td></tr>
             @endforelse
         </tbody>
     </table>
