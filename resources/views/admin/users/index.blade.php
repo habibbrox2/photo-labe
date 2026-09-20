@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Storage;
     <table class="w-full text-sm min-w-[640px]">
         <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Avatar</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Name</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Phone</th>
@@ -42,17 +43,15 @@ use Illuminate\Support\Facades\Storage;
             @forelse($users as $user)
                 <tr class="hover:bg-gray-50">
                     <td class="px-5 py-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full overflow-hidden shrink-0 {{ $user->avatar ? 'ring-2 ring-primary-100' : 'bg-primary-100' }} flex items-center justify-center text-primary-600 text-sm font-semibold">
-                                @if($user->avatar)
-                                    <img loading="lazy" decoding="async" src="{{ Storage::url($user->avatar) }}" alt="" class="w-full h-full object-cover">
-                                @else
-                                    {{ substr($user->name, 0, 1) }}
-                                @endif
-                            </div>
-                            <span class="font-medium text-gray-900">{{ $user->name }}</span>
+                        <div class="w-9 h-9 rounded-full overflow-hidden shrink-0 {{ $user->avatar ? 'ring-2 ring-primary-200' : 'bg-primary-100' }} flex items-center justify-center text-primary-600 text-sm font-semibold">
+                            @if($user->avatar)
+                                <img loading="lazy" decoding="async" src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                            @else
+                                {{ substr($user->name, 0, 1) }}
+                            @endif
                         </div>
                     </td>
+                    <td class="px-5 py-3 font-medium text-gray-900">{{ $user->name }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $user->email }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $user->phone ?? '—' }}</td>
                     <td class="px-5 py-3 text-gray-500">{{ $user->city ?? '—' }}</td>
@@ -74,7 +73,7 @@ use Illuminate\Support\Facades\Storage;
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="8" class="px-5 py-12 text-center text-gray-400">No users found.</td></tr>
+                <tr><td colspan="9" class="px-5 py-12 text-center text-gray-400">No users found.</td></tr>
             @endforelse
         </tbody>
     </table>
