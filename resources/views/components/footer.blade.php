@@ -34,7 +34,7 @@
             <div class="lg:col-span-2">
                 <a href="{{ route('home') }}" class="inline-block mb-6">
                     <img src="{{ asset('storage/brand/footer-logo.png') }}" alt="PhotoLabe"
-                         class="h-20 w-auto drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-transform duration-300 hover:scale-105">
+                         class="h-28 md:h-32 w-auto drop-shadow-[0_6px_30px_rgba(0,0,0,0.55)] transition-transform duration-300 hover:scale-105">
                 </a>
                 <p class="text-gray-400 leading-relaxed mb-6 max-w-sm">Professional photo editing and creative design services. Transform your images into stunning visuals that captivate and convert.</p>
                 
