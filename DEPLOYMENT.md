@@ -121,11 +121,14 @@ chmod -R 775 storage/logs/
 # Via SSH or cPanel Terminal
 cd /home/username/laravel-app
 
+php artisan key:generate --force
 php artisan migrate --force
 php artisan storage:link
+php artisan db:seed --class=HeroSlideSeeder --force
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan cache:clear
 php artisan optimize
 ```
 
@@ -156,17 +159,21 @@ Set up cron jobs in cPanel for the Laravel scheduler:
 
 ## Queue Workers
 
-For database queue, use the scheduler to process jobs:
+Shared hosting has no Supervisor, so the database queue is drained by a
+short-lived worker started every minute via the scheduler:
 
 ```php
-// In app/Console/Kernel.php or routes/console.php
-$schedule->command('queue:work --stop-when-empty')->everyMinute();
+// routes/console.php (already configured)
+Schedule::command('queue:work --stop-when-empty --tries=3 --timeout=90')
+    ->everyMinute()
+    ->withoutOverlapping()
+    ->runInBackground();
 ```
 
-Or create a cron that runs queue workers periodically:
+The single cron job below runs both the scheduler and the queue worker:
 
 ```
-*/5 * * * * cd /home/username/laravel-app && php artisan queue:work --stop-when-empty >> /dev/null 2>&1
+* * * * * cd /home/username/laravel-app && php artisan schedule:run >> /dev/null 2>&1
 ```
 
 ## File Storage

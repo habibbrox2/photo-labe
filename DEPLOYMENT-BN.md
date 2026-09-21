@@ -180,6 +180,7 @@ php artisan db:seed --class=HeroSlideSeeder --force
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan cache:clear
 ```
 
 > **CLI নেই?** কিছু শেয়ার্ড হোস্টে আর্টিসান চালানো যায় না। তখন:
