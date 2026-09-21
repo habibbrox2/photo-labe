@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Get a Free Quote')
 @section('content')
+@php
+$showPrice = \App\Models\Setting::flag('services_show_price', true);
+@endphp
 
 <section class="page-hero-light">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
@@ -137,7 +140,7 @@
                             <select id="service_id" name="service_id" class="form-control-modern">
                                 <option value="">Select a service (optional)</option>
                                 @foreach($services as $service)
-                                <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->title }} — from ${{ number_format($service->starting_price ?? 0, 2) }}</option>
+                                <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->title }}@if($showPrice) — from ${{ number_format($service->starting_price ?? 0, 2) }}@endif</option>
                                 @endforeach
                             </select>
                         </div>

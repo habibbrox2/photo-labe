@@ -17,6 +17,8 @@ class SettingSeeder extends Seeder
             ['key' => 'address', 'value' => '123 Creative Street, Design City, DC 10001', 'group' => 'general'],
             ['key' => 'currency', 'value' => 'BDT', 'group' => 'general'],
             ['key' => 'timezone', 'value' => 'UTC', 'group' => 'general'],
+            ['key' => 'services_show_price', 'value' => '1', 'group' => 'general', 'type' => 'boolean'],
+            ['key' => 'products_show_price', 'value' => '1', 'group' => 'general', 'type' => 'boolean'],
             ['key' => 'default_meta_title', 'value' => 'PhotoLabe - Professional Photo Editing & Creative Design Services', 'group' => 'seo'],
             ['key' => 'default_meta_description', 'value' => 'Transform your images into professional, market-ready visuals with expert photo editing and creative design services.', 'group' => 'seo'],
         ];

@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@php
+$showPrice = \App\Models\Setting::flag('services_show_price', true);
+$showProductPrice = \App\Models\Setting::flag('products_show_price', true);
+@endphp
+
 @section('seo')
     <x-seo-meta
         :title="$seoData['title'] ?? 'Professional Photo Editing & Creative Design Services'"
@@ -258,7 +263,11 @@
                     </div>
                     <p class="mt-2 text-sm text-gray-500 leading-relaxed line-clamp-2">{{ $service->short_description }}</p>
                     <div class="mt-4 pt-4 border-t border-surface-200 flex items-center justify-between">
+                        @if($showPrice)
                         <span class="text-sm font-bold text-gray-900">From <span class="text-accent-600">${{ number_format($service->starting_price ?? 0, 2) }}</span></span>
+                        @else
+                        <span class="text-sm text-gray-400">Custom pricing</span>
+                        @endif
                         @if($service->delivery_time)
                         <span class="inline-flex items-center gap-1.5 text-xs text-gray-500">
                             <x-icon name="clock" class="w-3.5 h-3.5 text-gray-400" />
@@ -399,9 +408,13 @@
                     <div class="text-[11px] font-semibold uppercase tracking-wider text-accent-600">{{ $product->category->name ?? 'Product' }}</div>
                     <h3 class="mt-0.5 text-sm font-bold text-gray-900 leading-snug group-hover:text-primary-600 transition-colors">{{ $product->title }}</h3>
                     <div class="mt-2 flex items-baseline gap-2">
+                        @if($showProductPrice)
                         <span class="text-base font-extrabold text-gray-900">${{ number_format($product->sale_price ?? $product->price, 2) }}</span>
                         @if($product->sale_price && $product->sale_price < $product->price)
                         <span class="text-xs text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
+                        @endif
+                        @else
+                        <span class="text-sm text-gray-400">Price on request</span>
                         @endif
                     </div>
                 </div>

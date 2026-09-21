@@ -187,7 +187,7 @@ class SeoService
      */
     protected function getServiceSchema(Service $service): array
     {
-        return [
+        $schema = [
             '@type' => 'Service',
             'name' => $service->title,
             'description' => $service->short_description,
@@ -197,13 +197,20 @@ class SeoService
                 '@type' => 'Organization',
                 'name' => $this->appName,
             ],
-            'offers' => $service->starting_price ? [
+        ];
+
+        // Prices stay out of structured data when the admin hides them
+        // from the public site.
+        if ($service->starting_price && \App\Models\Setting::flag('services_show_price', true)) {
+            $schema['offers'] = [
                 '@type' => 'Offer',
                 'price' => $service->starting_price,
                 'priceCurrency' => 'USD',
                 'availability' => 'https://schema.org/InStock',
-            ] : null,
-        ];
+            ];
+        }
+
+        return $schema;
     }
 
     /**
@@ -231,7 +238,7 @@ class SeoService
      */
     protected function getProductSchema(Product $product): array
     {
-        return [
+        $schema = [
             '@type' => 'Product',
             'name' => $product->title,
             'description' => $product->short_description,
@@ -241,7 +248,12 @@ class SeoService
                 '@type' => 'Brand',
                 'name' => $this->appName,
             ],
-            'offers' => [
+        ];
+
+        // Prices stay out of structured data when the admin hides them
+        // from the public site.
+        if ($product->price && \App\Models\Setting::flag('products_show_price', true)) {
+            $schema['offers'] = [
                 '@type' => 'Offer',
                 'price' => $product->price,
                 'priceCurrency' => 'USD',
@@ -250,8 +262,10 @@ class SeoService
                     '@type' => 'Organization',
                     'name' => $this->appName,
                 ],
-            ],
-        ];
+            ];
+        }
+
+        return $schema;
     }
 
     /**

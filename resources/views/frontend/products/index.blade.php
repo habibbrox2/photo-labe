@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Digital Products')
+@php
+$showPrice = \App\Models\Setting::flag('products_show_price', true);
+@endphp
 @section('content')
 
 {{-- Hero --}}
@@ -93,9 +96,13 @@
                     <div class="text-[11px] font-semibold uppercase tracking-wider text-accent-600">{{ $product->category->name ?? 'Product' }}</div>
                     <h3 class="mt-0.5 text-sm font-bold text-gray-900 leading-snug group-hover:text-primary-600 transition-colors">{{ $product->title }}</h3>
                     <div class="mt-2 flex items-baseline gap-2">
+                        @if($showPrice)
                         <span class="text-base font-extrabold text-gray-900">${{ number_format($product->sale_price ?? $product->price, 2) }}</span>
                         @if($product->sale_price && $product->sale_price < $product->price)
                         <span class="text-xs text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
+                        @endif
+                        @else
+                        <span class="text-sm text-gray-400">Price on request</span>
                         @endif
                     </div>
                 </div>

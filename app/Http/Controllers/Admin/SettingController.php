@@ -21,7 +21,21 @@ class SettingController extends Controller
             'settings' => 'required|array',
         ]);
 
-        foreach ($request->input('settings') as $key => $value) {
+        $inputs = $request->input('settings', []);
+
+        // Unchecked checkboxes never reach the request; force every boolean
+        // setting that is missing from the payload to "0" so toggling a
+        // boolean off actually persists.
+        $missingBooleans = Setting::query()
+            ->where('type', 'boolean')
+            ->whereNotIn('key', array_keys($inputs))
+            ->pluck('key');
+
+        foreach ($missingBooleans as $key) {
+            $inputs[$key] = '0';
+        }
+
+        foreach ($inputs as $key => $value) {
             Setting::set($key, $value);
         }
 

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Our Services')
 @section('content')
+@php
+$showPrice = \App\Models\Setting::flag('services_show_price', true);
+@endphp
 
 {{-- Hero --}}
 <section class="page-hero-light">
@@ -138,7 +141,7 @@
                         </div>
                         <p class="mt-2 text-sm text-gray-500 leading-relaxed line-clamp-2">{{ $service->short_description }}</p>
                         <div class="mt-4 pt-4 border-t border-surface-200 flex items-center justify-between">
-                            @if($service->starting_price)
+                            @if($showPrice && $service->starting_price)
                             <span class="text-sm font-bold text-gray-900">From <span class="text-accent-600">${{ number_format($service->starting_price, 2) }}</span></span>
                             @else
                             <span class="text-sm text-gray-400">Custom pricing</span>

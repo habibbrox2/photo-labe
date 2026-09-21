@@ -2,6 +2,9 @@
 @section('title', $service->seo_title ?? $service->title)
 @section('meta_description', $service->seo_description ?? $service->short_description)
 @section('content')
+@php
+$showPrice = \App\Models\Setting::flag('services_show_price', true);
+@endphp
 
 {{-- Hero --}}
 <section class="page-hero-light">
@@ -32,7 +35,7 @@
             <p class="mt-5 text-lg text-gray-500 leading-relaxed max-w-2xl">{{ $service->short_description }}</p>
             <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-5">
                 <div class="flex items-center gap-5">
-                    @if($service->starting_price)
+                    @if($showPrice && $service->starting_price)
                     <div>
                         <div class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Starting at</div>
                         <div class="text-3xl font-extrabold text-gray-900 leading-tight">${{ number_format($service->starting_price, 2) }}<span class="text-sm font-medium text-gray-400">/image</span></div>
@@ -102,7 +105,7 @@
                 @endif
 
                 {{-- Pricing plans --}}
-                @if($service->pricing->count())
+                @if($showPrice && $service->pricing->count())
                 <div id="pricing">
                     <span class="eyebrow">Pricing</span>
                     <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-gray-900">Simple, per-image pricing</h2>
@@ -181,12 +184,18 @@
                 <div class="lg:sticky lg:top-24 space-y-5">
                     <div class="rounded-3xl border border-surface-200 bg-white p-7 shadow-[0_20px_50px_-30px_rgba(28,25,23,0.25)]">
                         <div class="flex items-center justify-between">
+                            @if($showPrice)
                             <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Starting from</span>
+                            @else
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">What you get</span>
+                            @endif
                             @if($service->delivery_time)
                             <span class="inline-flex items-center gap-1 text-[11px] font-medium text-gray-500"><x-icon name="clock" class="w-3 h-3" /> {{ $service->delivery_time }}</span>
                             @endif
                         </div>
+                        @if($showPrice)
                         <div class="mt-2 text-4xl font-extrabold text-gray-900">${{ number_format($service->starting_price ?? 0, 2) }}<span class="text-base font-medium text-gray-400"> / image</span></div>
+                        @endif
                         <ul class="mt-6 space-y-3 text-sm text-gray-600">
                             <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-accent-100 flex items-center justify-center shrink-0"><x-icon name="check" class="w-3 h-3 text-accent-700" /></span>Free unlimited revisions</li>
                             <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-accent-100 flex items-center justify-center shrink-0"><x-icon name="check" class="w-3 h-3 text-accent-700" /></span>Preview before you pay</li>
@@ -247,7 +256,7 @@
                         </div>
                         <p class="mt-2 text-sm text-gray-500 line-clamp-2">{{ $related->short_description }}</p>
                         <div class="mt-4 pt-4 border-t border-surface-200 flex justify-between items-center">
-                            @if($related->starting_price)
+                            @if($showPrice && $related->starting_price)
                             <span class="text-sm font-bold text-gray-900">From <span class="text-accent-600">${{ number_format($related->starting_price, 2) }}</span></span>
                             @endif
                             @if($related->delivery_time)
