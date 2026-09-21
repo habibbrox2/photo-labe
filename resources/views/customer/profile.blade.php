@@ -37,19 +37,19 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Name</label>
                         <input type="text" name="name" value="{{ old('name', $user->name) }}" required
                             class="form-control-modern {{ $errors->has('name') ? '!border-red-300' : '' }}">
-                        @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
                         <input type="email" name="email" value="{{ old('email', $user->email) }}" required
                             class="form-control-modern {{ $errors->has('email') ? '!border-red-300' : '' }}">
-                        @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Phone</label>
                         <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
                             class="form-control-modern {{ $errors->has('phone') ? '!border-red-300' : '' }}">
-                        @error('phone') <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @error('phone') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
                     </div>
                     <div class="flex items-end">
                         <span class="text-sm text-gray-500">Member since <span class="font-semibold text-gray-700">{{ $user->created_at->format('M Y') }}</span></span>
@@ -137,13 +137,13 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Current Password</label>
                         <input type="password" name="current_password" required
                             class="form-control-modern {{ $errors->has('current_password') ? '!border-red-300' : '' }}">
-                        @error('current_password') <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @error('current_password') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">New Password</label>
                         <input type="password" name="password" required
                             class="form-control-modern {{ $errors->has('password') ? '!border-red-300' : '' }}">
-                        @error('password') <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @error('password') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @endif
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Confirm New Password</label>
