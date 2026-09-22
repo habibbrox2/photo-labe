@@ -29,7 +29,7 @@
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div>
                             <span class="font-mono text-sm font-medium">{{ $order->order_number }}</span>
-                            <span class="text-gray-500 text-sm ml-2">${{ number_format($order->total, 2) }}</span>
+                            <span class="text-gray-500 text-sm ml-2">{{ money($order->total, $order->currency) }}</span>
                         </div>
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $order->status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">{{ ucfirst($order->status) }}</span>
                     </div>

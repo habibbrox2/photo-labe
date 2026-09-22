@@ -34,12 +34,12 @@ class OrderPlacedNotification extends Notification implements ShouldQueue
                     "We've received your order and started processing it right away.",
                     'You will receive another email as soon as your files are ready for download.',
                     '',
-                    ...$order->items->map(fn ($item) => '• '.$item->quantity.' × '.$item->name.' — $'.number_format((float) $item->total_price, 2))->all(),
+                    ...$order->items->map(fn ($item) => '• '.$item->quantity.' × '.$item->name.' — '.money($item->total_price, $order->currency))->all(),
                 ],
                 'details' => [
                     'Order Number' => $order->order_number,
                     'Items' => $order->items->sum('quantity'),
-                    'Total' => '$'.number_format((float) $order->total, 2),
+                    'Total' => money($order->total, $order->currency),
                     'Placed At' => $order->created_at?->format('M d, Y H:i'),
                 ],
 

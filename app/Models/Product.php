@@ -47,8 +47,24 @@ class Product extends Model
     public function scopeFeatured($query) { return $query->where('is_featured', true); }
     public function scopeOrdered($query) { return $query->orderBy('title'); }
 
+    /**
+     * The price customers actually pay: the sale price when it is set AND lower
+     * than the regular price, otherwise the regular price. Guards against a
+     * sale price accidentally entered above the regular price.
+     */
     public function getEffectivePriceAttribute(): float
     {
-        return $this->sale_price ?? $this->price;
+        if ($this->sale_price !== null && (float) $this->sale_price < (float) $this->price) {
+            return (float) $this->sale_price;
+        }
+
+        return (float) $this->price;
+    }
+
+    /** Whether this product is currently on sale (sale price set and lower). */
+    public function getOnSaleAttribute(): bool
+    {
+        return $this->sale_price !== null
+            && (float) $this->sale_price < (float) $this->price;
     }
 }

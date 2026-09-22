@@ -51,7 +51,7 @@
                     </td>
                     <td class="admin-td font-medium text-gray-900">{{ $product->title }}</td>
                     <td class="admin-td text-gray-500">{{ $product->category->name ?? '-' }}</td>
-                    <td class="px-5 py-3 text-gray-900 font-medium">${{ number_format($product->price, 2) }}</td>
+                    <td class="px-5 py-3 text-gray-900 font-medium">{{ money($product->price) }}</td>
                     <td class="px-5 py-3">
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $product->status === 'published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">{{ ucfirst($product->status) }}</span>
                     </td>

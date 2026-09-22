@@ -16,7 +16,7 @@
             <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
                     <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Total Revenue</p>
-                    <p class="text-2xl font-extrabold text-gray-900 mt-1.5">${{ number_format($stats['revenue'], 2) }}</p>
+                    <p class="text-2xl font-extrabold text-gray-900 mt-1.5">{{ money($stats['revenue']) }}</p>
                     <p class="text-xs text-gray-400 mt-0.5">completed orders</p>
                 </div>
                 <span class="w-11 h-11 shrink-0 rounded-2xl bg-accent-500 flex items-center justify-center shadow-sm shadow-accent-500/25">

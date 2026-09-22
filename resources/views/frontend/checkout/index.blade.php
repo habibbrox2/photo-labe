@@ -128,24 +128,24 @@
                                     <p class="text-sm font-bold text-gray-900 truncate">{{ $item->product->title }}</p>
                                     <p class="text-xs text-gray-400">Qty {{ $item->quantity }}</p>
                                 </div>
-                                <span class="text-sm font-semibold text-gray-900">${{ number_format($item->price * $item->quantity, 2) }}</span>
+                                <span class="text-sm font-semibold text-gray-900">{{ money($item->price * $item->quantity) }}</span>
                             </div>
                             @endforeach
                         </div>
                         <dl class="mt-5 pt-5 border-t border-surface-200 space-y-2.5 text-sm">
                             <div class="flex justify-between">
                                 <dt class="text-gray-500">Subtotal</dt>
-                                <dd class="font-semibold text-gray-900">${{ number_format($cart->total, 2) }}</dd>
+                                <dd class="font-semibold text-gray-900">{{ money($cart->total) }}</dd>
                             </div>
                             @if($cart->discount > 0)
                             <div class="flex justify-between">
                                 <dt class="text-gray-500">Discount</dt>
-                                <dd class="font-semibold text-emerald-600">−${{ number_format($cart->discount, 2) }}</dd>
+                                <dd class="font-semibold text-emerald-600">−{{ money($cart->discount) }}</dd>
                             </div>
                             @endif
                             <div class="flex justify-between text-base pt-3 border-t border-surface-200">
                                 <dt class="font-extrabold text-gray-900">Total</dt>
-                                <dd class="font-extrabold text-gray-900">${{ number_format($cart->grand_total, 2) }}</dd>
+                                <dd class="font-extrabold text-gray-900">{{ money($cart->grand_total) }}</dd>
                             </div>
                         </dl>
                         <button type="submit" class="btn btn-lg btn-gradient w-full mt-6">Place Order <x-icon name="arrow-right" class="w-4 h-4" /></button>

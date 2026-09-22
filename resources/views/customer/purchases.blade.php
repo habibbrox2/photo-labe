@@ -34,7 +34,7 @@
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <div class="font-extrabold text-gray-900">${{ number_format($purchase->amount, 2) }}</div>
+                                <div class="font-extrabold text-gray-900">{{ money($purchase->amount) }}</div>
                                 <div class="mt-1"><x-status-badge :status="$purchase->status" /></div>
                             </div>
                         </div>

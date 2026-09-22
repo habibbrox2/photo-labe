@@ -54,7 +54,7 @@
                         <x-icon name="credit-card" class="w-5 h-5 text-gray-600" />
                     </span>
                     <div>
-                        <div class="text-2xl font-extrabold text-gray-900 leading-none">${{ number_format($stats['total_spent'], 2) }}</div>
+                        <div class="text-2xl font-extrabold text-gray-900 leading-none">{{ money($stats['total_spent']) }}</div>
                         <div class="mt-1 text-xs font-medium text-gray-500">Total spent</div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                                 <div class="text-right shrink-0">
                                     <x-status-badge :status="$quote->status" />
                                     @if($quote->quoted_price)
-                                        <div class="text-xs text-gray-500 mt-1">${{ number_format($quote->quoted_price, 2) }}</div>
+                                        <div class="text-xs text-gray-500 mt-1">{{ money($quote->quoted_price) }}</div>
                                     @endif
                                 </div>
                             </a>
@@ -203,7 +203,7 @@
                             </div>
                             <div class="text-right shrink-0">
                                 <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/10">Completed</span>
-                                <div class="text-xs text-gray-500 mt-1">${{ number_format($purchase->amount, 2) }}</div>
+                                <div class="text-xs text-gray-500 mt-1">{{ money($purchase->amount) }}</div>
                             </div>
                         </div>
                     @endforeach

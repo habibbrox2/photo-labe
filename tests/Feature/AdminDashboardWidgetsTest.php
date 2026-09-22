@@ -154,6 +154,9 @@ class AdminDashboardWidgetsTest extends TestCase
 
     public function test_stat_widgets_aggregate_counts_and_revenue(): void
     {
+        // Pin the display currency so the revenue assertion is explicit.
+        \App\Models\Setting::set('currency', 'USD');
+
         $admin = $this->makeAdmin();
         $customer = $this->makeCustomer();
 

@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <dt class="text-gray-400 text-xs font-medium uppercase tracking-wider">Total</dt>
-                    <dd class="mt-1 font-bold text-gray-900 text-lg">${{ number_format($order->total, 2) }}</dd>
+                    <dd class="mt-1 font-bold text-gray-900 text-lg">{{ money($order->total) }}</dd>
                 </div>
                 <div>
                     <dt class="text-gray-400 text-xs font-medium uppercase tracking-wider">Status</dt>
@@ -63,7 +63,7 @@
                 @foreach($order->items as $item)
                 <div class="flex justify-between mt-3 text-sm">
                     <span class="text-gray-900 font-medium">{{ $item->name }} <span class="text-gray-400 font-normal">× {{ $item->quantity }}</span></span>
-                    <span class="font-semibold text-gray-900">${{ number_format($item->total_price, 2) }}</span>
+                    <span class="font-semibold text-gray-900">{{ money($item->total_price) }}</span>
                 </div>
                 @endforeach
             </div>

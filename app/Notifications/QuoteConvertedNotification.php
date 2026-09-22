@@ -52,7 +52,7 @@ class QuoteConvertedNotification extends Notification implements ShouldQueue
                     'Order Number' => $order->order_number,
                     'Service' => $order->service?->title ?? 'General',
                     'Quantity' => $order->quantity,
-                    'Total' => '$' . number_format((float) $order->total, 2),
+                    'Total' => money($order->total, $order->currency),
                     'Deadline' => $order->deadline?->format('M d, Y') ?? 'Flexible',
                 ],
                 'actionText' => 'View Order',

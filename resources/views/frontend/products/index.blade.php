@@ -87,7 +87,7 @@ $showPrice = \App\Models\Setting::flag('products_show_price', true);
                         <x-icon name="package" class="w-14 h-14 text-gray-300" />
                     </div>
                     @endif
-                    @if($product->sale_price && $product->sale_price < $product->price)
+                    @if($product->on_sale)
                     <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-accent-500 text-gray-900 text-[11px] font-bold shadow-sm">Sale</span>
                     @endif
                     <span class="absolute inset-0 bg-gray-900/0 group-hover:bg-gray-900/10 transition-colors duration-300" aria-hidden="true"></span>
@@ -97,9 +97,9 @@ $showPrice = \App\Models\Setting::flag('products_show_price', true);
                     <h3 class="mt-0.5 text-sm font-bold text-gray-900 leading-snug group-hover:text-primary-600 transition-colors">{{ $product->title }}</h3>
                     <div class="mt-2 flex items-baseline gap-2">
                         @if($showPrice)
-                        <span class="text-base font-extrabold text-gray-900">${{ number_format($product->sale_price ?? $product->price, 2) }}</span>
-                        @if($product->sale_price && $product->sale_price < $product->price)
-                        <span class="text-xs text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
+                        <span class="text-base font-extrabold text-gray-900">{{ money($product->effective_price) }}</span>
+                        @if($product->on_sale)
+                        <span class="text-xs text-gray-400 line-through">{{ money($product->price) }}</span>
                         @endif
                         @else
                         <span class="text-sm text-gray-400">Price on request</span>

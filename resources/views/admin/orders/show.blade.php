@@ -14,8 +14,8 @@
                     <div><span class="text-gray-500">Customer:</span> <span class="font-medium">{{ $order->user->name ?? 'N/A' }}</span></div>
                     <div><span class="text-gray-500">Service:</span> <span class="font-medium">{{ $order->service->title ?? '-' }}</span></div>
                     <div><span class="text-gray-500">Quantity:</span> <span class="font-medium">{{ $order->quantity }}</span></div>
-                    <div><span class="text-gray-500">Subtotal:</span> <span class="font-medium">${{ number_format($order->subtotal, 2) }}</span></div>
-                    <div><span class="text-gray-500">Total:</span> <span class="font-bold text-lg">${{ number_format($order->total, 2) }}</span></div>
+                    <div><span class="text-gray-500">Subtotal:</span> <span class="font-medium">{{ money($order->subtotal, $order->currency) }}</span></div>
+                    <div><span class="text-gray-500">Total:</span> <span class="font-bold text-lg">{{ money($order->total, $order->currency) }}</span></div>
                     <div><span class="text-gray-500">Deadline:</span> <span class="font-medium">{{ $order->deadline?->format('M d, Y') ?? '-' }}</span></div>
                     <div><span class="text-gray-500">Created:</span> <span class="font-medium">{{ $order->created_at->format('M d, Y H:i') }}</span></div>
                 </div>

@@ -1,6 +1,14 @@
 @extends('layouts.app')
 @section('title', $service->seo_title ?? $service->title)
 @section('meta_description', $service->seo_description ?? $service->short_description)
+@section('seo')
+    <x-seo-meta
+        :title="$seoData['title'] ?? ($service->seo_title ?? $service->title)"
+        :description="$seoData['description'] ?? ($service->seo_description ?? $service->short_description)"
+        :schema="$seoData['schema'] ?? []"
+        :breadcrumb="$seoData['breadcrumb'] ?? []"
+    />
+@endsection
 @section('content')
 @php
 $showPrice = \App\Models\Setting::flag('services_show_price', true);
@@ -38,7 +46,7 @@ $showPrice = \App\Models\Setting::flag('services_show_price', true);
                     @if($showPrice && $service->starting_price)
                     <div>
                         <div class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Starting at</div>
-                        <div class="text-3xl font-extrabold text-gray-900 leading-tight">${{ number_format($service->starting_price, 2) }}<span class="text-sm font-medium text-gray-400">/image</span></div>
+                        <div class="text-3xl font-extrabold text-gray-900 leading-tight">{{ money($service->starting_price) }}<span class="text-sm font-medium text-gray-400">/image</span></div>
                     </div>
                     @endif
                     <div class="w-px h-11 bg-surface-200" aria-hidden="true"></div>
@@ -119,7 +127,7 @@ $showPrice = \App\Models\Setting::flag('services_show_price', true);
                             @endif
                             <div class="text-sm font-bold uppercase tracking-wider {{ $plan->is_popular ? 'text-accent-400' : 'text-gray-400' }}">{{ $plan->plan_name }}</div>
                             <div class="mt-3 text-3xl font-extrabold leading-none {{ $plan->is_popular ? 'text-white' : 'text-gray-900' }}">
-                                ${{ number_format($plan->price, 2) }}
+                                {{ money($plan->price) }}
                                 <span class="text-xs font-medium {{ $plan->is_popular ? 'text-white/50' : 'text-gray-400' }}">/ image</span>
                             </div>
                             @if($plan->description)
@@ -194,7 +202,7 @@ $showPrice = \App\Models\Setting::flag('services_show_price', true);
                             @endif
                         </div>
                         @if($showPrice)
-                        <div class="mt-2 text-4xl font-extrabold text-gray-900">${{ number_format($service->starting_price ?? 0, 2) }}<span class="text-base font-medium text-gray-400"> / image</span></div>
+                        <div class="mt-2 text-4xl font-extrabold text-gray-900">{{ money($service->starting_price ?? 0) }}<span class="text-base font-medium text-gray-400"> / image</span></div>
                         @endif
                         <ul class="mt-6 space-y-3 text-sm text-gray-600">
                             <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-accent-100 flex items-center justify-center shrink-0"><x-icon name="check" class="w-3 h-3 text-accent-700" /></span>Free unlimited revisions</li>
@@ -257,7 +265,7 @@ $showPrice = \App\Models\Setting::flag('services_show_price', true);
                         <p class="mt-2 text-sm text-gray-500 line-clamp-2">{{ $related->short_description }}</p>
                         <div class="mt-4 pt-4 border-t border-surface-200 flex justify-between items-center">
                             @if($showPrice && $related->starting_price)
-                            <span class="text-sm font-bold text-gray-900">From <span class="text-accent-600">${{ number_format($related->starting_price, 2) }}</span></span>
+                            <span class="text-sm font-bold text-gray-900">From <span class="text-accent-600">{{ money($related->starting_price) }}</span></span>
                             @endif
                             @if($related->delivery_time)
                             <span class="text-xs text-gray-500">{{ $related->delivery_time }}</span>

@@ -35,7 +35,7 @@
                 <tr class="hover:bg-gray-50">
                     <td class="px-5 py-3 font-mono font-medium text-gray-900 text-xs">{{ $order->order_number }}</td>
                     <td class="admin-td text-gray-500">{{ $order->user->name ?? 'N/A' }}</td>
-                    <td class="px-5 py-3 text-gray-900 font-medium">${{ number_format($order->total, 2) }}</td>
+                    <td class="px-5 py-3 text-gray-900 font-medium">{{ money($order->total, $order->currency) }}</td>
                     <td class="px-5 py-3">
                         <x-status-badge :status="$order->status" />
                     </td>

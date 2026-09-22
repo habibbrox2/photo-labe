@@ -200,12 +200,12 @@ class SeoService
         ];
 
         // Prices stay out of structured data when the admin hides them
-        // from the public site.
+        // from the public site. Currency mirrors the display currency.
         if ($service->starting_price && \App\Models\Setting::flag('services_show_price', true)) {
             $schema['offers'] = [
                 '@type' => 'Offer',
                 'price' => $service->starting_price,
-                'priceCurrency' => 'USD',
+                'priceCurrency' => \App\Support\Currency::code(),
                 'availability' => 'https://schema.org/InStock',
             ];
         }
@@ -251,12 +251,13 @@ class SeoService
         ];
 
         // Prices stay out of structured data when the admin hides them
-        // from the public site.
+        // from the public site. The offer carries what the customer actually
+        // pays: the sale price when one is set and lower than the regular price.
         if ($product->price && \App\Models\Setting::flag('products_show_price', true)) {
             $schema['offers'] = [
                 '@type' => 'Offer',
-                'price' => $product->price,
-                'priceCurrency' => 'USD',
+                'price' => $product->effective_price,
+                'priceCurrency' => \App\Support\Currency::code(),
                 'availability' => 'https://schema.org/InStock',
                 'seller' => [
                     '@type' => 'Organization',

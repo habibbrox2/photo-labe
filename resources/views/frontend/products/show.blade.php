@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @php
 $showPrice = \App\Models\Setting::flag('products_show_price', true);
+$priceCurrency = currency_code();
 @endphp
 
 @section('seo')
@@ -15,7 +16,7 @@ $showPrice = \App\Models\Setting::flag('products_show_price', true);
             'description' => $product->short_description,
             'image' => $product->featured_image ? asset('storage/' . $product->featured_image) : '',
             $showPrice ? 'price' : null => $showPrice ? $product->effective_price : null,
-            $showPrice ? 'priceCurrency' : null => $showPrice ? 'USD' : null,
+            $showPrice ? 'priceCurrency' : null => $showPrice ? $priceCurrency : null,
             'brand' => ['@type' => 'Brand', 'name' => config('app.name')],
         ])"
     />
@@ -67,9 +68,9 @@ $showPrice = \App\Models\Setting::flag('products_show_price', true);
 
                 <div class="mt-6 flex items-center gap-3">
                     @if($showPrice)
-                    <span class="text-4xl font-extrabold text-gray-900">${{ number_format($product->effective_price, 2) }}</span>
-                    @if($product->sale_price && $product->sale_price < $product->price)
-                    <span class="text-xl text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
+                    <span class="text-4xl font-extrabold text-gray-900">{{ money($product->effective_price) }}</span>
+                    @if($product->on_sale)
+                    <span class="text-xl text-gray-400 line-through">{{ money($product->price) }}</span>
                     <span class="px-2.5 py-1 bg-accent-500 text-gray-900 text-xs font-bold rounded-full">Sale</span>
                     @endif
                     @else
@@ -101,7 +102,7 @@ $showPrice = \App\Models\Setting::flag('products_show_price', true);
                     <button type="submit" class="btn btn-lg btn-gradient w-full sm:w-auto">
                         <x-icon name="cart" class="w-5 h-5" />
                         @if($showPrice)
-                        Add to Cart — ${{ number_format($product->effective_price, 2) }}
+                        Add to Cart — {{ money($product->effective_price) }}
                         @else
                         Add to Cart
                         @endif
@@ -184,7 +185,7 @@ $showPrice = \App\Models\Setting::flag('products_show_price', true);
                     @else
                     <div class="w-full h-full flex items-center justify-center"><x-icon name="package" class="w-12 h-12 text-gray-300" /></div>
                     @endif
-                    @if($related->sale_price && $related->sale_price < $related->price)
+                    @if($related->on_sale)
                     <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-accent-500 text-gray-900 text-[11px] font-bold shadow-sm">Sale</span>
                     @endif
                 </div>
@@ -193,7 +194,7 @@ $showPrice = \App\Models\Setting::flag('products_show_price', true);
                     <h3 class="mt-0.5 text-sm font-bold text-gray-900 leading-snug group-hover:text-primary-600 transition-colors">{{ $related->title }}</h3>
                     <div class="mt-2">
                         @if($showPrice)
-                        <span class="text-base font-extrabold text-gray-900">${{ number_format($related->effective_price, 2) }}</span>
+                        <span class="text-base font-extrabold text-gray-900">{{ money($related->effective_price) }}</span>
                         @else
                         <span class="text-sm text-gray-400">Price on request</span>
                         @endif

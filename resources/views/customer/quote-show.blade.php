@@ -88,7 +88,7 @@
                     <h3 class="font-bold text-gray-900 mb-4">Pricing</h3>
                     @if($quote->quoted_price)
                         <div class="text-center mb-5">
-                            <div class="text-4xl font-extrabold text-gray-900">${{ number_format($quote->quoted_price, 2) }}</div>
+                            <div class="text-4xl font-extrabold text-gray-900">{{ money($quote->quoted_price) }}</div>
                             <div class="text-sm text-gray-500 mt-1">Quoted price</div>
                         </div>
 

@@ -53,7 +53,7 @@ class OrderStatusNotification extends Notification implements ShouldQueue
                     'Order Number' => $order->order_number,
                     'Service' => $order->service?->title ?? 'General',
                     'Status' => ucfirst(str_replace('_', ' ', $this->status)),
-                    'Total' => '$' . number_format((float) $order->total, 2),
+                    'Total' => money($order->total, $order->currency),
                     'Completed At' => $order->completed_at?->format('M d, Y H:i') ?? null,
                 ],
                 'actionText' => 'View Order',

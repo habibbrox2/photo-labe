@@ -38,7 +38,7 @@
                             <div class="flex-1 min-w-0">
                                 <a href="{{ route('products.show', $item->product->slug) }}" class="font-bold text-gray-900 hover:text-primary-600 transition-colors leading-snug">{{ $item->product->title }}</a>
                                 <p class="text-xs text-gray-400 mt-0.5">{{ $item->product->category->name ?? 'Digital product' }}</p>
-                                <p class="text-sm font-bold text-gray-900 mt-1.5">${{ number_format($item->price, 2) }}</p>
+                                <p class="text-sm font-bold text-gray-900 mt-1.5">{{ money($item->price) }}</p>
                             </div>
 
                             {{-- Quantity (auto-submit) --}}
@@ -54,7 +54,7 @@
 
                             {{-- Line total --}}
                             <div class="text-right min-w-[72px] hidden sm:block">
-                                <p class="font-extrabold text-gray-900">${{ number_format($item->price * $item->quantity, 2) }}</p>
+                                <p class="font-extrabold text-gray-900">{{ money($item->price * $item->quantity) }}</p>
                             </div>
 
                             {{-- Remove --}}
@@ -82,17 +82,17 @@
                     <dl class="space-y-3 text-sm">
                         <div class="flex justify-between">
                             <dt class="text-gray-500">Subtotal</dt>
-                            <dd class="font-semibold text-gray-900">${{ number_format($cart->total, 2) }}</dd>
+                            <dd class="font-semibold text-gray-900">{{ money($cart->total) }}</dd>
                         </div>
                         @if($cart->discount > 0)
                         <div class="flex justify-between">
                             <dt class="text-gray-500">Discount</dt>
-                            <dd class="font-semibold text-emerald-600">−${{ number_format($cart->discount, 2) }}</dd>
+                            <dd class="font-semibold text-emerald-600">−{{ money($cart->discount) }}</dd>
                         </div>
                         @endif
                         <div class="flex justify-between pt-4 mt-4 border-t border-surface-200 text-base">
                             <dt class="font-bold text-gray-900">Total</dt>
-                            <dd class="font-extrabold text-gray-900">${{ number_format($cart->grand_total, 2) }}</dd>
+                            <dd class="font-extrabold text-gray-900">{{ money($cart->grand_total) }}</dd>
                         </div>
                     </dl>
                     <a href="{{ route('checkout.show') }}" class="btn btn-lg btn-gradient w-full mt-6">Proceed to Checkout <x-icon name="arrow-right" class="w-5 h-5" /></a>

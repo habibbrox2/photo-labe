@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="text-right shrink-0">
                                     @if($quote->quoted_price)
-                                        <div class="text-2xl font-extrabold text-gray-900">${{ number_format($quote->quoted_price, 2) }}</div>
+                                        <div class="text-2xl font-extrabold text-gray-900">{{ money($quote->quoted_price) }}</div>
                                         <div class="text-xs text-gray-500 mt-1">Quoted price</div>
                                     @else
                                         <div class="text-sm text-gray-400">Awaiting quote</div>

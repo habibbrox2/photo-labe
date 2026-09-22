@@ -39,7 +39,12 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Currency</label>
-                    <input type="text" name="settings[currency]" value="{{ $settings['currency']->value ?? 'USD' }}" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                    <select name="settings[currency]" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-accent-500 outline-none">
+                        @foreach(\App\Support\Currency::options() as $code => $label)
+                        <option value="{{ $code }}" @selected(($settings['currency']->value ?? config('currency.default')) === $code)>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <p class="text-xs text-gray-500 mt-1">Used to display all prices across the site and in emails.</p>
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Timezone</label>
@@ -51,31 +56,32 @@
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
             <h3 class="font-semibold text-gray-900">Public Site</h3>
 
-            <div class="flex items-start justify-between gap-4">
+            {{-- The whole row is the toggle's label, so clicking anywhere on it flips the switch. --}}
+            <label class="flex items-start justify-between gap-4 cursor-pointer">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700">Show prices on public service pages</label>
+                    <span class="block text-sm font-semibold text-gray-700">Show prices on public service pages</span>
                     <p class="text-xs text-gray-500 mt-1">When off, visitors won't see service prices anywhere on the public site — the admin panel keeps showing them. Prices are also hidden from structured data (SEO).</p>
                 </div>
-                <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+                <span class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
                     <input type="checkbox" name="settings[services_show_price]" value="1"
                            @checked(\App\Models\Setting::flag('services_show_price', true))
                            class="sr-only peer">
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent-500/40 rounded-full peer peer-checked:bg-accent-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
-                </label>
-            </div>
+                    <span class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent-500/40 rounded-full peer peer-checked:bg-accent-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></span>
+                </span>
+            </label>
 
-            <div class="flex items-start justify-between gap-4">
+            <label class="flex items-start justify-between gap-4 cursor-pointer">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700">Show prices on public product pages</label>
+                    <span class="block text-sm font-semibold text-gray-700">Show prices on public product pages</span>
                     <p class="text-xs text-gray-500 mt-1">When off, visitors won't see product prices anywhere on the public site — the admin panel keeps showing them. Prices are also hidden from structured data (SEO).</p>
                 </div>
-                <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+                <span class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
                     <input type="checkbox" name="settings[products_show_price]" value="1"
                            @checked(\App\Models\Setting::flag('products_show_price', true))
                            class="sr-only peer">
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent-500/40 rounded-full peer peer-checked:bg-accent-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></div>
-                </label>
-            </div>
+                    <span class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent-500/40 rounded-full peer peer-checked:bg-accent-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-transform peer-checked:after:translate-x-5"></span>
+                </span>
+            </label>
         </div>
 
         <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">

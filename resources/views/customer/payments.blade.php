@@ -35,7 +35,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-600 font-mono">{{ $payment->order->order_number ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600">{{ ucfirst($payment->method ?? 'N/A') }}</td>
-                                    <td class="px-6 py-4 text-sm font-bold text-gray-900">${{ number_format($payment->amount, 2) }}</td>
+                                    <td class="px-6 py-4 text-sm font-bold text-gray-900">{{ money($payment->amount, $payment->currency) }}</td>
                                     <td class="px-6 py-4"><x-status-badge :status="$payment->status" /></td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $payment->created_at->format('M d, Y') }}</td>
                                 </tr>

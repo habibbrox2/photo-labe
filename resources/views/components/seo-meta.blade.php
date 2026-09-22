@@ -180,7 +180,7 @@
         'review' => $schema['review'] ?? null,
         'breadcrumb' => $breadcrumb ? [
             '@type' => 'BreadcrumbList',
-            'itemListElement' => collect($breadcrumb)->map(function ($item, $index) {
+            'itemListElement' => collect($breadcrumb)->map(function ($item, $index) use ($appUrl) {
                 return [
                     '@type' => 'ListItem',
                     'position' => $index + 1,

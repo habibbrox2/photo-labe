@@ -57,7 +57,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-600">{{ $order->service->title ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $order->created_at->format('M d, Y') }}</td>
-                                    <td class="px-6 py-4 text-sm font-bold text-gray-900">${{ number_format($order->total, 2) }}</td>
+                                    <td class="px-6 py-4 text-sm font-bold text-gray-900">{{ money($order->total, $order->currency) }}</td>
                                     <td class="px-6 py-4"><x-status-badge :status="$order->status" /></td>
                                     <td class="px-6 py-4 text-right">
                                         <a href="{{ route('account.orders.show', $order) }}" class="inline-flex items-center gap-1 text-sm font-semibold text-primary-600 hover:text-primary-700">View <x-icon name="chevron-right" class="w-3.5 h-3.5" /></a>

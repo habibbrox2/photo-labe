@@ -50,7 +50,7 @@
                         </div>
                         <div>
                             <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Total</div>
-                            <div class="text-sm font-extrabold text-gray-900">${{ number_format($order->total, 2) }}</div>
+                            <div class="text-sm font-extrabold text-gray-900">{{ money($order->total, $order->currency) }}</div>
                         </div>
                     </div>
 
@@ -193,16 +193,16 @@
                 <div class="surface-card p-6">
                     <h3 class="font-bold text-gray-900 mb-4">Order Summary</h3>
                     <dl class="space-y-3 text-sm">
-                        <div class="flex justify-between"><dt class="text-gray-500">Subtotal</dt><dd class="font-semibold text-gray-900">${{ number_format($order->subtotal, 2) }}</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Subtotal</dt><dd class="font-semibold text-gray-900">{{ money($order->subtotal, $order->currency) }}</dd></div>
                         @if($order->discount > 0)
-                            <div class="flex justify-between"><dt class="text-gray-500">Discount</dt><dd class="font-semibold text-emerald-600">-${{ number_format($order->discount, 2) }}</dd></div>
+                            <div class="flex justify-between"><dt class="text-gray-500">Discount</dt><dd class="font-semibold text-emerald-600">-{{ money($order->discount, $order->currency) }}</dd></div>
                         @endif
                         @if($order->tax > 0)
-                            <div class="flex justify-between"><dt class="text-gray-500">Tax</dt><dd class="font-semibold text-gray-900">${{ number_format($order->tax, 2) }}</dd></div>
+                            <div class="flex justify-between"><dt class="text-gray-500">Tax</dt><dd class="font-semibold text-gray-900">{{ money($order->tax, $order->currency) }}</dd></div>
                         @endif
                         <div class="flex justify-between pt-3 border-t border-surface-200 text-base">
                             <dt class="font-extrabold text-gray-900">Total</dt>
-                            <dd class="font-extrabold text-gray-900">${{ number_format($order->total, 2) }}</dd>
+                            <dd class="font-extrabold text-gray-900">{{ money($order->total, $order->currency) }}</dd>
                         </div>
                     </dl>
                 </div>

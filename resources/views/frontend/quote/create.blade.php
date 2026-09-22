@@ -140,7 +140,7 @@ $showPrice = \App\Models\Setting::flag('services_show_price', true);
                             <select id="service_id" name="service_id" class="form-control-modern">
                                 <option value="">Select a service (optional)</option>
                                 @foreach($services as $service)
-                                <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->title }}@if($showPrice) — from ${{ number_format($service->starting_price ?? 0, 2) }}@endif</option>
+                                <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->title }}@if($showPrice) — from {{ money($service->starting_price ?? 0) }}@endif</option>
                                 @endforeach
                             </select>
                         </div>

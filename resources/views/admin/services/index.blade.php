@@ -68,7 +68,7 @@
                         <div class="text-xs text-gray-400">/{{ $service->slug }}</div>
                     </td>
                     <td class="px-5 py-3 text-gray-500">{{ $service->category->name ?? '-' }}</td>
-                    <td class="px-5 py-3 text-gray-900 font-medium">${{ number_format($service->starting_price ?? 0, 2) }}</td>
+                    <td class="px-5 py-3 text-gray-900 font-medium">{{ money($service->starting_price ?? 0) }}</td>
                     <td class="px-5 py-3">
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full {{ $service->status === 'published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
                             {{ ucfirst($service->status) }}

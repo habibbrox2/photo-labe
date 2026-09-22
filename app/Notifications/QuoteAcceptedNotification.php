@@ -51,7 +51,7 @@ class QuoteAcceptedNotification extends Notification implements ShouldQueue
                     'Email' => $quote->email,
                     'Service' => $quote->service?->title ?? 'General',
                     'Quantity' => $quote->quantity,
-                    'Quoted Price' => $quote->quoted_price ? '$' . number_format((float) $quote->quoted_price, 2) : '—',
+                    'Quoted Price' => $quote->quoted_price ? money($quote->quoted_price) : '—',
                 ],
                 'actionText' => 'View Quote',
                 'actionUrl' => route('admin.quotes.show', $quote),

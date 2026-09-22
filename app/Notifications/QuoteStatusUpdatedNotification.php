@@ -60,7 +60,7 @@ class QuoteStatusUpdatedNotification extends Notification implements ShouldQueue
                     'Quote ID' => "#{$quote->id}",
                     'Service' => $quote->service?->title ?? 'General',
                     'Status' => ucfirst($quote->status),
-                    'Quoted Price' => $quote->quoted_price ? '$' . number_format((float) $quote->quoted_price, 2) : null,
+                    'Quoted Price' => $quote->quoted_price ? money($quote->quoted_price) : null,
                     'Admin Notes' => $quote->admin_notes,
                 ]),
                 'actionText' => $quote->status === 'quoted' ? 'Review & Accept Quote' : 'View Quote',
@@ -85,7 +85,7 @@ class QuoteStatusUpdatedNotification extends Notification implements ShouldQueue
     protected function buildMessage(): string
     {
         return match ($this->status) {
-            'quoted' => "Your quote request #{$this->quote->id} has been reviewed. We've prepared a quote of $" . number_format((float) ($this->quote->quoted_price ?? 0), 2) . ' — take a look and let us know if you accept it.',
+            'quoted' => "Your quote request #{$this->quote->id} has been reviewed. We've prepared a quote of " . money($this->quote->quoted_price ?? 0) . ' — take a look and let us know if you accept it.',
             'rejected' => "Your quote request #{$this->quote->id} was not accepted. Please contact us if you'd like to discuss alternatives.",
             'expired' => "Your quote request #{$this->quote->id} has expired. Please submit a new request if you still need our services.",
             'cancelled' => "Your quote request #{$this->quote->id} has been cancelled.",
